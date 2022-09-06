@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   MINISHELL                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdas-nev <rdas-nev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -20,6 +20,8 @@ int main()
     {
         sig_handler();
         line = readline(BLUE"amazing"YELLOW"shell: "RES);
+        add_history(line);
+        commands()
         if (!line)
         {
             printf("exit\n");
