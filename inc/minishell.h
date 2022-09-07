@@ -21,6 +21,7 @@
 # include<signal.h>
 # include<unistd.h>
 # include<stdlib.h>
+# include<string.h>
 
 // COLORS
 
@@ -31,7 +32,11 @@
 
 // Functions
 
-char *readline (const char *prompt);
 void sig_handler(void);
+void commands(char *line);
+void builtins(char *line);
+int ft_strncmp(const char *s1, const char *s2, size_t n);
+int ft_strlen(const char *s);
+char *ft_strdup(const char *s1);
 
 #endif

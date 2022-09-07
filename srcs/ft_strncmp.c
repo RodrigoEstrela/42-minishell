@@ -12,25 +12,48 @@
 
 #include"../inc/minishell.h"
 
-void builtins(char *line)
+int ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-    if (ft_strncmp(line, "exit", 4) == 0)
+    size_t i;
+
+    i = 0;
+    if (!s1)
+        return (-1);
+    while (i < n && s1[i] && s2[i])
     {
-        printf("exit\n");
-        exit(1);
+        if (s1[i] != s2[i])
+            return (s1[i] - s2[i]);
+        i++;
     }
-    else if (ft_strncmp(line, "cd", 1) == 0) {
-        if (ft_strlen(line) == 2)
-            chdir(getenv("HOME"));
-        else
-            chdir(line + 3);
-    }
-    else if (ft_strncmp(line, "pwd", 3) == 0)
+    if (i == n)
+        return (0);
+    return (s1[i] - s2[i]);
+}
+
+int ft_strlen(const char *s)
+{
+    int i;
+
+    i = 0;
+    while (s[i])
+        i++;
+    return (i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+    char	*str;
+    size_t	i;
+
+    str = (char *)malloc(sizeof(*s1) * (ft_strlen(s1) + 1));
+    if (!str)
+        return (NULL);
+    i = 0;
+    while (s1[i])
     {
-        char cwd[1024];
-        getcwd(cwd, sizeof(cwd));
-        printf("%s\n", cwd);
+        str[i] = s1[i];
+        i++;
     }
-    else
-        return ;
+    str[i] = 0;
+    return (str);
 }

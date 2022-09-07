@@ -21,7 +21,7 @@ int main()
         sig_handler();
         line = readline(BLUE"amazing"YELLOW"shell: "RES);
         add_history(line);
-        commands()
+        commands(line);
         if (!line)
         {
             printf("exit\n");

@@ -12,4 +12,8 @@
 
 #include"../inc/minishell.h"
 
-void    commands()
+void    commands(char *line)
+{
+    builtins(line);
+    return ;
+}
