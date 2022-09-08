@@ -12,8 +12,7 @@
 
 #include"../inc/minishell.h"
 
-void    commands(char *line)
+void    commands(char *line, t_list **env)
 {
-    builtins(line);
-    return ;
+    builtins(line, env);
 }

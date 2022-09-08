@@ -12,33 +12,40 @@
 
 #include"../inc/minishell.h"
 
-int main(int ac, char **av, char **envp)
+t_list *ft_lstnew(void *content)
 {
-    (void)ac;
-    (void)av;
-    char *line;
-    t_list **env;
-    int i;
+    t_list *new;
 
-    i = 0;
-    env = malloc(sizeof(t_list));
-    ft_lstadd_front(env, ft_lstnew(envp[i]));
-    i++;
-    while (envp[i])
+    new = malloc(sizeof(t_list));
+    if (!new)
+        return (NULL);
+    new->content = content;
+    new->next = NULL;
+    return (new);
+}
+
+void ft_lstadd_back(t_list **lst, t_list *new)
+{
+    t_list *tmp;
+
+    if (!*lst)
     {
-        ft_lstadd_back(env, ft_lstnew(envp[i]));
-        i++;
+        *lst = new;
+        return ;
     }
-    while(1)
+    tmp = *lst;
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = new;
+}
+
+void ft_lstadd_front(t_list **lst, t_list *new)
+{
+    if (!*lst)
     {
-        sig_handler();
-        line = readline(BLUE"amazing"YELLOW"shell: "RES);
-        add_history(line);
-        commands(line, env);
-        if (!line)
-        {
-            printf("exit\n");
-            exit(1);
-        }
+        *lst = new;
+        return ;
     }
+    new->next = *lst;
+    *lst = new;
 }

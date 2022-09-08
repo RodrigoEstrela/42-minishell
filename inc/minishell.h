@@ -30,13 +30,25 @@
 # define BLUE "\e[1;34m"
 # define RES "\e[0m"
 
+// Structures
+
+typedef struct s_list
+{
+    char *content;
+    struct s_list *next;
+}               t_list;
+
 // Functions
 
 void sig_handler(void);
-void commands(char *line);
-void builtins(char *line);
+void commands(char *line, t_list **env);
+void builtins(char *line, t_list **env);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 int ft_strlen(const char *s);
-char *ft_strdup(const char *s1);
+
+t_list *ft_lstnew(void *content);
+void ft_lstadd_back(t_list **lst, t_list *new);
+void ft_lstadd_front(t_list **lst, t_list *new);
+
 
 #endif

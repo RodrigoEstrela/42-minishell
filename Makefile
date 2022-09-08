@@ -10,7 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c
+SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
+					listfuncs.c
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
