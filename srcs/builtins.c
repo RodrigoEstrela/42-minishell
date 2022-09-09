@@ -12,7 +12,7 @@
 
 #include"../inc/minishell.h"
 
-void builtins(char *line, t_list **env)
+void builtins(char *line, t_list **env, t_list **export)
 {
     if (ft_strncmp(line, "exit", 4) == 0)
     {
@@ -45,13 +45,20 @@ void builtins(char *line, t_list **env)
     {
         if (ft_strlen(line) == 6)
         {
-            t_list *tmp = *env;
-            ft_sort_int_tab(tmp, ft_lstsize(tmp));
+            t_list *tmp = *export;
             while (tmp)
             {
                 printf("declare -x %s\n", tmp->content);
                 tmp = tmp->next;
             }
+        }
+        else
+        {
+            char *str = ft_substr(line, 7, ft_strlen(line) - 7);
+            if (check_duplicated(*export, str) == 0)
+                ft_lstadd_back(export, ft_lstnew(str));
+            else
+                printf("export: `%s': not a valid identifier\n", str);
         }
     }
 }

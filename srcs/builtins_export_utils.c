@@ -12,10 +12,10 @@
 
 #include"../inc/minishell.h"
 
-void    ft_sort_int_tab(t_list *tab, unsigned int size)
+void    ft_sort_list(t_list *tab, int size)
 {
-    unsigned int i;
-    unsigned int j;
+    int i;
+    int j;
     char *tmp;
 
     i = 0;
@@ -36,4 +36,23 @@ void    ft_sort_int_tab(t_list *tab, unsigned int size)
         }
         i++;
     }
+}
+
+int     check_duplicated(t_list *list, char *str)
+{
+    int i;
+    int j;
+
+    i = 0;
+    if (!ft_strchr(str, '='))
+        j = 0;
+    else
+        j = ft_strlen(ft_strchr(str, '='));
+    while (i < ft_lstsize(list))
+    {
+        if (ft_strncmp(indx(list, i)->content, str, ft_strlen(str) - j) == 0)
+            return (1);
+        i++;
+    }
+    return (0);
 }

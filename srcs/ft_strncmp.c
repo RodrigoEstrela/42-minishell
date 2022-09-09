@@ -57,3 +57,39 @@ char	*ft_strdup(const char *s1)
     str[i] = 0;
     return (str);
 }
+
+char *ft_strchr(const char *s, int c)
+{
+    while (*s)
+    {
+        if (*s == c)
+            return ((char *)s);
+        s++;
+    }
+    if (c == 0)
+        return ((char *)s);
+    return (NULL);
+}
+
+char *ft_substr(char const *s, int start, size_t len)
+{
+    char *str;
+    size_t i;
+
+    if (!s)
+        return (NULL);
+    if (start > ft_strlen(s))
+        return (ft_strdup(""));
+    str = (char *)malloc(sizeof(char) * (len + 1));
+    if (!str)
+        return (NULL);
+    i = 0;
+    while (i < len && s[start])
+    {
+        str[i] = s[start];
+        i++;
+        start++;
+    }
+    str[i] = 0;
+    return (str);
+}

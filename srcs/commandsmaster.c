@@ -12,7 +12,7 @@
 
 #include"../inc/minishell.h"
 
-void    commands(char *line, t_list **env)
+void    commands(char *line, t_list **env, t_list **export)
 {
-    builtins(line, env);
+    builtins(line, env, export);
 }

@@ -18,19 +18,25 @@ int main(int ac, char **av, char **envp)
     (void)av;
     char *line;
     t_list **env;
+    t_list **export;
     int i;
 
     i = 0;
     env = malloc(sizeof(t_list));
-    ft_lstadd_front(env, ft_lstnew(envp[i++]));
-    while (envp[i])
-        ft_lstadd_back(env, ft_lstnew(envp[i++]));
+    export = malloc(sizeof(t_list));
+    ft_lstadd_front(env, ft_lstnew(envp[i]));
+    ft_lstadd_front(export, ft_lstnew(envp[i++]));
+    while (envp[i]) {
+        ft_lstadd_back(env, ft_lstnew(envp[i]));
+        ft_lstadd_back(export, ft_lstnew(envp[i++]));
+    }
+    ft_sort_list(*export, ft_lstsize(*export));
     while(1)
     {
         sig_handler();
         line = readline(BLUE"amazing"YELLOW"shell: "RES);
         add_history(line);
-        commands(line, env);
+        commands(line, env, export);
         if (!line)
         {
             printf("exit\n");
