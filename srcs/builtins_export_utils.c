@@ -12,64 +12,28 @@
 
 #include"../inc/minishell.h"
 
-t_list *ft_lstnew(void *content)
+void    ft_sort_int_tab(t_list *tab, unsigned int size)
 {
-    t_list *new;
-
-    new = malloc(sizeof(t_list));
-    if (!new)
-        return (NULL);
-    new->content = content;
-    new->next = NULL;
-    return (new);
-}
-
-void ft_lstadd_back(t_list **lst, t_list *new)
-{
-    t_list *tmp;
-
-    if (!*lst)
-    {
-        *lst = new;
-        return ;
-    }
-    tmp = *lst;
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new;
-}
-
-void ft_lstadd_front(t_list **lst, t_list *new)
-{
-    if (!*lst)
-    {
-        *lst = new;
-        return ;
-    }
-    new->next = *lst;
-    *lst = new;
-}
-
-int ft_lstsize(t_list *lst)
-{
-    int i;
+    unsigned int i;
+    unsigned int j;
+    char *tmp;
 
     i = 0;
-    while (lst)
+    while (i < size)
     {
-        lst = lst->next;
+        j = i + 1;
+        while (j < size)
+        {
+            if (ft_strncmp(indx(tab, i)->content,
+                           indx(tab, j)->content,
+                           ft_strlen(indx(tab, i)->content)) > 0)
+            {
+                tmp = indx(tab, i)->content;
+                indx(tab, i)->content = indx(tab, j)->content;
+                indx(tab, j)->content = tmp;
+            }
+            j++;
+        }
         i++;
     }
-    return (i);
-}
-
-t_list	*indx(t_list *list, int index) {
-    int i;
-
-    i = 0;
-    while (i < index) {
-        list = list->next;
-        i++;
-    }
-    return (list);
 }

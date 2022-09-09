@@ -44,7 +44,14 @@ void builtins(char *line, t_list **env)
     else if (ft_strncmp(line, "export", 6) == 0)
     {
         if (ft_strlen(line) == 6)
-            printf("export\n");
+        {
+            t_list *tmp = *env;
+            ft_sort_int_tab(tmp, ft_lstsize(tmp));
+            while (tmp)
+            {
+                printf("declare -x %s\n", tmp->content);
+                tmp = tmp->next;
+            }
+        }
     }
 }
-

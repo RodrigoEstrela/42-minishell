@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
-					listfuncs.c
+					listfuncs.c builtins_export_utils.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 

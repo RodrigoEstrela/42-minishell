@@ -22,13 +22,9 @@ int main(int ac, char **av, char **envp)
 
     i = 0;
     env = malloc(sizeof(t_list));
-    ft_lstadd_front(env, ft_lstnew(envp[i]));
-    i++;
+    ft_lstadd_front(env, ft_lstnew(envp[i++]));
     while (envp[i])
-    {
-        ft_lstadd_back(env, ft_lstnew(envp[i]));
-        i++;
-    }
+        ft_lstadd_back(env, ft_lstnew(envp[i++]));
     while(1)
     {
         sig_handler();
