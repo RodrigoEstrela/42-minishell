@@ -55,10 +55,11 @@ void builtins(char *line, t_list **env, t_list **export)
         else
         {
             char *str = ft_substr(line, 7, ft_strlen(line) - 7);
-            if (check_duplicated(*export, str) == 0)
+            int dup = check_duplicated(*export, str);
+            if (dup == 0)
                 ft_lstadd_back(export, ft_lstnew(str));
             else
-                printf("export: `%s': not a valid identifier\n", str);
+                value_modifier(export ,dup, str);
         }
     }
 }

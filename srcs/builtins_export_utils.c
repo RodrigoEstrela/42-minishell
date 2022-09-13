@@ -38,21 +38,37 @@ void    ft_sort_list(t_list *tab, int size)
     }
 }
 
+static int cmpateaoigual(const char *s1, const char *s2)
+{
+    int i;
+
+    i = 0;
+    while (s1 && s2 && s1[i] == s2[i])
+    {
+        if (s1[i] == '=' && s2[i] == '=')
+            return(1);
+        i++;
+    }
+    if (s1[i] == s2[i] && s2[i + 1] == '\0')
+        return(1);
+    return(0);
+}
+
 int     check_duplicated(t_list *list, char *str)
 {
     int i;
-    int j;
 
     i = 0;
-    if (!ft_strchr(str, '='))
-        j = 0;
-    else
-        j = ft_strlen(ft_strchr(str, '='));
     while (i < ft_lstsize(list))
     {
-        if (ft_strncmp(indx(list, i)->content, str, ft_strlen(str) - j) == 0)
-            return (1);
+        if (cmpateaoigual(indx(list, i)->content, str) == 1)
+            return (i);
         i++;
     }
     return (0);
+}
+
+void    value_modifier(t_list **export, int dup, char *str)
+{
+    indx((*export), dup)->content = str;
 }

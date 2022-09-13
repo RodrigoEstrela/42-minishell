@@ -49,6 +49,9 @@ char *ft_strchr(const char *s, int c);
 int     check_duplicated(t_list *list, char *str);
 char	*ft_strdup(const char *s1);
 char *ft_substr(char const *s, int start, size_t len);
+void    value_modifier(t_list **export, int dup, char *str);
+char	**ft_split(char const *s, char c);
+char	*ft_strtrim(char const *s1, char const *set);
 
 t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);
