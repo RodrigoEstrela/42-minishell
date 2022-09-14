@@ -50,11 +50,10 @@ int main(int ac, char **av, char **envp)
         cmds = ft_split(line, '|');
         while (cmds[j]) {
             tmp = cmds[j];
-            cmds[j] = ft_strtrim(tmp, " ");
+            cmds[j] = ft_strtrim(tmp);
             free(tmp);
-            printf("%s\n", cmds[j]);
             j++;
         }
-        commands(line, env, export);
+        commands(line, env, export, cmds, envp);
     }
 }

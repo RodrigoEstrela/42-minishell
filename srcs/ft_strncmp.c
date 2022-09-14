@@ -12,24 +12,6 @@
 
 #include"../inc/minishell.h"
 
-int ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-    size_t i;
-
-    i = 0;
-    if (!s1 || !s2)
-        return (-1);
-    while (i < n && s1[i] && s2[i])
-    {
-        if (s1[i] != s2[i])
-            return (s1[i] - s2[i]);
-        i++;
-    }
-    if (i == n)
-        return (0);
-    return (s1[i] - s2[i]);
-}
-
 int ft_strlen(const char *s)
 {
     int i;
@@ -56,19 +38,6 @@ char	*ft_strdup(const char *s1)
     }
     str[i] = 0;
     return (str);
-}
-
-char *ft_strchr(const char *s, int c)
-{
-    while (*s)
-    {
-        if (*s == c)
-            return ((char *)s);
-        s++;
-    }
-    if (c == 0)
-        return ((char *)s);
-    return (NULL);
 }
 
 char *ft_substr(char const *s, int start, size_t len)

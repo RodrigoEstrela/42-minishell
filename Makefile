@@ -12,6 +12,9 @@
 
 SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 					listfuncs.c builtins_export_utils.c split.c \
+					pipex/children.c pipex/ft_memcmp.c pipex/get_next_line.c \
+					pipex/get_next_line_utils.c pipex/heredoc.c \
+					pipex/pipex.c pipex/pipex_utils.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
@@ -22,6 +25,7 @@ NAME		= 		minishell
 
 objs/%.o: srcs/%.c
 			@mkdir -p objs
+			@mkdir -p objs/pipex
 			@cc $(CFLAGS) -c $< -o $@
 
 objs_bonus/%.o: bonus/%.c

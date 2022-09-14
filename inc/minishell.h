@@ -22,6 +22,7 @@
 # include<unistd.h>
 # include<stdlib.h>
 # include<string.h>
+# include"pipex.h"
 
 // COLORS
 
@@ -40,8 +41,8 @@ typedef struct s_list
 // Functions
 
 void sig_handler(void);
-void commands(char *line, t_list **env, t_list **export);
-void builtins(char *line, t_list **env, t_list **export);
+void commands(char *line, t_list **env, t_list **export, char **cmds, char **envp);
+void builtins(char *line, t_list **env, t_list **export, char **cmds, char **envp);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 int ft_strlen(const char *s);
 void    ft_sort_list(t_list *tab, int size);
@@ -51,7 +52,8 @@ char	*ft_strdup(const char *s1);
 char *ft_substr(char const *s, int start, size_t len);
 void    value_modifier(t_list **export, int dup, char *str);
 char	**ft_split(char const *s, char c);
-char	*ft_strtrim(char const *s1, char const *set);
+void    pipex(int ac, char **av, char **envp);
+char *ft_strtrim(char *str);
 
 t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);

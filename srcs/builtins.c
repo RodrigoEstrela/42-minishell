@@ -12,8 +12,11 @@
 
 #include"../inc/minishell.h"
 
-void builtins(char *line, t_list **env, t_list **export)
+void builtins(char *line, t_list **env, t_list **export, char **cmds, char **envp)
 {
+    int i;
+
+    i = -1;
     if (ft_strncmp(line, "exit", 4) == 0)
     {
         printf("exit\n");
@@ -61,5 +64,11 @@ void builtins(char *line, t_list **env, t_list **export)
             else
                 value_modifier(export ,dup, str);
         }
+    }
+    else
+    {
+        while (cmds[++i])
+            ;
+        pipex( i, cmds, envp);
     }
 }
