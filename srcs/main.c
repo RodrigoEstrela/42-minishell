@@ -51,6 +51,7 @@ int main(int ac, char **av, char **envp)
         while (cmds[j]) {
             tmp = ft_strdup(cmds[j]);
             cmds[j] = ft_strtrim(tmp);
+            printf("cmds: %s\n", cmds[j]);
             free(tmp);
             j++;
         }

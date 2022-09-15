@@ -44,7 +44,6 @@ void sig_handler(void);
 void commands(char *line, t_list **env, t_list **export, char **cmds, char **envp);
 void builtins(char *line, t_list **env, t_list **export, char **cmds, char **envp);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
-int ft_strlen(const char *s);
 void    ft_sort_list(t_list *tab, int size);
 char *ft_strchr(const char *s, int c);
 int     check_duplicated(t_list *list, char *str);
