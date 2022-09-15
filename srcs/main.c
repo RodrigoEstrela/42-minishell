@@ -49,7 +49,7 @@ int main(int ac, char **av, char **envp)
         }
         cmds = ft_split(line, '|');
         while (cmds[j]) {
-            tmp = cmds[j];
+            tmp = ft_strdup(cmds[j]);
             cmds[j] = ft_strtrim(tmp);
             free(tmp);
             j++;
