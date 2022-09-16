@@ -21,12 +21,8 @@ int main(int ac, char **av, char **envp)
     t_list **export;
     int i;
     char **cmds;
-    char *tmp;
 
     i = 0;
-    int j = 0;
-
-
     env = malloc(sizeof(t_list));
     export = malloc(sizeof(t_list));
     ft_lstadd_front(env, ft_lstnew(envp[i]));
@@ -36,7 +32,6 @@ int main(int ac, char **av, char **envp)
         ft_lstadd_back(export, ft_lstnew(envp[i++]));
     }
     ft_sort_list(*export, ft_lstsize(*export));
-
     while(1)
     {
         sig_handler();
@@ -48,13 +43,6 @@ int main(int ac, char **av, char **envp)
             exit(1);
         }
         cmds = ft_split(line, '|');
-        while (cmds[j]) {
-            tmp = ft_strdup(cmds[j]);
-            cmds[j] = ft_strtrim(tmp);
-            printf("cmds: %s\n", cmds[j]);
-            free(tmp);
-            j++;
-        }
         commands(line, env, export, cmds, envp);
     }
 }

@@ -17,25 +17,25 @@ void builtins(char *line, t_list **env, t_list **export, char **cmds, char **env
     int i;
 
     i = -1;
-    if (ft_strncmp(line, "exit", 4) == 0)
+    if (ft_strcmp(line, "exit") == 0)
     {
         printf("exit\n");
         exit(1);
     }
-    else if (ft_strncmp(line, "cd", 1) == 0)
+    else if (ft_strcmp(line, "cd") == 0)
     {
         if (ft_strlen(line) == 2)
             chdir(getenv("HOME"));
         else
             chdir(line + 3);
     }
-    else if (ft_strncmp(line, "pwd", 3) == 0)
+    else if (ft_strcmp(line, "pwd") == 0)
     {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
         printf("%s\n", cwd);
     }
-    else if (ft_strncmp(line, "env", 3) == 0)
+    else if (ft_strcmp(line, "env") == 0)
     {
         t_list *tmp = *env;
         while (tmp)
@@ -44,7 +44,7 @@ void builtins(char *line, t_list **env, t_list **export, char **cmds, char **env
             tmp = tmp->next;
         }
     }
-    else if (ft_strncmp(line, "export", 6) == 0)
+    else if (ft_strcmp(line, "export") == 0)
     {
         if (ft_strlen(line) == 6)
         {

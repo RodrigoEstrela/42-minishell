@@ -18,7 +18,7 @@ SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
-CFLAGS		=		-Wall -Wextra -Werror -lreadline -g
+CFLAGS		=		-Wall -Wextra -Werror -lreadline
 RM			=		rm -f
 
 NAME		= 		minishell

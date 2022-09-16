@@ -53,6 +53,7 @@ void    value_modifier(t_list **export, int dup, char *str);
 char	**ft_split(char const *s, char c);
 void    pipex(int ac, char **av, char **envp);
 char *ft_strtrim(char *str);
+int ft_strcmp(const char *s1, const char *s2);
 
 t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);
