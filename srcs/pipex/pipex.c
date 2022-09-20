@@ -61,7 +61,7 @@ void    pipex(int ac, char **av, char **envp)
 		//	i_fd1_fd2[2] = open_file(av[ac - 1], 1);
 //			dup2(i_fd1_fd2[1], 0);
 		}
-		while (i_fd1_fd2[0] < ac)
+		while (i_fd1_fd2[0] < ac - 1)
 			child_one(av[i_fd1_fd2[0]++], envp);
 //		dup2(i_fd1_fd2[2], 0);
         int pid = fork();

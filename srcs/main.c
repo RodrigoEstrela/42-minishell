@@ -42,7 +42,13 @@ int main(int ac, char **av, char **envp)
             printf("exit\n");
             exit(1);
         }
-        cmds = ft_split(line, '|');
-        commands(line, env, export, cmds, envp);
+        int pid = fork();
+        if (pid == 0)
+        {
+            cmds = ft_split(line, '|');
+            commands(line, env, export, cmds, envp);
+            exit(0);
+        }
+        waitpid(pid, 0, 0);
     }
 }
