@@ -18,7 +18,7 @@ SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
-CFLAGS		=		-Wall -Wextra -Werror -lreadline
+CFLAGS		=		-lreadline -Wall -Wextra -Werror
 RM			=		rm -f
 
 NAME		= 		minishell
@@ -27,7 +27,6 @@ objs/%.o: srcs/%.c
 			@mkdir -p objs
 			@mkdir -p objs/pipex
 			@cc $(CFLAGS) -c $< -o $@
-
 
 $(NAME):    	$(OBJS)
 			@cc $(OBJS) $(CFLAGS) -o $(NAME)

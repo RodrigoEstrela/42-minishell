@@ -12,43 +12,43 @@
 
 #include"../inc/minishell.h"
 
-void builtins(char *line, t_list **env, t_list **export, char **cmds, char **envp)
+void builtins(t_lists *minithings, char **envp)
 {
     int i;
 
     i = -1;
-    if (ft_strcmp(line, "exit") == 0)
+    if (ft_strcmp(minithings->line, "exit") == 0)
     {
         printf("exit\n");
         exit(1);
     }
-    else if (ft_strcmp(line, "cd") == 0)
+    else if (ft_strcmp(minithings->line, "cd") == 0)
     {
-        if (ft_strlen(line) == 2)
+        if (ft_strlen(minithings->line) == 2)
             chdir(getenv("HOME"));
         else
-            chdir(line + 3);
+            chdir(minithings->line + 3);
     }
-    else if (ft_strcmp(line, "pwd") == 0)
+    else if (ft_strcmp(minithings->line, "pwd") == 0)
     {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
         printf("%s\n", cwd);
     }
-    else if (ft_strcmp(line, "env") == 0)
+    else if (ft_strcmp(minithings->line, "env") == 0)
     {
-        t_list *tmp = *env;
+        t_list *tmp = *minithings->env;
         while (tmp)
         {
             printf("%s\n", tmp->content);
             tmp = tmp->next;
         }
     }
-    else if (ft_strcmp(line, "export") == 0)
+    else if (ft_strcmp(minithings->line, "export") == 0)
     {
-        if (ft_strlen(line) == 6)
+        if (ft_strlen(minithings->line) == 6)
         {
-            t_list *tmp = *export;
+            t_list *tmp = *minithings->export;
             while (tmp)
             {
                 printf("declare -x %s\n", tmp->content);
@@ -57,18 +57,18 @@ void builtins(char *line, t_list **env, t_list **export, char **cmds, char **env
         }
         else
         {
-            char *str = ft_substr(line, 7, ft_strlen(line) - 7);
-            int dup = check_duplicated(*export, str);
+            char *str = ft_substr(minithings->line, 7, ft_strlen(minithings->line) - 7);
+            int dup = check_duplicated(*minithings->export, str);
             if (dup == 0)
-                ft_lstadd_back(export, ft_lstnew(str));
+                ft_lstadd_back(minithings->export, ft_lstnew(str));
             else
-                value_modifier(export ,dup, str);
+                value_modifier(minithings->export ,dup, str);
         }
     }
     else
     {
-        while (cmds[++i])
+        while (minithings->cmds[++i])
             ;
-        pipex( i, cmds, envp);
+        pipex( i, minithings->cmds, envp);
     }
 }

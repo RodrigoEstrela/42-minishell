@@ -12,7 +12,15 @@
 
 #include"../inc/minishell.h"
 
-void    commands(char *line, t_list **env, t_list **export, char **cmds, char **envp)
+void    commands(t_lists *lists, char **envp)
 {
-    builtins(line, env, export, cmds, envp);
+    int pid;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        builtins(lists, envp);
+        exit(0);
+    }
+    waitpid(pid, 0, 0);
 }

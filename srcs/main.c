@@ -12,43 +12,42 @@
 
 #include"../inc/minishell.h"
 
+static t_lists *init_lists(t_lists *lists, char **envp)
+{
+    int i;
+
+    i = 0;
+    lists->env = malloc(sizeof(t_list));
+    lists->export = malloc(sizeof(t_list));
+    ft_lstadd_front(lists->env, ft_lstnew(envp[i]));
+    ft_lstadd_front(lists->export, ft_lstnew(envp[i++]));
+    while (envp[i]) {
+        ft_lstadd_back(lists->env, ft_lstnew(envp[i]));
+        ft_lstadd_back(lists->export, ft_lstnew(envp[i++]));
+    }
+    ft_sort_list(*lists->export, ft_lstsize(*lists->export));
+    return (lists);
+}
+
 int main(int ac, char **av, char **envp)
 {
     (void)ac;
     (void)av;
-    char *line;
-    t_list **env;
-    t_list **export;
-    int i;
-    char **cmds;
+    t_lists *minithings;
 
-    i = 0;
-    env = malloc(sizeof(t_list));
-    export = malloc(sizeof(t_list));
-    ft_lstadd_front(env, ft_lstnew(envp[i]));
-    ft_lstadd_front(export, ft_lstnew(envp[i++]));
-    while (envp[i]) {
-        ft_lstadd_back(env, ft_lstnew(envp[i]));
-        ft_lstadd_back(export, ft_lstnew(envp[i++]));
-    }
-    ft_sort_list(*export, ft_lstsize(*export));
+    minithings = (t_lists *)malloc(sizeof(t_lists *) * 2);
+    minithings = init_lists(minithings, envp);
     while(1)
     {
         sig_handler();
-        line = readline(BLUE"amazing"YELLOW"shell: "RES);
-        add_history(line);
-        if (!line)
+        minithings->line = readline(BLUE"amazing"YELLOW"shell: "RES);
+        add_history(minithings->line);
+        if (!minithings->line)
         {
             printf("exit\n");
             exit(1);
         }
-        int pid = fork();
-        if (pid == 0)
-        {
-            cmds = ft_split(line, '|');
-            commands(line, env, export, cmds, envp);
-            exit(0);
-        }
-        waitpid(pid, 0, 0);
+        minithings->cmds = ft_split(minithings->line, '|');
+        commands(minithings, envp);
     }
 }

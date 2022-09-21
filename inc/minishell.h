@@ -38,11 +38,19 @@ typedef struct s_list
     struct s_list *next;
 }               t_list;
 
+typedef struct s_lists
+{
+    t_list **env;
+    t_list **export;
+    char *line;
+    char **cmds;
+}               t_lists;
+
 // Functions
 
 void sig_handler(void);
-void commands(char *line, t_list **env, t_list **export, char **cmds, char **envp);
-void builtins(char *line, t_list **env, t_list **export, char **cmds, char **envp);
+void commands(t_lists *minithings, char **envp);
+void builtins(t_lists *minithings, char **envp);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 void    ft_sort_list(t_list *tab, int size);
 char *ft_strchr(const char *s, int c);
