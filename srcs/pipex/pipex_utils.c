@@ -47,31 +47,6 @@ int	ft_access(char	*tmp, char	**paths, char *cmd, char *path)
 	return (0);
 }
 
-char	*check_commands(char *raw_cmd, char **envp)
-{
-	int			*i_a;
-	char		**paths;
-	char		*path;
-	char		*cmd;
-	char		*tmp;
-
-	i_a = (int [2]){-1, -1};
-	i_a[0] = -1;
-	while (ft_memcmp(envp[++i_a[0]], "PATH=", 5))
-		;
-	path = ft_substr(envp[i_a[0]], 5, ft_strlen(envp[i_a[0]]) - 5);
-	paths = ft_split(path, ':');
-	cmd = ft_str_cmdpath(raw_cmd);
-	while (paths[++i_a[1]])
-	{
-		tmp = ft_strjoin(paths[i_a[1]], cmd);
-		if (ft_access(tmp, paths, cmd, path))
-			return (tmp);
-		free(tmp);
-	}
-	exit(0);
-}
-
 int ft_strncmp(const char *s1, const char *s2, size_t n)
 {
     size_t i;

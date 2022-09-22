@@ -12,24 +12,26 @@
 
 #include"../inc/minishell.h"
 
-void    commands(t_minithings *minithings, char **envp)
-{
-    int pid;
+static void show_export_list(t_minithings *minithings) {
+    t_list *tmp;
 
-    if (ft_strncmp(minithings->line, "cd ", 3) == 0)
-    {
-        if (ft_strlen(minithings->line) == 2)
-            chdir(getenv("HOME"));
-        else {
-            printf("%s\n", minithings->line + 3);
-            chdir(minithings->line + 3);
-        }
+    tmp = *minithings->export;
+    while (tmp) {
+        printf("declare -x %s\n", tmp->content);
+        tmp = tmp->next;
     }
-    pid = fork();
-    if (pid == 0)
-    {
-        builtins(minithings, envp);
-        exit(0);
+}
+
+void export(t_minithings *minithings)
+{
+    if (ft_strlen(minithings->line) == 6)
+        show_export_list(minithings);
+    else {
+        char *str = ft_substr(minithings->line, 7, ft_strlen(minithings->line) - 7);
+        int dup = check_duplicated(*minithings->export, str);
+        if (dup == 0)
+            ft_lstadd_back(minithings->export, ft_lstnew(str));
+        else
+            value_modifier(minithings->export, dup, str);
     }
-    waitpid(pid, 0, 0);
 }

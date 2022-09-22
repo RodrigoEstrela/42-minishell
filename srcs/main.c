@@ -12,32 +12,31 @@
 
 #include"../inc/minishell.h"
 
-static t_lists *init_lists(t_lists *lists, char **envp)
+static t_minithings *init_lists(t_minithings *minithings, char **envp)
 {
     int i;
 
     i = 0;
-    lists->env = malloc(sizeof(t_list));
-    lists->export = malloc(sizeof(t_list));
-    ft_lstadd_front(lists->env, ft_lstnew(envp[i]));
-    ft_lstadd_front(lists->export, ft_lstnew(envp[i++]));
+    minithings->env = malloc(sizeof(t_list));
+    minithings->export = malloc(sizeof(t_list));
+    ft_lstadd_front(minithings->env, ft_lstnew(envp[i]));
+    ft_lstadd_front(minithings->export, ft_lstnew(envp[i++]));
     while (envp[i]) {
-        ft_lstadd_back(lists->env, ft_lstnew(envp[i]));
-        ft_lstadd_back(lists->export, ft_lstnew(envp[i++]));
+        ft_lstadd_back(minithings->env, ft_lstnew(envp[i]));
+        ft_lstadd_back(minithings->export, ft_lstnew(envp[i++]));
     }
-    ft_sort_list(*lists->export, ft_lstsize(*lists->export));
-    return (lists);
+    ft_sort_list(*minithings->export, ft_lstsize(*minithings->export));
+    return (minithings);
 }
 
 int main(int ac, char **av, char **envp)
 {
-    (void)ac;
     (void)av;
-    t_lists *minithings;
+    t_minithings *minithings;
 
-    minithings = (t_lists *)malloc(sizeof(t_lists *) * 2);
+    minithings = (t_minithings *)malloc(sizeof(t_minithings *) * 2);
     minithings = init_lists(minithings, envp);
-    while(1)
+    while(ac)
     {
         sig_handler();
         minithings->line = readline(BLUE"amazing"YELLOW"shell: "RES);

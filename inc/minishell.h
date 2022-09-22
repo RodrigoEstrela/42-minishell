@@ -44,13 +44,13 @@ typedef struct s_lists
     t_list **export;
     char *line;
     char **cmds;
-}               t_lists;
+}               t_minithings;
 
 // Functions
 
 void sig_handler(void);
-void commands(t_lists *minithings, char **envp);
-void builtins(t_lists *minithings, char **envp);
+void commands(t_minithings *minithings, char **envp);
+void builtins(t_minithings *minithings, char **envp);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 void    ft_sort_list(t_list *tab, int size);
 char *ft_strchr(const char *s, int c);
@@ -62,6 +62,7 @@ char	**ft_split(char const *s, char c);
 void    pipex(int ac, char **av, char **envp);
 char *ft_strtrim(char *str);
 int ft_strcmp(const char *s1, const char *s2);
+void export(t_minithings *minithings);
 
 t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);

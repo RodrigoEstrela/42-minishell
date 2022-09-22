@@ -12,7 +12,7 @@
 
 #include"../inc/minishell.h"
 
-void builtins(t_lists *minithings, char **envp)
+void builtins(t_minithings *minithings, char **envp)
 {
     int i;
 
@@ -22,12 +22,14 @@ void builtins(t_lists *minithings, char **envp)
         printf("exit\n");
         exit(1);
     }
-    else if (ft_strcmp(minithings->line, "cd") == 0)
+    else if (ft_strncmp(minithings->line, "cd ", 3) == 0)
     {
         if (ft_strlen(minithings->line) == 2)
             chdir(getenv("HOME"));
-        else
+        else {
+            printf("%s\n", minithings->line + 3);
             chdir(minithings->line + 3);
+        }
     }
     else if (ft_strcmp(minithings->line, "pwd") == 0)
     {
@@ -46,24 +48,7 @@ void builtins(t_lists *minithings, char **envp)
     }
     else if (ft_strcmp(minithings->line, "export") == 0)
     {
-        if (ft_strlen(minithings->line) == 6)
-        {
-            t_list *tmp = *minithings->export;
-            while (tmp)
-            {
-                printf("declare -x %s\n", tmp->content);
-                tmp = tmp->next;
-            }
-        }
-        else
-        {
-            char *str = ft_substr(minithings->line, 7, ft_strlen(minithings->line) - 7);
-            int dup = check_duplicated(*minithings->export, str);
-            if (dup == 0)
-                ft_lstadd_back(minithings->export, ft_lstnew(str));
-            else
-                value_modifier(minithings->export ,dup, str);
-        }
+        export(minithings);
     }
     else
     {
