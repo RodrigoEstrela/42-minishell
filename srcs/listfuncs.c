@@ -50,7 +50,7 @@ void ft_lstadd_front(t_list **lst, t_list *new)
     *lst = new;
 }
 
-int ft_lstsize(t_list *lst)
+int ft_lstsize(t_exporttable *lst)
 {
     int i;
 

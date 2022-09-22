@@ -38,10 +38,17 @@ typedef struct s_list
     struct s_list *next;
 }               t_list;
 
+typedef struct s_exporttable
+{
+    char *key;
+    char *value;
+    struct s_exporttable *next;
+}               t_exporttable;
+
 typedef struct s_lists
 {
     t_list **env;
-    t_list **export;
+    t_exporttable **export;
     char *line;
     char **cmds;
 }               t_minithings;
@@ -52,22 +59,28 @@ void sig_handler(void);
 void commands(t_minithings *minithings, char **envp);
 void builtins(t_minithings *minithings, char **envp);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
-void    ft_sort_list(t_list *tab, int size);
 char *ft_strchr(const char *s, int c);
-int     check_duplicated(t_list *list, char *str);
 char	*ft_strdup(const char *s1);
 char *ft_substr(char const *s, int start, size_t len);
-void    value_modifier(t_list **export, int dup, char *str);
 char	**ft_split(char const *s, char c);
 void    pipex(int ac, char **av, char **envp);
 char *ft_strtrim(char *str);
 int ft_strcmp(const char *s1, const char *s2);
-void export(t_minithings *minithings);
 
+t_minithings *export(t_minithings *minithings);
+void show_export_list(t_minithings *minithings);
+t_exporttable *add_export_node(void *key, void *value);
+void add_export_node_front(t_exporttable **head, t_exporttable *new);
+void add_export_node_back(t_exporttable **lst, t_exporttable *new);
+t_exporttable 	*indxexport(t_exporttable *list, int index);
+int ft_lstsize(t_exporttable *lst);
+int     check_duplicated(t_exporttable **export, char *str);
+void    value_modifier(t_exporttable **export, char *value, int i);
+
+void    ft_sort_list(t_exporttable *tab, int size);
 t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);
 void ft_lstadd_front(t_list **lst, t_list *new);
-int ft_lstsize(t_list *lst);
 t_list *indx(t_list *lst, int index);
 
 #endif

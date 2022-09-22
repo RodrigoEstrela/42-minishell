@@ -46,14 +46,53 @@ void builtins(t_minithings *minithings, char **envp)
             tmp = tmp->next;
         }
     }
-    else if (ft_strcmp(minithings->line, "export") == 0)
+
+//    else if (ft_strncmp(minithings->line, "echo ", 5) == 0)
+//    {
+//        char **echo_str;
+//
+//        echo_str = ft_split(minithings->line, ' ');
+//        if (echo_str[1][0] == '-')
+//        {
+//            if (echo_str[1][1] == 'n')
+//            {
+//                //no newline
+//                i += 2;
+//                while (echo_str[++i])
+//                {
+//                    printf("%s", echo_str[i]);
+//                }
+//            }
+//            else
+//                printf("Unknown option: %c\n", echo_str[1][1]);
+//        }
+//        else
+//        {
+//            i++;
+//            while (echo_str[++i])
+//            {
+//                printf("%s", echo_str[i]);
+//            }
+//            printf("\n");
+//        }
+//    }
+
+    else if (ft_strncmp(minithings->line, "export", 6) == 0)
     {
-        export(minithings);
+       export(minithings);
     }
     else
     {
-        while (minithings->cmds[++i])
-            ;
-        pipex( i, minithings->cmds, envp);
+        int pid;
+
+        pid = fork();
+        if (pid == 0) {
+            while (minithings->cmds[++i])
+                ;
+            pipex( i, minithings->cmds, envp);
+            exit(0);
+        }
+        waitpid(pid, NULL, 0);
+
     }
 }

@@ -12,11 +12,12 @@
 
 #include"../inc/minishell.h"
 
-void    ft_sort_list(t_list *tab, int size)
+void    ft_sort_list(t_exporttable *tab, int size)
 {
     int i;
     int j;
-    char *tmp;
+    char *tmpkey;
+    char *tmpvalue;
 
     i = 0;
     while (i < size)
@@ -24,13 +25,16 @@ void    ft_sort_list(t_list *tab, int size)
         j = i + 1;
         while (j < size)
         {
-            if (ft_strncmp(indx(tab, i)->content,
-                           indx(tab, j)->content,
-                           ft_strlen(indx(tab, i)->content)) > 0)
+            if (ft_strncmp(indxexport(tab, i)->key,
+                           indxexport(tab, j)->key,
+                           ft_strlen(indxexport(tab, i)->key)) > 0)
             {
-                tmp = indx(tab, i)->content;
-                indx(tab, i)->content = indx(tab, j)->content;
-                indx(tab, j)->content = tmp;
+                tmpkey = indxexport(tab, i)->key;
+                tmpvalue = indxexport(tab, i)->value;
+                indxexport(tab, i)->key = indxexport(tab, j)->key;
+                indxexport(tab, j)->key = tmpkey;
+                indxexport(tab, i)->value = indxexport(tab, j)->value;
+                indxexport(tab, j)->value = tmpvalue;
             }
             j++;
         }
@@ -38,37 +42,43 @@ void    ft_sort_list(t_list *tab, int size)
     }
 }
 
-static int cmpateaoigual(const char *s1, const char *s2)
-{
+t_exporttable 	*indxexport(t_exporttable *list, int index) {
     int i;
 
     i = 0;
-    while (s1 && s2 && s1[i] == s2[i])
-    {
-        if (s1[i] == '=' && s2[i] == '=')
-            return(1);
+    while (i < index) {
+        list = list->next;
         i++;
     }
-    if (s1[i] == s2[i] && s2[i + 1] == '\0')
-        return(1);
-    return(0);
+    return (list);
 }
 
-int     check_duplicated(t_list *list, char *str)
+int     check_duplicated(t_exporttable **export, char *str)
 {
     int i;
 
     i = 0;
-    while (i < ft_lstsize(list))
+    while (i < ft_lstsize(*export))
     {
-        if (cmpateaoigual(indx(list, i)->content, str) == 1)
+        if (ft_strcmp(indxexport(*export, i)->key, str) == 0)
             return (i);
         i++;
     }
     return (0);
 }
 
-void    value_modifier(t_list **export, int dup, char *str)
+void    value_modifier(t_exporttable **export, char *value, int i)
 {
-    indx((*export), dup)->content = str;
+    indxexport(*export, i)->value = value;
+}
+
+void show_export_list(t_minithings *minithings)
+{
+    t_exporttable *tmp;
+
+    tmp = *minithings->export;
+    while (tmp) {
+        printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+        tmp = tmp->next;
+    }
 }
