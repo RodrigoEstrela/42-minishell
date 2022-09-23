@@ -77,6 +77,8 @@ int ft_lstsize(t_exporttable *lst);
 int     check_duplicated(t_exporttable **export, char *str);
 void    value_modifier(t_exporttable **export, char *value, int i);
 
+void    unset(t_minithings *minithings);
+
 void    ft_sort_list(t_exporttable *tab, int size);
 t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);

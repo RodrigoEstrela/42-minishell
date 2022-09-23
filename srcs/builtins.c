@@ -47,39 +47,40 @@ void builtins(t_minithings *minithings, char **envp)
         }
     }
 
-//    else if (ft_strncmp(minithings->line, "echo ", 5) == 0)
-//    {
-//        char **echo_str;
-//
-//        echo_str = ft_split(minithings->line, ' ');
-//        if (echo_str[1][0] == '-')
-//        {
-//            if (echo_str[1][1] == 'n')
-//            {
-//                //no newline
-//                i += 2;
-//                while (echo_str[++i])
-//                {
-//                    printf("%s", echo_str[i]);
-//                }
-//            }
-//            else
-//                printf("Unknown option: %c\n", echo_str[1][1]);
-//        }
-//        else
-//        {
-//            i++;
-//            while (echo_str[++i])
-//            {
-//                printf("%s", echo_str[i]);
-//            }
-//            printf("\n");
-//        }
-//    }
+    else if (ft_strncmp(minithings->line, "echo ", 5) == 0)
+    {
+        char **echo_str;
+
+        echo_str = ft_split(minithings->line, ' ');
+        if (echo_str[1][0] == '-')
+        {
+            if (echo_str[1][1] == 'n')
+            {
+                //no newline
+                i += 2;
+                while (echo_str[++i])
+                    printf("%s", echo_str[i]);
+            }
+            else
+                printf("Unknown option: %c\n", echo_str[1][1]);
+        }
+        else
+        {
+            i++;
+            while (echo_str[++i])
+                printf("%s", echo_str[i]);
+            printf("\n");
+        }
+    }
 
     else if (ft_strncmp(minithings->line, "export", 6) == 0)
     {
        export(minithings);
+    }
+    else if (ft_strncmp(minithings->line, "unset", 5) == 0)
+    {
+        printf("unset\n");
+        unset(minithings);
     }
     else
     {
