@@ -40,11 +40,15 @@ void delete_node(t_exporttable **export, int index)
 void unset(t_minithings *minithings)
 {
     int i;
+    int j;
+    char **inputs;
 
-    i = check_duplicated(minithings->export, minithings->line + 6);
-    printf("input:%s\n", minithings->line + 6);
-    if (i)
-    {
-        delete_node(minithings->export, i);
+    inputs = ft_split(minithings->line, ' ');
+    j = 1;
+    while(inputs[j]) {
+        i = check_duplicated(minithings->export, inputs[j]);
+        if (i)
+            delete_node(minithings->export, i);
+        j++;
     }
 }
