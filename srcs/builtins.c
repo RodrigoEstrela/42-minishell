@@ -37,6 +37,7 @@ void builtins(t_minithings *minithings, char **envp)
         getcwd(cwd, sizeof(cwd));
         printf("%s\n", cwd);
     }
+
     else if (ft_strcmp(minithings->line, "env") == 0)
     {
         t_list *tmp = *minithings->env;
