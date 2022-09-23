@@ -64,6 +64,36 @@ int main(int ac, char **av, char **envp)
             exit(1);
         }
         minithings->cmds = ft_split(minithings->line, '|');
+        int i = -1;
+        int first_q = -1;
+        int second_q = -1;
+        while (minithings->cmds[++i]) {
+            printf("minithings->cmds[++i] = %s\n", minithings->cmds[i]);
+            printf("i = %d\n", i);
+            if (ft_strchr(minithings->cmds[i], '"')) {
+                first_q = i;
+                while (minithings->cmds[i]) {
+                    printf("i = %d\n", i);
+                    if (ft_strchr(minithings->cmds[i], '"')) {
+                        second_q = i;
+                        break;
+                    }
+                    i++;
+                }
+                if (second_q == -1) {
+                    printf("Error: missing closing quote\n");
+                    break;
+                }
+             //   minithings->cmds[first_q] = ft_strtrim(minithings->cmds[first_q], "\"");
+                if (second_q != first_q) {
+                    printf("fuwefwenfweufwenfweu\n");
+                    minithings->cmds[first_q] = ft_strjoin(minithings->cmds[first_q], "|");
+                    minithings->cmds[first_q] = ft_strjoin(minithings->cmds[first_q], minithings->cmds[second_q]);
+                    minithings->cmds[second_q] = NULL;
+                }
+            }
+        }
+        printf("minithings->cmds[0] = %s\n", minithings->cmds[0]);
         commands(minithings, envp);
     }
 }
