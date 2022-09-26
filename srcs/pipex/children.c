@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../../inc/pipex.h"
+#include"../../inc/minishell.h"
 
 char	*ft_strnstr(const char	*big, const char *little, size_t len)
 {
@@ -42,6 +42,7 @@ void	execute(char *av, char **envp)
 
     i = -1;
     cmd = ft_split(av, ' ');
+    //cmd = quote_splitter(av);
     path = find_path(cmd[0], envp);
     if (!path)
 	{

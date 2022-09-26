@@ -66,6 +66,7 @@ char	**ft_split(char const *s, char c);
 void    pipex(int ac, char **av, char **envp);
 char *ft_strtrim(char *str);
 int ft_strcmp(const char *s1, const char *s2);
+char **quote_splitter(char *line);
 
 t_minithings *export(t_minithings *minithings);
 void show_export_list(t_minithings *minithings);

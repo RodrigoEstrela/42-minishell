@@ -67,14 +67,15 @@ int main(int ac, char **av, char **envp)
         int i = -1;
         int first_q = -1;
         int second_q = -1;
+        char *tmp;
         while (minithings->cmds[++i]) {
-            printf("minithings->cmds[++i] = %s\n", minithings->cmds[i]);
-            printf("i = %d\n", i);
-            if (ft_strchr(minithings->cmds[i], '"')) {
+            //printf("minithings->cmds[++i] = %s\n", minithings->cmds[i]);
+            tmp = ft_strchr(minithings->cmds[i], '"');
+            if (tmp) {
                 first_q = i;
                 while (minithings->cmds[i]) {
-                    printf("i = %d\n", i);
-                    if (ft_strchr(minithings->cmds[i], '"')) {
+                    *tmp++;
+                    if (ft_strchr(tmp, '"')) {
                         second_q = i;
                         break;
                     }
@@ -93,7 +94,7 @@ int main(int ac, char **av, char **envp)
                 }
             }
         }
-        printf("minithings->cmds[0] = %s\n", minithings->cmds[0]);
+        //printf("minithings->cmds[0] = %s\n", minithings->cmds[0]);
         commands(minithings, envp);
     }
 }
