@@ -52,7 +52,8 @@ void builtins(t_minithings *minithings, char **envp)
     {
         char **echo_str;
 
-        echo_str = ft_split(minithings->line, ' ');
+        //echo_str = ft_split(minithings->line, ' ');
+        echo_str = quote_splitter(minithings->cmds[0]);
         if (echo_str[1][0] == '-')
         {
             if (echo_str[1][1] == 'n')

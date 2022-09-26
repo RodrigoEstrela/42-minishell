@@ -14,7 +14,7 @@ SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 					listfuncs.c builtins_export_utils.c split.c \
 					pipex/children.c pipex/ft_memcmp.c pipex/get_next_line.c \
 					pipex/get_next_line_utils.c pipex/heredoc.c \
-					pipex/pipex.c pipex/pipex_utils.c export.c \
+					pipex/pipex.c pipex/pipex_utils.c pipex/quote_splitter.c export.c \
 					unset.c
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
@@ -30,7 +30,7 @@ objs/%.o: srcs/%.c
 			@cc $(CFLAGS) -c $< -o $@
 
 $(NAME):    	$(OBJS)
-			@cc $(OBJS) $(CFLAGS) -o $(NAME)
+			@cc -g $(OBJS) $(CFLAGS) -o $(NAME)
 
 all:      	$(NAME)
 
