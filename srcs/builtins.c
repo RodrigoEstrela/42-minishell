@@ -12,17 +12,29 @@
 
 #include"../inc/minishell.h"
 
-void builtins(t_minithings *minithings, char **envp)
+int is_builtin(char *str)
+{
+    if (ft_strcmp(str, "echo") == 0)
+        return (1);
+    if (ft_strcmp(str, "cd") == 0)
+        return (1);
+    if (ft_strcmp(str, "pwd") == 0)
+        return (1);
+    if (ft_strcmp(str, "export") == 0)
+        return (1);
+    if (ft_strcmp(str, "unset") == 0)
+        return (1);
+    if (ft_strcmp(str, "env") == 0)
+        return (1);
+    return (0);
+}
+
+void builtins(t_minithings *minithings)
 {
     int i;
 
     i = -1;
-    if (ft_strcmp(minithings->line, "exit") == 0)
-    {
-        printf("exit\n");
-        exit(1);
-    }
-    else if (ft_strncmp(minithings->line, "cd ", 3) == 0)
+    if (ft_strncmp(minithings->line, "cd ", 3) == 0)
     {
         if (ft_strlen(minithings->line) == 2)
             chdir(getenv("HOME"));
@@ -37,7 +49,6 @@ void builtins(t_minithings *minithings, char **envp)
         getcwd(cwd, sizeof(cwd));
         printf("%s\n", cwd);
     }
-
     else if (ft_strcmp(minithings->line, "env") == 0)
     {
         t_list *tmp = *minithings->env;
@@ -47,7 +58,6 @@ void builtins(t_minithings *minithings, char **envp)
             tmp = tmp->next;
         }
     }
-
     else if (ft_strncmp(minithings->line, "echo ", 5) == 0)
     {
         char **echo_str;
@@ -73,7 +83,6 @@ void builtins(t_minithings *minithings, char **envp)
             printf("\n");
         }
     }
-
     else if (ft_strncmp(minithings->line, "export", 6) == 0)
     {
        export(minithings);
@@ -82,18 +91,5 @@ void builtins(t_minithings *minithings, char **envp)
     {
         unset(minithings);
     }
-    else
-    {
-        int pid;
 
-        pid = fork();
-        if (pid == 0) {
-            while (minithings->cmds[++i])
-                ;
-            pipex( i, minithings->cmds, envp);
-            exit(0);
-        }
-        waitpid(pid, NULL, 0);
-
-    }
 }

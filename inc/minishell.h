@@ -45,10 +45,18 @@ typedef struct s_exporttable
     struct s_exporttable *next;
 }               t_exporttable;
 
+typedef struct s_cmds
+{
+    char *cmd;
+    char **args;
+    struct s_cmds *next;
+}               t_cmds;
+
 typedef struct s_lists
 {
     t_list **env;
     t_exporttable **export;
+//    t_cmds **cmds;
     char *line;
     char **cmds;
 }               t_minithings;
@@ -57,13 +65,14 @@ typedef struct s_lists
 
 void sig_handler(void);
 void commands(t_minithings *minithings, char **envp);
-void builtins(t_minithings *minithings, char **envp);
+void builtins(t_minithings *minithings);
+int is_builtin(char *str);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 char *ft_substr(char const *s, int start, size_t len);
 char	**ft_split(char const *s, char c);
-void    pipex(int ac, char **av, char **envp);
+void    pipex(int nbr_cmds, char **cmds, char **envp);
 char *ft_strtrim(char *str);
 int ft_strcmp(const char *s1, const char *s2);
 char **quote_splitter(char *line);

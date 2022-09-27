@@ -44,31 +44,21 @@ char	*find_path(char *cmd, char **envp)
 	return (0);
 }
 
-void    pipex(int ac, char **av, char **envp)
+void    pipex(int nbr_cmds, char **cmds, char **envp)
 {
-	int		*i_fd1_fd2;
+	int		i;
+    int pid;
 
-	i_fd1_fd2 = (int [3]){0, 0, 0};
-	if (ac >= 1)
+	if (nbr_cmds >= 1)
 	{
-		if (ft_strncmp(av[1], "here_doc", 8) == 0)
-		{
-			i_fd1_fd2[0] = 3;
-			i_fd1_fd2[2] = open_file(av[ac - 1], 0);
-			ft_here_doc(av[2], ac);
-		}
-		else
-		{
-			i_fd1_fd2[0] = 0;
-		}
-		while (i_fd1_fd2[0] < ac - 1)
-			child_one(av[i_fd1_fd2[0]++], envp);
-        int pid = fork();
+        i = 0;
+		while (i < nbr_cmds - 1)
+			child_one(cmds[i++], envp);
+        pid = fork();
         if (pid == 0)
-        {
-            execute(av[ac - 1], envp);
-        }
-        waitpid(pid, 0 ,0);
+            execute(cmds[nbr_cmds - 1], envp);
+        else
+            waitpid(pid, NULL, 0);
         return;
 	}
 }

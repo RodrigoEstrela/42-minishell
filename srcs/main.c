@@ -59,12 +59,10 @@ int main(int ac, char **av, char **envp)
         minithings->line = readline(BLUE"amazing"YELLOW"shell: "RES);
         add_history(minithings->line);
         if (!minithings->line)
-        {
-            printf("exit\n");
             exit(1);
-        }
         minithings->cmds = ft_split(minithings->line, '|');
-        int i = -1;
+
+       /* int i = -1;
         int first_q = -1;
         int second_q = -1;
         char *tmp;
@@ -94,7 +92,7 @@ int main(int ac, char **av, char **envp)
                 }
             }
         }
-        //printf("minithings->cmds[0] = %s\n", minithings->cmds[0]);
+        //printf("minithings->cmds[0] = %s\n", minithings->cmds[0]);*/
         commands(minithings, envp);
     }
 }

@@ -15,6 +15,28 @@
 void    commands(t_minithings *minithings, char **envp)
 {
     int pid;
+    int nbr_cmds;
 
-    builtins(minithings, envp);
-}
+    nbr_cmds = 0;
+//    while (minithings->cmds[++i])
+//    {
+        if (ft_strcmp(minithings->cmds[0], "exit") == 0)
+        {
+            printf("exit\n");
+            exit(1);
+        }
+        else if (is_builtin(minithings->cmds[nbr_cmds]))
+        {
+            builtins(minithings);
+            return ;
+        }
+        pid = fork();
+        if (pid == 0) {
+            while (minithings->cmds[++nbr_cmds])
+                ;
+            pipex( nbr_cmds, minithings->cmds, envp);
+            exit(0);
+        }
+        waitpid(pid, NULL, 0);
+    }
+//}
