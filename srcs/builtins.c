@@ -14,22 +14,23 @@
 
 int is_builtin(char *str)
 {
+    printf("string: %s\n", str);
     if (ft_strcmp(str, "echo") == 0)
         return (1);
-    if (ft_strcmp(str, "cd") == 0)
+    if (ft_strncmp(str, "cd ", 3) == 0)
         return (1);
     if (ft_strcmp(str, "pwd") == 0)
         return (1);
-    if (ft_strcmp(str, "export") == 0)
+    if (ft_strncmp(str, "export", 6) == 0)
         return (1);
-    if (ft_strcmp(str, "unset") == 0)
+    if (ft_strncmp(str, "unset", 5) == 0)
         return (1);
     if (ft_strcmp(str, "env") == 0)
         return (1);
     return (0);
 }
 
-void builtins(t_minithings *minithings)
+t_minithings *builtins(t_minithings *minithings)
 {
     int i;
 
@@ -85,11 +86,11 @@ void builtins(t_minithings *minithings)
     }
     else if (ft_strncmp(minithings->line, "export", 6) == 0)
     {
-       export(minithings);
+        minithings = export(&minithings);
     }
     else if (ft_strncmp(minithings->line, "unset", 5) == 0)
     {
-        unset(minithings);
+        minithings = (minithings);
     }
-
+    return (minithings);
 }

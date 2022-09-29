@@ -22,13 +22,18 @@
 # include<unistd.h>
 # include<stdlib.h>
 # include<string.h>
-# include"pipex.h"
+# include <sys/wait.h>
+# include <fcntl.h>
 
 // COLORS
 
 # define YELLOW "\e[1;33m"
 # define BLUE "\e[1;34m"
 # define RES "\e[0m"
+
+// BUFFER_SIZE FOR GNL
+
+# define BUFFER_SIZE 100
 
 // Structures
 
@@ -64,20 +69,20 @@ typedef struct s_lists
 // Functions
 
 void sig_handler(void);
-void commands(t_minithings *minithings, char **envp);
-void builtins(t_minithings *minithings);
+t_minithings *commands(t_minithings *minithings, char **envp);
+t_minithings *builtins(t_minithings *minithings);
 int is_builtin(char *str);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 char *ft_substr(char const *s, int start, size_t len);
 char	**ft_split(char const *s, char c);
-void    pipex(int nbr_cmds, char **cmds, char **envp);
+t_minithings   *pipex(int nbr_cmds, char **cmds, char **envp, t_minithings *minithings);
 char *ft_strtrim(char *str);
 int ft_strcmp(const char *s1, const char *s2);
 char **quote_splitter(char *line);
 
-t_minithings *export(t_minithings *minithings);
+t_minithings *export(t_minithings **minithings);
 void show_export_list(t_minithings *minithings);
 t_exporttable *add_export_node(void *key, void *value);
 void add_export_node_front(t_exporttable **head, t_exporttable *new);
@@ -94,5 +99,24 @@ t_list *ft_lstnew(void *content);
 void ft_lstadd_back(t_list **lst, t_list *new);
 void ft_lstadd_front(t_list **lst, t_list *new);
 t_list *indx(t_list *lst, int index);
+
+char	**ft_split(char const *s, char c);
+int	ft_strlen(const char *str);
+char	*ft_substr(char const *s,  int start, size_t len);
+char	*ft_strdup(const char *s1);
+char	*ft_strjoin(char *s1, char *s2);
+
+char	*ft_strchr(const char *s, int c);
+t_minithings 	*child_one(char *av, char **envp, t_minithings *minithings);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+char	*ft_exstrchr(char *s);
+char	*ft_strnldup(char *s1);
+size_t	ft_strlcpy(char *dst, char *src, size_t size);
+void	*ft_calloc(size_t count, size_t size);
+
+t_minithings 	*execute(char *av, char **envp, t_minithings *minithings);
+char	*ft_strnstr(const char	*big, const char *little, size_t len);
+char	*find_path(char *cmd, char **envp);
 
 #endif

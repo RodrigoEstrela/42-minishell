@@ -10,7 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/pipex.h"
+#include "../../inc/minishell.h"
+
+char	*ft_strnstr(const char	*big, const char *little, size_t len)
+{
+    size_t	i;
+    size_t	j;
+
+    i = 0;
+    if (little[i] == '\0')
+        return ((char *)big);
+    while (big[i] && i < len)
+    {
+        j = 0;
+        while (big[i + j] == little[j] && i + j < len)
+        {
+            if (little[j + 1] == '\0')
+                return ((char *)big + i);
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
+
 
 char	*find_path(char *cmd, char **envp)
 {
@@ -44,21 +67,24 @@ char	*find_path(char *cmd, char **envp)
 	return (0);
 }
 
-void    pipex(int nbr_cmds, char **cmds, char **envp)
+t_minithings  *pipex(int nbr_cmds, char **cmds, char **envp, t_minithings *minithings)
 {
 	int		i;
     int pid;
 
-	if (nbr_cmds >= 1)
-	{
+	if (nbr_cmds >= 1) {
         i = 0;
-		while (i < nbr_cmds - 1)
-			child_one(cmds[i++], envp);
+
+        while (i < nbr_cmds)
+        {
+            printf("cmd: %s\n", cmds[i]);
+            minithings = child_one(cmds[i++], envp, minithings);
+        }
         pid = fork();
         if (pid == 0)
-            execute(cmds[nbr_cmds - 1], envp);
+            minithings = execute(cmds[nbr_cmds - 1], envp, minithings);
         else
             waitpid(pid, NULL, 0);
-        return;
 	}
+    return (minithings);
 }
