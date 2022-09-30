@@ -92,6 +92,6 @@ int main(int ac, char **av, char **envp)
             }
         }
         //printf("minithings->cmds[0] = %s\n", minithings->cmds[0]);*/
-        minithings = commands(minithings, envp);
+       commands(minithings, envp);
     }
 }

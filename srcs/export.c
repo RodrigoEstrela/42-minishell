@@ -67,7 +67,7 @@ char **key_and_value(char *str)
     return (key_value);
 }
 
-t_minithings *export(t_minithings **minithings)
+void export(t_minithings *minithings, int flag)
 {
     int i;
     char **allvars;
@@ -75,32 +75,26 @@ t_minithings *export(t_minithings **minithings)
     int ind;
 
     i = 0;
-    allvars = ft_split((*minithings)->line, 32);
+    allvars = ft_split(minithings->cmds[0], 32);
     if (ft_strncmp(allvars[0], "export", 6) == 0 && !allvars[1])
     {
-        t_exporttable *tmp;
-
-        tmp = *(*minithings)->export;
-        while (tmp) {
-            printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
-            tmp = tmp->next;
-        }
-        return (*minithings);
+        ft_sort_list(*minithings->export, ft_lstsize(*minithings->export));
+        show_export_list(minithings);
     }
-    else
+    else if (flag == 1)
     {
         while (allvars[++i])
         {
             onevar = key_and_value(allvars[i]);
-            if ((ind = check_duplicated((*minithings)->export, onevar[0])))
+            if ((ind = check_duplicated(minithings->export, onevar[0])))
             {
                 if (onevar[1])
-                    value_modifier((*minithings)->export, onevar[1], ind);
+                    value_modifier(minithings->export, onevar[1], ind);
             }
             else
-                add_export_node_back((*minithings)->export, add_export_node(onevar[0], onevar[1]));
+                add_export_node_back(minithings->export, add_export_node(onevar[0], onevar[1]));
         }
-        ft_sort_list(*(*minithings)->export, ft_lstsize(*(*minithings)->export));
-        return ((*minithings));
     }
+    else
+        return;
 }

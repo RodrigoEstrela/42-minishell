@@ -12,18 +12,13 @@
 
 #include"../../inc/minishell.h"
 
-t_minithings 	*execute(char *av, char **envp, t_minithings *minithings)
+void execute(char *av, char **envp, t_minithings *minithings)
 {
 	int		i;
 	char	**cmd;
 	char	*path;
 
     i = -1;
-    if (is_builtin(av))
-    {
-        printf("builtin\n");
-        minithings = builtins(minithings);
-    }
     cmd = ft_split(av, ' ');
     path = find_path(cmd[0], envp);
     if (!path)
@@ -34,12 +29,18 @@ t_minithings 	*execute(char *av, char **envp, t_minithings *minithings)
         free(cmd);
         exit(EXIT_FAILURE);
     }
-    printf("%s\n", av);
-    execve(path, cmd, envp);
-    return (minithings);
+    if (is_builtin(av))
+    {
+        builtins(minithings, 0);
+    }
+    else
+    {
+        execve(path, cmd, envp);
+    }
+//    execve(path, cmd, envp);
 }
 
-t_minithings 	*child_one(char *av, char **envp, t_minithings *minithings)
+void child_one(char *av, char **envp, t_minithings *minithings)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -51,7 +52,7 @@ t_minithings 	*child_one(char *av, char **envp, t_minithings *minithings)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		minithings = execute(av, envp, minithings);
+		execute(av, envp, minithings);
 	}
 	else
 	{
@@ -59,5 +60,4 @@ t_minithings 	*child_one(char *av, char **envp, t_minithings *minithings)
 		dup2(fd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
 	}
-    return (minithings);
 }

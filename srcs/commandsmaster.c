@@ -12,7 +12,7 @@
 
 #include"../inc/minishell.h"
 
-t_minithings   *commands(t_minithings *minithings, char **envp)
+void commands(t_minithings *minithings, char **envp)
 {
     int nbr_cmds;
     int pid;
@@ -23,13 +23,17 @@ t_minithings   *commands(t_minithings *minithings, char **envp)
         printf("exit\n");
         exit(1);
     }
+    else if (is_builtin(minithings->cmds[0]) && !minithings->cmds[1])
+    {
+        builtins(minithings, 1);
+    }
     pid = fork();
-    if (pid == 0) {
+    if (pid == 0)
+    {
         while (minithings->cmds[++nbr_cmds])
             ;
         pipex( nbr_cmds, minithings->cmds, envp, minithings);
         exit(0);
     }
     waitpid(pid, NULL, 0);
-    return (minithings);
 }

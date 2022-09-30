@@ -71,3 +71,14 @@ void    value_modifier(t_exporttable **export, char *value, int i)
 {
     indxexport(*export, i)->value = value;
 }
+
+void show_export_list(t_minithings *minithings)
+{
+    t_exporttable *tmp;
+
+    tmp = *minithings->export;
+    while (tmp) {
+        printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+        tmp = tmp->next;
+    }
+}
