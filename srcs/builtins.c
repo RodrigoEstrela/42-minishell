@@ -52,12 +52,7 @@ void builtins(t_minithings *minithings, int flag)
     }
     else if (ft_strcmp(minithings->line, "env") == 0)
     {
-        t_list *tmp = *minithings->env;
-        while (tmp)
-        {
-            printf("%s\n", tmp->content);
-            tmp = tmp->next;
-        }
+        show_export_list(minithings, 1);
     }
     else if (ft_strncmp(minithings->line, "echo ", 5) == 0)
     {

@@ -24,14 +24,14 @@ t_list *ft_lstnew(void *content)
     return (new);
 }
 
-void ft_lstadd_back(t_list **lst, t_list *new)
-{
-    t_list *tmp;
 
-    if (!*lst)
-    {
+void ft_lstadd_back(t_cmds **lst, t_cmds *new)
+{
+    t_cmds *tmp;
+
+    if (*lst == NULL) {
         *lst = new;
-        return ;
+        return;
     }
     tmp = *lst;
     while (tmp->next)

@@ -78,8 +78,7 @@ void export(t_minithings *minithings, int flag)
     allvars = ft_split(minithings->cmds[0], 32);
     if (ft_strncmp(allvars[0], "export", 6) == 0 && !allvars[1])
     {
-        ft_sort_list(*minithings->export, ft_lstsize(*minithings->export));
-        show_export_list(minithings);
+        show_export_list(minithings, 0);
     }
     else if (flag == 1)
     {

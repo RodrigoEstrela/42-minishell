@@ -22,8 +22,8 @@
 # include<unistd.h>
 # include<stdlib.h>
 # include<string.h>
-# include <sys/wait.h>
-# include <fcntl.h>
+# include<sys/wait.h>
+# include<fcntl.h>
 
 // COLORS
 
@@ -58,11 +58,10 @@ typedef struct s_cmds
 
 typedef struct s_lists
 {
-    t_list **env;
     t_exporttable **export;
-//    t_cmds **cmds;
     char *line;
     char **cmds;
+    char ***testebonito;
 }               t_minithings;
 
 // Functions
@@ -83,7 +82,7 @@ int ft_strcmp(const char *s1, const char *s2);
 char **quote_splitter(char *line);
 
 void export(t_minithings *minithings, int flag);
-void show_export_list(t_minithings *minithings);
+void show_export_list(t_minithings *minithings, int flag);
 t_exporttable *add_export_node(void *key, void *value);
 void add_export_node_front(t_exporttable **head, t_exporttable *new);
 void add_export_node_back(t_exporttable **lst, t_exporttable *new);
@@ -96,7 +95,7 @@ void unset(t_minithings *minithings);
 
 void    ft_sort_list(t_exporttable *tab, int size);
 t_list *ft_lstnew(void *content);
-void ft_lstadd_back(t_list **lst, t_list *new);
+void ft_lstadd_back(t_cmds **lst, t_cmds *new);
 void ft_lstadd_front(t_list **lst, t_list *new);
 t_list *indx(t_list *lst, int index);
 
@@ -118,5 +117,6 @@ void	*ft_calloc(size_t count, size_t size);
 void execute(char *av, char **envp, t_minithings *minithings);
 char	*ft_strnstr(const char	*big, const char *little, size_t len);
 char	*find_path(char *cmd, char **envp);
+char ***parser(char *line);
 
 #endif
