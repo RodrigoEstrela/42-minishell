@@ -67,7 +67,7 @@ char	*find_path(char *cmd, char **envp)
 	return (0);
 }
 
-void pipex(int nbr_cmds, char **cmds, char **envp, t_minithings *minithings)
+void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
 {
 	int		i;
     int pid;
@@ -75,13 +75,13 @@ void pipex(int nbr_cmds, char **cmds, char **envp, t_minithings *minithings)
 	if (nbr_cmds >= 1) {
         i = 0;
 
-        while (i < nbr_cmds)
+        while (i < nbr_cmds - 1)
         {
-            child_one(cmds[i++], envp, minithings);
+            child_one(cmds[i++], minithings, envp);
         }
         pid = fork();
         if (pid == 0)
-            execute(cmds[nbr_cmds - 1], envp, minithings);
+            execute(cmds[nbr_cmds - 1], minithings, envp);
         else
             waitpid(pid, NULL, 0);
 	}

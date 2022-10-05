@@ -12,14 +12,12 @@
 
 #include"../../inc/minishell.h"
 
-void execute(char *av, char **envp, t_minithings *minithings)
+void execute(char **cmd, t_minithings *minithings, char **envp)
 {
 	int		i;
-	char	**cmd;
 	char	*path;
 
     i = -1;
-    cmd = ft_split(av, ' ');
     path = find_path(cmd[0], envp);
     if (!path)
 	{
@@ -29,7 +27,7 @@ void execute(char *av, char **envp, t_minithings *minithings)
         free(cmd);
         exit(EXIT_FAILURE);
     }
-    if (is_builtin(av))
+    if (is_builtin(cmd[0]))
     {
         builtins(minithings, 0);
     }
@@ -37,10 +35,9 @@ void execute(char *av, char **envp, t_minithings *minithings)
     {
         execve(path, cmd, envp);
     }
-//    execve(path, cmd, envp);
 }
 
-void child_one(char *av, char **envp, t_minithings *minithings)
+void child_one(char **cmds, t_minithings *minithings, char **envp)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -52,7 +49,7 @@ void child_one(char *av, char **envp, t_minithings *minithings)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		execute(av, envp, minithings);
+		execute(cmds, minithings, envp);
 	}
 	else
 	{

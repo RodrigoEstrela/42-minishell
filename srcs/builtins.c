@@ -54,12 +54,11 @@ void builtins(t_minithings *minithings, int flag)
     {
         show_export_list(minithings, 1);
     }
-    else if (ft_strncmp(minithings->line, "echo ", 5) == 0)
+    else if (ft_strncmp(minithings->cmds[0][0], "echo", 4) == 0)
     {
+        printf("echo comando encontrado\n");
         char **echo_str;
 
-        //echo_str = ft_split(minithings->line, ' ');
-        echo_str = quote_splitter(minithings->cmds[0]);
         if (echo_str[1][0] == '-')
         {
             if (echo_str[1][1] == 'n')
