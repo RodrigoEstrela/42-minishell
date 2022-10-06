@@ -66,6 +66,7 @@ typedef struct s_lists
 // Functions
 
 void sig_handler(void);
+void	sig_handler_block(void);
 void commands(t_minithings *minithings, char **envp);
 void builtins(t_minithings *minithings);
 int is_builtin(char *str);

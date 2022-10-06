@@ -18,6 +18,7 @@ void commands(t_minithings *minithings, char **envp)
     int pid;
 
     nbr_cmds = -1;
+    sig_handler_block();
     if (ft_strncmp(minithings->cmds[0][0], "exit", 4) == 0)
     {
         printf("exit\n");

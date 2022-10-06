@@ -80,8 +80,11 @@ void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
             child_one(cmds[i++], minithings, envp);
         }
         pid = fork();
+
         if (pid == 0)
+        {
             execute(cmds[nbr_cmds - 1], minithings, envp);
+        }
         waitpid(pid, NULL, 0);
 	}
 }

@@ -18,6 +18,7 @@ void execute(char **cmd, t_minithings *minithings, char **envp)
 	char	*path;
 
     i = -1;
+
     if (is_builtin(cmd[0]))
     {
         builtins(minithings);
