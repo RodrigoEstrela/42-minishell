@@ -82,7 +82,6 @@ void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
         pid = fork();
         if (pid == 0)
             execute(cmds[nbr_cmds - 1], minithings, envp);
-        else
-            waitpid(pid, NULL, 0);
+        waitpid(pid, NULL, 0);
 	}
 }

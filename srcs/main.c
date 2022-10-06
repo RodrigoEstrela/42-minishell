@@ -41,11 +41,10 @@ int main(int ac, char **av, char **envp)
     {
         sig_handler();
         minithings->line = readline(BLUE"amazing"YELLOW"shell: "RES);
-        minithings->cmds = parser(minithings->line);
-        printf("cmd 194: %s\n", minithings->cmds[194][498]);
-        add_history(minithings->line);
         if (!minithings->line)
             exit(1);
+        add_history(minithings->line);
+        minithings->cmds = parser(minithings->line);
         commands(minithings, envp);
     }
 }

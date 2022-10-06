@@ -67,7 +67,7 @@ typedef struct s_lists
 
 void sig_handler(void);
 void commands(t_minithings *minithings, char **envp);
-void builtins(t_minithings *minithings, int flag);
+void builtins(t_minithings *minithings);
 int is_builtin(char *str);
 int is_not_pipeable(char *str);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -80,7 +80,7 @@ char *ft_strtrim(char *str);
 int ft_strcmp(const char *s1, const char *s2);
 char **quote_splitter(char *line);
 
-void export(t_minithings *minithings, int flag);
+void export(t_minithings *minithings);
 void show_export_list(t_minithings *minithings, int flag);
 t_exporttable *add_export_node(void *key, void *value);
 void add_export_node_front(t_exporttable **head, t_exporttable *new);

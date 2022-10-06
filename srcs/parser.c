@@ -204,7 +204,7 @@ char ***parser(char *line)
         cmd[i] = cmd_maker(*fds, i + 1);
     }
     cmd[i] = NULL;
-    print_triple_pointer(cmd);
+//    print_triple_pointer(cmd);
     delete_linked_list(*fds);
     free(fds);
     return (cmd);
