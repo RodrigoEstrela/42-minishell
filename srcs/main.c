@@ -44,7 +44,7 @@ int main(int ac, char **av, char **envp)
         if (!minithings->line)
             exit(1);
         add_history(minithings->line);
-        minithings->cmds = parser(minithings->line);
+        minithings->cmds = parser(minithings->line, minithings->export);
         commands(minithings, envp);
     }
 }

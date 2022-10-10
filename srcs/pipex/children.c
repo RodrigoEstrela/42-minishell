@@ -34,6 +34,7 @@ void execute(char **cmd, t_minithings *minithings, char **envp)
         exit(EXIT_FAILURE);
     }
     execve(path, cmd, envp);
+//    sig_handler_block();
 }
 
 void child_one(char **cmds, t_minithings *minithings, char **envp)
