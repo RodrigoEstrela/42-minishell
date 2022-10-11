@@ -74,7 +74,7 @@ void export(t_minithings *minithings)
     int ind;
 
     i = 0;
-    if (ft_strncmp(minithings->cmds[0][0], "export", 6) == 0 && !minithings->cmds[0][1])
+    if (ft_strcmp(minithings->cmds[0][0], "export") == 0 && !minithings->cmds[0][1])
         show_export_list(minithings, 0);
     else if (minithings->cmds[0][1])
         while (minithings->cmds[0][++i])
