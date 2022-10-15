@@ -12,6 +12,17 @@
 
 #include"../inc/minishell.h"
 
+void    print_stacks(t_cmds *stck_a)
+{
+    printf("\n################\n");
+    while (stck_a)
+    {
+        printf("%s\n", stck_a->cmd);
+        stck_a = stck_a->next;
+    }
+    printf("\n################\n");
+}
+
 int ft_str_ui_len(const char *s, int start, int letra) {
     int i;
 
@@ -62,12 +73,13 @@ int pipe_counter(t_cmds *fds) {
 
     i = 0;
     while (fds) {
-        if (fds->cmd[0] == '|')
+        if (fds->cmd && fds->cmd[0] == '|')
             i++;
         fds = fds->next;
     }
     return (i);
 }
+
 
 int arg_ctr(t_cmds *fds, int nbr) {
     int i;
@@ -76,7 +88,7 @@ int arg_ctr(t_cmds *fds, int nbr) {
     while (fds && nbr > 0) {
         if (nbr == 1)
             i++;
-        if (fds->cmd[0] == '|') {
+        if (fds->cmd && fds->cmd[0] == '|') {
             nbr--;
         }
         if (fds->next == NULL)
@@ -111,7 +123,6 @@ char **cmd_maker(t_cmds *fds, int nbr)
     return (cmd);
 }
 
-
 void    delete_linked_list(t_cmds *list)
 {
     t_cmds *tmp;
@@ -145,25 +156,6 @@ void free_triple_pointer(char ***triple)
     free(triple);
 }
 
-void    print_triple_pointer(char ***triple)
-{
-    int i;
-    int j;
-
-    i = 0;
-    while (triple[i])
-    {
-        j = 0;
-        printf("New Comand\n");
-        while (triple[i][j])
-        {
-            printf("%s\n", triple[i][j]);
-            j++;
-        }
-        i++;
-    }
-}
-
 void delete_last_node(t_cmds *node)
 {
     t_cmds *tmp;
@@ -176,17 +168,6 @@ void delete_last_node(t_cmds *node)
     free(tmp->next->cmd);
     free(tmp->next);
     tmp->next = NULL;
-}
-
-void    print_stacks(t_cmds *stck_a)
-{
-    printf("\n################\n");
-    while (stck_a)
-    {
-        printf("%s\n", stck_a->cmd);
-        stck_a = stck_a->next;
-    }
-    printf("\n################\n");
 }
 
 char *ft_strndup(const char *s1, size_t n)
@@ -233,8 +214,10 @@ int    get_var_name(char *input, int start, int divider, t_cmds **lst)
     i = start -1;
     ctr = 0;
     var_len = 0;
+    var_len = 0;
     while (input[++i]) {
-        while (input[i] && input[++i] != '$');
+        while (input[i] && input[i] != '$')
+            i++;
         while (input[i] && input[++i] != ' ' && input[i] != divider) {
             ctr++;
         }
@@ -271,7 +254,11 @@ void get_val_from_export(t_exporttable **export, t_cmds **vars)
         tmp2 = *export;
         tmp = tmp->next;
     }
-}
+/*
+    printf("Values from export\n");
+    print_stacks(*vars);
+*/
+ }
 
 void dollar_expanded(char *input, char *new_str, int start, int divider, t_cmds **vars)
 {
@@ -288,16 +275,18 @@ void dollar_expanded(char *input, char *new_str, int start, int divider, t_cmds 
     {
         if (input[i] == '$')
         {
+            g = -1;
             while (tmpvars->cmd[++g])
                 new_str[++j] = tmpvars->cmd[g];
             while (input[++i] != ' ' && input[i] != divider)
                 ;
+            i--;
+            tmpvars = tmpvars->next;
         }
         else
             new_str[++j] = input[i];
     }
     new_str[++j] = '\0';
-    printf("chegou ao fim desta cena\n");
 }
 
 char  *dollar_expansion(char *input, int start, int divider, t_exporttable **export)
@@ -311,22 +300,59 @@ char  *dollar_expansion(char *input, int start, int divider, t_exporttable **exp
     var_len = get_var_name(input, start, divider, vars);
     get_val_from_export(export, vars);
     new_str = (char *)malloc(sizeof(char) * (ft_str_ui_len(input, start, divider) - var_len + ft_strlen_vars(*vars) + 1));
-    printf("passou do malloc\n");
     dollar_expanded(input, new_str, start, divider, vars);
-    printf("passou do dollar_expanded\n");
     delete_linked_list(*vars);
     free(vars);
     return (new_str);
 }
 
+char *search_export(t_exporttable **export, char *key)
+{
+    t_exporttable *tmp;
+    char *value;
+
+    tmp = *export;
+    while (tmp)
+    {
+        if (ft_strcmp(tmp->key, key) == 0) {
+            //printf("Found key %s\n", tmp->value);
+            value = ft_strdup(tmp->value);
+            return (value);
+        }
+        tmp = tmp->next;
+    }
+    value = ft_strdup("");
+    return (value);
+}
+
+char *only_$(char *input, int start, t_exporttable **export)
+{
+    char *var_value;
+    char *key;
+
+    if (input[start] == '$')
+        start++;
+    key = str_space_dup(input, start, ' ');
+    var_value = search_export(export, key);
+    free(key);
+    return (var_value);
+}
+
+
+/*
 char ***parser(char *input, t_exporttable **export)
 {
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
+    //*cmds = malloc(sizeof(t_cmds));
     *cmds = NULL;
     int i = -1;
     int size = ft_strlen(input);
     int start = 0;
 
+    if (uneven_quotes(input) == 1) {
+        printf("Unclosed quotes\n");
+        return (NULL);
+    }
     if (!input)
         return (NULL);
     while (++i < size) {
@@ -344,19 +370,20 @@ char ***parser(char *input, t_exporttable **export)
                 ft_lstadd_back(cmds, ft_lstnew(dollar_expansion(input, start, '"', export)));
             else
                 ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '"')));
-            i += 2;
+            i += 1;
             start = i;
         }
         else if (input[i] == '$')
         {
-            printf("dollar\n");
-            i++;
-            start++;
-            while (input[++i] != ' ' && input[i] != '\0')
-                ;
-            ft_lstadd_back(cmds, ft_lstnew(dollar_expansion(input, start, ' ', export)));
-            printf("passou do ft_lstadd_back\n");
             start = i;
+            while (input[i] != ' ' && input[i] != '\0') {
+                i++;
+            }
+            ft_lstadd_back(cmds, ft_lstnew(only_$(input, start, export)));
+            if (input[i] != '\0')
+                start = i + 1;
+            else
+                start = i;
         }
         else if (input[i] == '|') {
             ft_lstadd_back(cmds, ft_lstnew(pipe_str()));
@@ -364,27 +391,20 @@ char ***parser(char *input, t_exporttable **export)
             start = i;
         }
     }
-    printf("passou do while\n");
-    if (input[i - 3] != '\"') {
+    if (!input[i - 3] || input[i - 3] != '\"')
         ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, ' ')));
-    }
-    printf("1\n");
     if (input[i - 1] == 32) {
         delete_last_node(*cmds);
     }
-    printf("2\n");
     int cmd_ctr = pipe_counter(*cmds) + 1;
-    printf("3 - cmd counter = %d\n", cmd_ctr);
-    char ***cmd = malloc(sizeof(char **) * (cmd_ctr + 1));
+    char ***cmd;
+    cmd = malloc(sizeof(char **) * (cmd_ctr + 1));
     i = -1;
-    printf("4\n");
     while (++i < cmd_ctr) {
         cmd[i] = cmd_maker(*cmds, i + 1);
     }
     cmd[i] = NULL;
-    printf("5\n");
     delete_linked_list(*cmds);
     free(cmds);
-    printf("chegou ao return\n");
     return (cmd);
-}
+}*/
