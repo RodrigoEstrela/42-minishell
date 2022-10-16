@@ -64,7 +64,7 @@ t_cmds **build_cmdtable(t_minithings *mt, t_cmds **cmds)
             if (uneven_quotes(mt->line, '\'') == 0)
             {
                 i++;
-                s = i - 1;
+                s = i;
                 while (mt->line[i] != '\'')
                     i++;
                 ft_lstadd_back(cmds, ft_lstnew(ft_substr(mt->line, s, i - s)));
@@ -98,9 +98,11 @@ t_cmds **build_cmdtable(t_minithings *mt, t_cmds **cmds)
         }
         else if (mt->line[i] == ' ')
         {
-            ft_lstadd_back(cmds, ft_lstnew(" "));
-            while (mt->line[i] == ' ')
+            while (mt->line[i] == ' ') {
                 i++;
+            }
+            if (mt->line[i] != '|' && mt->line[i - 2] != '|')
+                ft_lstadd_back(cmds, ft_lstnew(" "));
             i--;
         }
         else

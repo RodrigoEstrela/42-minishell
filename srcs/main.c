@@ -48,6 +48,6 @@ int main(int ac, char **av, char **envp)
         add_history(minithings->line);
         cmds = build_cmdtable(minithings, cmds);
         minithings->cmds = build_triple_pointer(cmds);
-//        commands(minithings, envp);
+        commands(minithings, envp);
     }
 }
