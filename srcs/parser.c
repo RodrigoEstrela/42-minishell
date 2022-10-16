@@ -20,7 +20,7 @@ void    print_stacks(t_cmds *stck_a)
         printf("%s\n", stck_a->cmd);
         stck_a = stck_a->next;
     }
-    printf("\n################\n");
+    printf("################\n");
 }
 
 int ft_str_ui_len(const char *s, int start, int letra) {
@@ -68,14 +68,14 @@ char *str_space_dup(const char *s1, int start, int letra)
     return (str);
 }
 
-int pipe_counter(t_cmds *fds) {
+int pipe_counter(t_cmds *cmds) {
     int i;
 
     i = 0;
-    while (fds) {
-        if (fds->cmd && fds->cmd[0] == '|')
+    while (cmds) {
+        if (cmds->cmd && cmds->cmd[0] == '|')
             i++;
-        fds = fds->next;
+        cmds = cmds->next;
     }
     return (i);
 }

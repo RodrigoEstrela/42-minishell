@@ -34,6 +34,7 @@ static t_minithings *build_export_table(t_minithings *minithings, char **envp)
 int main(int ac, char **av, char **envp)
 {
     t_minithings *minithings;
+    t_cmds **cmds;
 
     minithings = (t_minithings *)malloc(sizeof(t_minithings *) * 2);
     minithings = build_export_table(minithings, envp);
@@ -44,7 +45,8 @@ int main(int ac, char **av, char **envp)
         if (!minithings->line)
             exit(1);
         add_history(minithings->line);
-        minithings->cmds = parser(minithings);
+        cmds = build_cmdtable(minithings);
+        minithings->cmds = build_triple_pointer(cmds);
 //        commands(minithings, envp);
     }
 }

@@ -35,10 +35,10 @@ void    print_triple_pointer(char ***triple)
     int j;
 
     i = 0;
-    while (triple[i])
+    while(triple[i])
     {
         j = 0;
-        printf("New Comand\n");
+        printf("New Command\n");
         while (triple[i][j])
         {
             printf("%s\n", triple[i][j]);
@@ -48,31 +48,27 @@ void    print_triple_pointer(char ***triple)
     }
 }
 
-char ***parser(t_minithings *minithings)
+t_cmds **build_cmdtable(t_minithings *mt)
 {
     int i;
-    int j;
-    int k;
-    int start;
-    char ***cmds;
+    int s;
+    t_cmds **cmds;
 
     i = 0;
-    j = 0;
-    k = 0;
-    cmds = malloc(sizeof(char ***) * 1);
-
-    while (minithings->line[i])
+    cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
+    *cmds = NULL;
+    while (i < ft_strlen(mt->line))
     {
-        if (minithings->line[i] == '\'')
+        if (mt->line[i] == '\'')
         {
-            if (uneven_quotes(minithings->line, '\'') == 0)
+            if (uneven_quotes(mt->line, '\'') == 0)
             {
                 i++;
-                start = i;
-                while (minithings->line[i] != '\'')
+                s = i;
+                while (mt->line[i] != '\'')
                     i++;
-                cmds[k][j] = ft_substr(minithings->line, start, i - start);
-                j++;
+                ft_lstadd_back(cmds, ft_lstnew(ft_substr(mt->line, s, i - s)));
+
             }
             else
             {
@@ -80,36 +76,75 @@ char ***parser(t_minithings *minithings)
                 return (NULL);
             }
         }
-        else if (minithings->line[i] == '"')
+        else if (mt->line[i] == '\"')
         {
-            if (uneven_quotes(minithings->line, '"') == 0)
+            if (uneven_quotes(mt->line, '\"') == 0)
             {
                 i++;
-                start = i;
-                while (minithings->line[i] != '"')
+                s = i;
+                while (mt->line[i] != '\"')
                     i++;
-                cmds[k][j] = ft_substr(minithings->line, start, i - start);
-                j++;
+                ft_lstadd_back(cmds, ft_lstnew(ft_substr(mt->line, s, i - s)));
             }
             else
+            {
                 printf("missing closing double quote\n");
-            return (NULL);
+                return (NULL);
+            }
         }
-        else if (minithings->line[i] == '|')
+        else if (mt->line[i] == '|')
         {
-            i++;
-            j = 0;
-            k++;
+            ft_lstadd_back(cmds, ft_lstnew("|"));
         }
-        else if (minithings->line[i] == ' ')
+        else if (mt->line[i] == ' ')
         {
-            while (minithings->line[i] == ' ')
+            ft_lstadd_back(cmds, ft_lstnew(" "));
+            while (mt->line[i] == ' ')
                 i++;
             i--;
-            j++;
+        }
+        else
+        {
+            s = i;
+            while (mt->line[i] != ' ' && mt->line[i] != '|'
+            && mt->line[i] != '\'' && mt->line[i] != '"' && mt->line[i] != '\0')
+                i++;
+            ft_lstadd_back(cmds, ft_lstnew(ft_substr(mt->line, s, i - s)));
+            i--;
         }
         i++;
     }
-//    print_triple_pointer(cmds);
+    print_stacks(*cmds);
     return (cmds);
+}
+
+char ***build_triple_pointer(t_cmds **cmds)
+{
+    int size;
+    char ***triple;
+    int i;
+    int j;
+
+    size = pipe_counter(*cmds);
+    triple = malloc(sizeof(char **) * (size + 1));
+    i = 0;
+    j = 0;
+    while ((*cmds)->next)
+    {
+        printf("comando: %s\n", (*cmds)->cmd);
+        if (ft_strcmp((*cmds)->cmd, "|"))
+        {
+            j++;
+            i = 0;
+        }
+        else
+        {
+            triple[j] = malloc(sizeof(char *) * (i + 1));
+            triple[j][i] = (*cmds)->cmd;
+            i++;
+        }
+        *cmds = (*cmds)->next;
+    }
+//    print_triple_pointer(triple);
+    return (triple);
 }

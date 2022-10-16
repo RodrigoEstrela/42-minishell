@@ -117,6 +117,11 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strnstr(const char	*big, const char *little, size_t len);
 char	*find_path(char *cmd, char **envp);
-char ***parser(t_minithings *minithings);
-
+void    parser(t_minithings *minithings);
+t_cmds  **build_cmdtable(t_minithings *mt);
+void    print_stacks(t_cmds *stck_a);
+void delete_last_node(t_cmds *node);
+int cmdtablesize(t_cmds *cmds);
+char ***build_triple_pointer(t_cmds **cmds);
+int pipe_counter(t_cmds *cmds);
 #endif
