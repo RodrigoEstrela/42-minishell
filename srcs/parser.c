@@ -98,7 +98,6 @@ int arg_ctr(t_cmds *fds, int nbr) {
     return (i - 1);
 }
 
-
 char **cmd_maker(t_cmds *fds, int nbr)
 {
     char **cmd;
@@ -203,7 +202,6 @@ int ft_strlen_vars(t_cmds *vars)
     }
     return (i);
 }
-
 
 int    get_var_name(char *input, int start, int divider, t_cmds **lst)
 {
@@ -337,7 +335,6 @@ char *only_$(char *input, int start, t_exporttable **export)
     free(key);
     return (var_value);
 }
-
 
 /*
 char ***parser(char *input, t_exporttable **export)

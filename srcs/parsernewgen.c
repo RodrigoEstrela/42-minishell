@@ -48,15 +48,15 @@ void    print_triple_pointer(char ***triple)
     }
 }
 
-t_cmds **build_cmdtable(t_minithings *mt)
+t_cmds **build_cmdtable(t_minithings *mt, t_cmds **cmds)
 {
     int i;
     int s;
-    t_cmds **cmds;
-
     i = 0;
-    cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
+
     *cmds = NULL;
+    if (!mt->line)
+        return (NULL);
     while (i < ft_strlen(mt->line))
     {
         if (mt->line[i] == '\'')
@@ -64,7 +64,7 @@ t_cmds **build_cmdtable(t_minithings *mt)
             if (uneven_quotes(mt->line, '\'') == 0)
             {
                 i++;
-                s = i;
+                s = i - 1;
                 while (mt->line[i] != '\'')
                     i++;
                 ft_lstadd_back(cmds, ft_lstnew(ft_substr(mt->line, s, i - s)));
@@ -81,7 +81,7 @@ t_cmds **build_cmdtable(t_minithings *mt)
             if (uneven_quotes(mt->line, '\"') == 0)
             {
                 i++;
-                s = i;
+                s = i - 1;
                 while (mt->line[i] != '\"')
                     i++;
                 ft_lstadd_back(cmds, ft_lstnew(ft_substr(mt->line, s, i - s)));
@@ -114,7 +114,6 @@ t_cmds **build_cmdtable(t_minithings *mt)
         }
         i++;
     }
-    print_stacks(*cmds);
     return (cmds);
 }
 
@@ -123,28 +122,18 @@ char ***build_triple_pointer(t_cmds **cmds)
     int size;
     char ***triple;
     int i;
-    int j;
 
-    size = pipe_counter(*cmds);
+    size = pipe_counter(*cmds) + 1;
     triple = malloc(sizeof(char **) * (size + 1));
-    i = 0;
-    j = 0;
-    while ((*cmds)->next)
+    i = -1;
+
+    if (!*cmds)
+        return (NULL);
+    while (++i < size)
     {
-        printf("comando: %s\n", (*cmds)->cmd);
-        if (ft_strcmp((*cmds)->cmd, "|"))
-        {
-            j++;
-            i = 0;
-        }
-        else
-        {
-            triple[j] = malloc(sizeof(char *) * (i + 1));
-            triple[j][i] = (*cmds)->cmd;
-            i++;
-        }
-        *cmds = (*cmds)->next;
+        triple[i] = cmd_maker(*cmds, i + 1);
     }
-//    print_triple_pointer(triple);
+    triple[i] = NULL;
+    print_triple_pointer(triple);
     return (triple);
 }

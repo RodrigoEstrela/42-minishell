@@ -38,6 +38,7 @@ int main(int ac, char **av, char **envp)
 
     minithings = (t_minithings *)malloc(sizeof(t_minithings *) * 2);
     minithings = build_export_table(minithings, envp);
+    cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
     while(ac != ft_strlen(av[ac]))
     {
         sig_handler();
@@ -45,7 +46,7 @@ int main(int ac, char **av, char **envp)
         if (!minithings->line)
             exit(1);
         add_history(minithings->line);
-        cmds = build_cmdtable(minithings);
+        cmds = build_cmdtable(minithings, cmds);
         minithings->cmds = build_triple_pointer(cmds);
 //        commands(minithings, envp);
     }
