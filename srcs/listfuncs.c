@@ -63,19 +63,6 @@ int ft_lstsize(t_exporttable *lst)
     return (i);
 }
 
-int cmdtablesize(t_cmds *cmds)
-{
-    int i;
-
-    i = 0;
-    while (cmds)
-    {
-        cmds = cmds->next;
-        i++;
-    }
-    return (i);
-}
-
 t_list	*indx(t_list *list, int index) {
     int i;
 

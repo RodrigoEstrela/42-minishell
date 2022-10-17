@@ -20,7 +20,7 @@ void    print_stacks(t_cmds *stck_a)
         printf("%s\n", stck_a->cmd);
         stck_a = stck_a->next;
     }
-    printf("################\n");
+    printf("\n################\n");
 }
 
 int ft_str_ui_len(const char *s, int start, int letra) {
@@ -68,16 +68,42 @@ char *str_space_dup(const char *s1, int start, int letra)
     return (str);
 }
 
-int pipe_counter(t_cmds *cmds) {
+int pipe_counter(t_cmds *fds) {
     int i;
 
     i = 0;
-    while (cmds) {
-        if (cmds->cmd && cmds->cmd[0] == '|')
+    while (fds) {
+        if (fds->cmd && fds->cmd[0] == '|')
             i++;
-        cmds = cmds->next;
+        fds = fds->next;
     }
     return (i);
+}
+
+
+int str_super_len(char *input, int start){
+    int i;
+
+    i = start - 1;
+    while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"')
+        ;
+    return (i);
+}
+
+char *str_super_dup(char *input, int start)
+{
+    int i;
+    int j;
+    char *new_str;
+
+    i = start - 1;
+    j = -1;
+    new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 1));
+    while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"'){
+        new_str[++j] = input[i];
+    }
+    new_str[++j] = '\0';
+    return (new_str);
 }
 
 
@@ -155,6 +181,25 @@ void free_triple_pointer(char ***triple)
     free(triple);
 }
 
+void    print_triple_pointer(char ***triple)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (triple[i])
+    {
+        j = 0;
+        printf("New Comand\n");
+        while (triple[i][j])
+        {
+            printf("%s\n", triple[i][j]);
+            j++;
+        }
+        i++;
+    }
+}
+
 void delete_last_node(t_cmds *node)
 {
     t_cmds *tmp;
@@ -188,6 +233,7 @@ char *ft_strndup(const char *s1, size_t n)
     return (str);
 }
 
+
 int ft_strlen_vars(t_cmds *vars)
 {
     int i;
@@ -216,7 +262,7 @@ int    get_var_name(char *input, int start, int divider, t_cmds **lst)
     while (input[++i]) {
         while (input[i] && input[i] != '$')
             i++;
-        while (input[i] && input[++i] != ' ' && input[i] != divider) {
+        while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '\'') {
             ctr++;
         }
         ft_lstadd_back(lst, ft_lstnew(ft_strndup(input + i - ctr, ctr)));
@@ -276,7 +322,7 @@ void dollar_expanded(char *input, char *new_str, int start, int divider, t_cmds 
             g = -1;
             while (tmpvars->cmd[++g])
                 new_str[++j] = tmpvars->cmd[g];
-            while (input[++i] != ' ' && input[i] != divider)
+            while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '\'')
                 ;
             i--;
             tmpvars = tmpvars->next;
@@ -330,13 +376,29 @@ char *only_$(char *input, int start, t_exporttable **export)
 
     if (input[start] == '$')
         start++;
-    key = str_space_dup(input, start, ' ');
+    key = str_super_dup(input, start);
     var_value = search_export(export, key);
     free(key);
     return (var_value);
 }
 
-/*
+int uneven_quotes(char *input)
+{
+    int i;
+    int quotes;
+
+    i = -1;
+    quotes = 0;
+    while (input[++i])
+    {
+        if (input[i] == '"')
+            quotes++;
+    }
+    if (quotes % 2 != 0)
+        return (1);
+    return (0);
+}
+
 char ***parser(char *input, t_exporttable **export)
 {
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
@@ -353,46 +415,65 @@ char ***parser(char *input, t_exporttable **export)
     if (!input)
         return (NULL);
     while (++i < size) {
-        if (input[i] == ' ') {
-            ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, ' ')));
+        if (input[i] == '\'')
+        {
             start = i + 1;
+            while (input[++i] != '\'')
+                ;
+            ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '\'')));
+            //i += 1;
+            start = i;
         }
         else if (input[i] == '"')
         {
-            i++;
-            start++;
+            start = i + 1;
             while (input[++i] != '"')
                 ;
             if (ft_strchr(input + start, '$'))
                 ft_lstadd_back(cmds, ft_lstnew(dollar_expansion(input, start, '"', export)));
             else
                 ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '"')));
-            i += 1;
+            //i += 1;
             start = i;
         }
         else if (input[i] == '$')
         {
             start = i;
-            while (input[i] != ' ' && input[i] != '\0') {
-                i++;
-            }
+            while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"')
+                ;
+            i--;
             ft_lstadd_back(cmds, ft_lstnew(only_$(input, start, export)));
-            if (input[i] != '\0')
+            /*if (input[i] != '\0')
                 start = i + 1;
-            else
+            else*/
                 start = i;
         }
         else if (input[i] == '|') {
             ft_lstadd_back(cmds, ft_lstnew(pipe_str()));
-            i += 2;
+            i += 1;
+            start = i;
+        }
+        else if (input[i] != ' ') {
+            /*printf("i %d\n", i);
+            printf("start %d\n", start);*/
+            start = i;
+            ft_lstadd_back(cmds, ft_lstnew(str_super_dup(input, start)));
+            while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"') {
+                i++;
+            }
+            i--;
+            /*printf("final i %d\n", i);
+            printf("input[i] %c\n", input[i]);*/
             start = i;
         }
     }
-    if (!input[i - 3] || input[i - 3] != '\"')
+    /*if (!input[i - 3] || input[i - 3] != '\"') {
         ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, ' ')));
+    }*/
     if (input[i - 1] == 32) {
         delete_last_node(*cmds);
     }
+//    print_stacks(*cmds);
     int cmd_ctr = pipe_counter(*cmds) + 1;
     char ***cmd;
     cmd = malloc(sizeof(char **) * (cmd_ctr + 1));
@@ -404,4 +485,4 @@ char ***parser(char *input, t_exporttable **export)
     delete_linked_list(*cmds);
     free(cmds);
     return (cmd);
-}*/
+}

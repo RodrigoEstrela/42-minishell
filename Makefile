@@ -15,7 +15,7 @@ SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 					pipex/children.c pipex/ft_memcmp.c pipex/get_next_line.c \
 					pipex/get_next_line_utils.c pipex/heredoc.c \
 					pipex/pipex.c pipex/pipex_utils.c pipex/quote_splitter.c export.c \
-					unset.c parser.c parsernewgen.c \
+					unset.c parser.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
