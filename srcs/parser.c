@@ -101,7 +101,14 @@ char *str_super_dup(char *input, int start)
     new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 1));
     while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"'){
         new_str[++j] = input[i];
-    }
+    }/*
+    if (input[i] == ' ' && input[i + 1] != '$' )
+    {
+        printf("input[i] = %c\n", input[i]);
+        printf("input[i + 1] = %c\n", input[i + 1]);
+        printf("oi\n");
+        new_str[++j] = ' ';
+    }*/
     new_str[++j] = '\0';
     return (new_str);
 }
@@ -232,7 +239,6 @@ char *ft_strndup(const char *s1, size_t n)
     str[i] = '\0';
     return (str);
 }
-
 
 int ft_strlen_vars(t_cmds *vars)
 {
@@ -382,7 +388,7 @@ char *only_$(char *input, int start, t_exporttable **export)
     return (var_value);
 }
 
-int uneven_quotes(char *input)
+int uneven_quotes(char *input, char duborsing)
 {
     int i;
     int quotes;
@@ -391,7 +397,7 @@ int uneven_quotes(char *input)
     quotes = 0;
     while (input[++i])
     {
-        if (input[i] == '"')
+        if (input[i] == duborsing)
             quotes++;
     }
     if (quotes % 2 != 0)
@@ -408,12 +414,16 @@ char ***parser(char *input, t_exporttable **export)
     int size = ft_strlen(input);
     int start = 0;
 
-    if (uneven_quotes(input) == 1) {
-        printf("Unclosed quotes\n");
-        return (NULL);
-    }
+
     if (!input)
         return (NULL);
+
+    if (uneven_quotes(input, '"') == 1 || uneven_quotes(input, '\'') == 1)
+    {
+        printf("Error: uneven quotes\n");
+        return (NULL);
+    }
+
     while (++i < size) {
         if (input[i] == '\'')
         {

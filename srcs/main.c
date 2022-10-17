@@ -57,13 +57,16 @@ int main(int ac, char **av, char **envp)
     {
         sig_handler();
         minithings->line = readline(BLUE"amazing"YELLOW"shell: "RES);
-        if (!minithings->line)
+        if (!minithings->line) {
             exit(1);
+        }
         add_history(minithings->line);
         minithings->cmds = parser(minithings->line, minithings->export);
+        if (minithings->cmds) {
+            commands(minithings, envp);
+            free_triple_pointer(minithings->cmds);
+        }
         //print_triple_pointer(minithings->cmds);
-        commands(minithings, envp);
-        free_triple_pointer(minithings->cmds);
         free(minithings->line);
     }
 }
