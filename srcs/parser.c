@@ -80,7 +80,6 @@ int pipe_counter(t_cmds *fds) {
     return (i);
 }
 
-
 int str_super_len(char *input, int start){
     int i;
 
@@ -112,7 +111,6 @@ char *str_super_dup(char *input, int start)
     new_str[++j] = '\0';
     return (new_str);
 }
-
 
 int arg_ctr(t_cmds *fds, int nbr) {
     int i;
@@ -408,22 +406,18 @@ int uneven_quotes(char *input, char duborsing)
 char ***parser(char *input, t_exporttable **export)
 {
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
-    //*cmds = malloc(sizeof(t_cmds));
     *cmds = NULL;
     int i = -1;
     int size = ft_strlen(input);
-    int start = 0;
-
+    int start;
 
     if (!input)
         return (NULL);
-
     if (uneven_quotes(input, '"') == 1 || uneven_quotes(input, '\'') == 1)
     {
         printf("Error: uneven quotes\n");
         return (NULL);
     }
-
     while (++i < size) {
         if (input[i] == '\'')
         {
@@ -431,8 +425,6 @@ char ***parser(char *input, t_exporttable **export)
             while (input[++i] != '\'')
                 ;
             ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '\'')));
-            //i += 1;
-            start = i;
         }
         else if (input[i] == '"')
         {
@@ -443,8 +435,6 @@ char ***parser(char *input, t_exporttable **export)
                 ft_lstadd_back(cmds, ft_lstnew(dollar_expansion(input, start, '"', export)));
             else
                 ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '"')));
-            //i += 1;
-            start = i;
         }
         else if (input[i] == '$')
         {
@@ -453,35 +443,19 @@ char ***parser(char *input, t_exporttable **export)
                 ;
             i--;
             ft_lstadd_back(cmds, ft_lstnew(only_$(input, start, export)));
-            /*if (input[i] != '\0')
-                start = i + 1;
-            else*/
-                start = i;
         }
         else if (input[i] == '|') {
             ft_lstadd_back(cmds, ft_lstnew(pipe_str()));
             i += 1;
-            start = i;
         }
         else if (input[i] != ' ') {
-            /*printf("i %d\n", i);
-            printf("start %d\n", start);*/
             start = i;
             ft_lstadd_back(cmds, ft_lstnew(str_super_dup(input, start)));
             while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"') {
                 i++;
             }
             i--;
-            /*printf("final i %d\n", i);
-            printf("input[i] %c\n", input[i]);*/
-            start = i;
         }
-    }
-    /*if (!input[i - 3] || input[i - 3] != '\"') {
-        ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, ' ')));
-    }*/
-    if (input[i - 1] == 32) {
-        delete_last_node(*cmds);
     }
 //    print_stacks(*cmds);
     int cmd_ctr = pipe_counter(*cmds) + 1;
