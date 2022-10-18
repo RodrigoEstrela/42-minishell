@@ -253,7 +253,7 @@ int ft_strlen_vars(t_cmds *vars)
     return (i);
 }
 
-int    get_var_name(char *input, int start, int divider, t_cmds **lst)
+int    get_var_name(char *input, int start, t_cmds **lst)
 {
     int i;
     int ctr;
@@ -345,7 +345,7 @@ char  *dollar_expansion(char *input, int start, int divider, t_exporttable **exp
     *vars = NULL;
     values = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
     *values = NULL;
-    var_len = get_var_name(input, start, divider, vars);
+    var_len = get_var_name(input, start, vars);
     get_val_from_export(export, vars, values);
     new_str = (char *)malloc(sizeof(char) * (ft_str_ui_len(input, start, divider) - var_len + ft_strlen_vars(*vars) + 1));
     dollar_expanded(input, new_str, start, divider, values);
@@ -428,7 +428,7 @@ void    cleanup(char ***cmd)
         {
             while (cmd[i][j] != NULL)
             {
-                if (j == 0 || j == doublepointersize(cmd[i]) - 1 && cmd[i][j][ft_strlen(cmd[i][j]) - 1] == ' ')
+                if (j == 0 || (j == doublepointersize(cmd[i]) - 1 && cmd[i][j][ft_strlen(cmd[i][j]) - 1] == ' '))
                 {
                     cmd[i][j][ft_strlen(cmd[i][j]) - 1] = '\0';
                     j++;
