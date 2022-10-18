@@ -17,7 +17,7 @@ void    print_stacks(t_cmds *stck_a)
     printf("\n################\n");
     while (stck_a)
     {
-        printf("%s\n", stck_a->cmd);
+        printf("%s||\n", stck_a->cmd);
         stck_a = stck_a->next;
     }
     printf("\n################\n");
@@ -100,14 +100,9 @@ char *str_super_dup(char *input, int start)
     new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 1));
     while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"'){
         new_str[++j] = input[i];
-    }/*
-    if (input[i] == ' ' && input[i + 1] != '$' )
-    {
-        printf("input[i] = %c\n", input[i]);
-        printf("input[i + 1] = %c\n", input[i + 1]);
-        printf("oi\n");
+    }
+    if (input[i] == ' ' && (input[i - 1] != '|' || input[i + 1] != '|'))
         new_str[++j] = ' ';
-    }*/
     new_str[++j] = '\0';
     return (new_str);
 }
@@ -198,7 +193,7 @@ void    print_triple_pointer(char ***triple)
         printf("New Comand\n");
         while (triple[i][j])
         {
-            printf("%s\n", triple[i][j]);
+            printf("%s||\n", triple[i][j]);
             j++;
         }
         i++;
@@ -403,6 +398,60 @@ int uneven_quotes(char *input, char duborsing)
     return (0);
 }
 
+int doublepointersize(char **input)
+{
+    int i;
+
+    i = 0;
+    while (input[i])
+        i++;
+    return (i);
+}
+
+void    echoaddspace(char ***cmd)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (cmd[i] != NULL)
+    {
+        if (ft_strcmp("echo " , cmd[i][0]) == 0)
+        {
+            while (cmd[i][j] != NULL)
+            {
+                if (j == 0 || j == doublepointersize(cmd[i]) - 1 && cmd[i][j][ft_strlen(cmd[i][j]) - 1] == ' ')
+                {
+                    cmd[i][j][ft_strlen(cmd[i][j]) - 1] = '\0';
+                    j++;
+                }
+                else
+                    j++;
+            }
+        }
+        else
+            while (cmd[i][j])
+            {
+                if (cmd[i][j][ft_strlen(cmd[i][j]) - 1] == ' ')
+                    cmd[i][j][ft_strlen(cmd[i][j]) - 1] = '\0';
+                j++;
+            }
+        i++;
+        j = 0;
+    }
+}
+
+char *space_str()
+{
+    char *str;
+
+    str = (char *)malloc(sizeof(char) * 2);
+    str[0] = ' ';
+    str[1] = '\0';
+    return (str);
+}
+
 char ***parser(char *input, t_exporttable **export)
 {
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
@@ -446,27 +495,32 @@ char ***parser(char *input, t_exporttable **export)
         }
         else if (input[i] == '|') {
             ft_lstadd_back(cmds, ft_lstnew(pipe_str()));
-            i += 1;
+//            i += 1;
         }
         else if (input[i] != ' ') {
             start = i;
             ft_lstadd_back(cmds, ft_lstnew(str_super_dup(input, start)));
-            while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"') {
+            while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"'){
                 i++;
             }
             i--;
         }
     }
-//    print_stacks(*cmds);
+    print_stacks(*cmds);
     int cmd_ctr = pipe_counter(*cmds) + 1;
     char ***cmd;
     cmd = malloc(sizeof(char **) * (cmd_ctr + 1));
     i = -1;
-    while (++i < cmd_ctr) {
+    while (++i < cmd_ctr)
+    {
         cmd[i] = cmd_maker(*cmds, i + 1);
     }
     cmd[i] = NULL;
     delete_linked_list(*cmds);
     free(cmds);
+    print_triple_pointer(cmd);
+    printf("\n");
+    echoaddspace(cmd);
+    print_triple_pointer(cmd);
     return (cmd);
 }

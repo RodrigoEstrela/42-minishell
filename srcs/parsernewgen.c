@@ -12,25 +12,6 @@
 
 #include"../inc/minishell.h"
 
-void    print_triple_pointer(char ***triple)
-{
-    int i;
-    int j;
-
-    i = 0;
-    while(triple[i])
-    {
-        j = 0;
-        printf("New Command\n");
-        while (triple[i][j])
-        {
-            printf("%s\n", triple[i][j]);
-            j++;
-        }
-        i++;
-    }
-}
-
 t_cmds **build_cmdtable(t_minithings *mt, t_cmds **cmds)
 {
     int i;

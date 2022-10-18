@@ -121,5 +121,10 @@ char ***parser(char *line, t_exporttable **export);
 
 void free_triple_pointer(char ***triple);
 void    print_triple_pointer(char ***triple);
+int uneven_quotes(char *input, char duborsing);
+char **cmd_maker(t_cmds *fds, int nbr);
+int pipe_counter(t_cmds *fds);
+t_cmds **build_cmdtable(t_minithings *mt, t_cmds **cmds);
+char ***build_triple_pointer(t_cmds **cmds);
 
 #endif

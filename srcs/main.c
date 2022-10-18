@@ -66,7 +66,7 @@ int main(int ac, char **av, char **envp)
             commands(minithings, envp);
             free_triple_pointer(minithings->cmds);
         }
-        //print_triple_pointer(minithings->cmds);
+//        print_triple_pointer(minithings->cmds);
         free(minithings->line);
     }
 }
