@@ -265,8 +265,11 @@ int    get_var_name(char *input, int start, t_cmds **lst)
     while (input[++i]) {
         while (input[i] && input[i] != '$')
             i++;
-        while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '\'') {
+        if (input[i] == '$')
+            i++;
+        while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '\'') {
             ctr++;
+            i++;
         }
         ft_lstadd_back(lst, ft_lstnew(ft_strndup(input + i - ctr, ctr)));
         if (ctr != 0)

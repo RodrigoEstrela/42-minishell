@@ -27,29 +27,31 @@ void execute(char **cmd, t_minithings *minithings, char **envp)
     path = find_path(cmd[0], envp);
     if (!path)
 	{
+        printf("minishell: command not found: %s\n", cmd[0]);
         while (cmd[++i]) {
             free(cmd[i]);
         }
         free(cmd);
         exit(EXIT_FAILURE);
     }
-    execve(path, cmd, envp);
 //    sig_handler_block();
+    execve(path, cmd, envp);
 }
 
 void child_one(char **cmds, t_minithings *minithings, char **envp)
 {
-	pid_t	pid;
-	int		fd[2];
+    pid_t	pid;
+    int		fd[2];
 
-	if (pipe(fd) == -1)
-		exit(0);
-	pid = fork();
-	if (pid == 0)
+    if (pipe(fd) == -1) {
+        exit(0);
+    }
+    pid = fork();
+    if (pid == 0)
 	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		execute(cmds, minithings, envp);
+        close(fd[0]);
+        dup2(fd[1], STDOUT_FILENO);
+        execute(cmds, minithings, envp);
         exit(0);
 	}
 	else

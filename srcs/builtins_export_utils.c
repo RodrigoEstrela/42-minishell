@@ -67,7 +67,7 @@ t_exporttable 	*indxexport(t_exporttable *list, int index) {
     return (list);
 }
 
-int     check_duplicated(t_exporttable **export, char *str)
+int     check_duplicated(t_exporttable **export, char *str, int flag)
 {
     int i;
 

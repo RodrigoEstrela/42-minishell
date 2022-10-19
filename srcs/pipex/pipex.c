@@ -77,12 +77,14 @@ void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
 
         while (i < nbr_cmds - 1)
         {
+//            sig_handler_block();
             child_one(cmds[i++], minithings, envp);
         }
         pid = fork();
-
+        sig_handler_block();
         if (pid == 0)
         {
+//            sig_handler_block();
             execute(cmds[nbr_cmds - 1], minithings, envp);
         }
         waitpid(pid, NULL, 0);

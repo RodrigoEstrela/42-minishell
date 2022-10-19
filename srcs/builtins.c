@@ -36,6 +36,7 @@ void builtins(t_minithings *minithings)
     int i;
 
     i = -1;
+
     if (ft_strncmp(minithings->cmds[0][0], "cd", 2) == 0)
     {
         if (!minithings->cmds[0][1])
@@ -44,7 +45,7 @@ void builtins(t_minithings *minithings)
             chdir(minithings->cmds[0][1]);
         }
     }
-    else if (ft_strcmp(minithings->line, "pwd") == 0)
+    else if (ft_strcmp(minithings->cmds[0][0], "pwd") == 0)
     {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));

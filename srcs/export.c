@@ -19,8 +19,14 @@ t_exporttable *add_export_node(char *key, char *value)
     new = malloc(sizeof(t_exporttable));
     if (!new)
         return (NULL);
+    if (ft_strcmp(key, "") == 0)
+    {
+        printf("amazingshell: export: `=%s': not a valid identifier\n", value);
+        return (NULL);
+    }
     if (!value)
         value = "";
+
     new->key = ft_strdup(key);
     new->value = ft_strdup(value);
     new->next = NULL;
@@ -82,7 +88,7 @@ void export(t_minithings *minithings)
         while (minithings->cmds[0][++i])
         {
             onevar = key_and_value(minithings->cmds[0][i]);
-            if ((ind = check_duplicated(minithings->export, onevar[0])))
+            if ((ind = check_duplicated(minithings->export, onevar[0], 0)))
             {
                 if (onevar[1])
                 {

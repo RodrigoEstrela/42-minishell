@@ -13,13 +13,13 @@
 SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 					listfuncs.c builtins_export_utils.c split.c \
 					pipex/children.c pipex/ft_memcmp.c pipex/get_next_line.c \
-					pipex/get_next_line_utils.c pipex/heredoc.c \
+					pipex/get_next_line_utils.c \
 					pipex/pipex.c pipex/pipex_utils.c pipex/quote_splitter.c export.c \
 					unset.c parser.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
-CFLAGS		=		-g -lreadline -Wall -Wextra -Werror
+CFLAGS		=		-g -lreadline #-Wall -Wextra -Werror
 RM			=		rm -f
 
 NAME		= 		minishell

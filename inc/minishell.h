@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   MINISHELL                                          :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdas-nev <rdas-nev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 4242/42/42 42:42:42 by rdas-nev          #+#    #+#             */
-/*   Updated: 4242/42/42 42:42:42 by rdas-nev         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:29:42 by rdas-nev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define YELLOW "\e[1;33m"
 # define BLUE "\e[1;34m"
+# define GREEN "\e[1;32m"
 # define RES "\e[0m"
 
 // BUFFER_SIZE FOR GNL
@@ -83,12 +84,12 @@ char **quote_splitter(char *line);
 
 void export(t_minithings *minithings);
 void show_export_list(t_minithings *minithings, int flag);
-t_exporttable *add_export_node(char *key, char *value);
+t_exporttable				*add_export_node(char *key, char *value);
 void add_export_node_front(t_exporttable **head, t_exporttable *new);
 void add_export_node_back(t_exporttable **lst, t_exporttable *new);
-t_exporttable 	*indxexport(t_exporttable *list, int index);
+t_exporttable				*indxexport(t_exporttable *list, int index);
 int ft_lstsize(t_exporttable *lst);
-int     check_duplicated(t_exporttable **export, char *str);
+int     check_duplicated(t_exporttable **export, char *str, int flag);
 void    value_modifier(t_exporttable **export, char *value, int i);
 
 void unset(t_minithings *minithings);
