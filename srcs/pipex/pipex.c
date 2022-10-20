@@ -35,21 +35,21 @@ char	*ft_strnstr(const char	*big, const char *little, size_t len)
 }
 
 
-char	*find_path(char *cmd, char **envp)
+char	*find_path(char *cmd, t_exporttable **envp)
 {
 	char	**paths;
 	char	*path;
 	int		i;
 	char	*part_path;
+    t_exporttable *tmp;
 
 	i = 0;
-
+    tmp = *envp;
     if (access(cmd, F_OK) == 0)
         return (cmd);
-    while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = 0;
+    while (ft_strnstr(tmp->key, "PATH", 4) == 0)
+		tmp = tmp->next;
+	paths = ft_split(tmp->value, ':');
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");
@@ -70,23 +70,14 @@ char	*find_path(char *cmd, char **envp)
 void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
 {
 	int		i;
-    int pid;
 
 	if (nbr_cmds >= 1) {
         i = 0;
 
         while (i < nbr_cmds - 1)
         {
-//            sig_handler_block();
             child_one(cmds[i++], minithings, envp);
         }
-        pid = fork();
-        sig_handler_block();
-        if (pid == 0)
-        {
-//            sig_handler_block();
-            execute(cmds[nbr_cmds - 1], minithings, envp);
-        }
-        waitpid(pid, NULL, 0);
+        execute(cmds[nbr_cmds - 1], minithings, envp);
 	}
 }

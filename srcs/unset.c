@@ -55,7 +55,7 @@ void unset(t_minithings *minithings)
             j++;
             continue ;
         }
-        i = check_duplicated(minithings->export, inputs[j], 1);
+        i = check_duplicated(minithings->export, inputs[j]);
         if (i)
             delete_node(minithings->export, i);
         j++;

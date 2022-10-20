@@ -59,6 +59,7 @@ char *paint_prompt_2(char *str, char *color)
     return (tmp);
 }
 
+
 char *get_prompt(void)
 {
     char *prompt;
@@ -117,13 +118,13 @@ int main(int ac, char **av, char **envp)
             exit(1);
         add_history(minithings->line);
         minithings->cmds = parser(minithings->line, minithings->export);
-        if (minithings->cmds)
-        {
+        if (minithings->cmds) {
             commands(minithings, envp);
             free_triple_pointer(minithings->cmds);
         }
-        else
+        else {
             free(minithings->cmds);
+        }
         free(minithings->line);
     }
 }
