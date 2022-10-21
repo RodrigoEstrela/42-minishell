@@ -35,6 +35,7 @@ void execute(char **cmd, t_minithings *minithings, char **envp, int indx)
         exit(EXIT_FAILURE);
     }
     execve(path, cmd, envp);
+//    sig_handler_block();
 }
 
 void child_one(char **cmds, t_minithings *minithings, char **envp, int indx)
@@ -45,7 +46,6 @@ void child_one(char **cmds, t_minithings *minithings, char **envp, int indx)
 	if (pipe(fd) == -1)
 		exit(0);
 	pid = fork();
-    sig_handler_block();
 	if (pid == 0)
 	{
 		close(fd[0]);

@@ -74,7 +74,7 @@ void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
 	if (nbr_cmds >= 1) {
         i = -1;
 
-        while (++i <= nbr_cmds - 1)
+        while (++i < nbr_cmds - 1)
         {
             child_one(cmds[i], minithings, envp, i);
         }

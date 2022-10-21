@@ -185,7 +185,6 @@ void commands(t_minithings *minithings, char **envp)
         if (pid == 0)
         {
             while (quad[i][++nbr_cmds]) { ; }
-//            printf("nbr_cmds = %d\n", nbr_cmds);
             pipex(nbr_cmds, quad[i], envp, minithings);
             exit(0);
         }
