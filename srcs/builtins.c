@@ -36,7 +36,7 @@ void builtins(t_minithings *minithings, int indx)
     int i;
 
     i = -1;
-    if (ft_strncmp(minithings->cmds[indx][0], "cd", 2) == 0)
+    if (ft_strcmp(minithings->cmds[indx][0], "cd") == 0)
     {
         if (!minithings->cmds[indx][1])
             chdir(getenv("HOME"));
