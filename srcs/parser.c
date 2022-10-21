@@ -532,7 +532,6 @@ char ***parser(char *input, t_exporttable **export)
             i--;
         }
     }
-    //print_stacks(*cmds);
     int cmd_ctr = pipe_counter(*cmds) + 1;
     char ***cmd;
     cmd = malloc(sizeof(char **) * (cmd_ctr + 1));

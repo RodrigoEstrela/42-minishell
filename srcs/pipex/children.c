@@ -12,7 +12,7 @@
 
 #include"../../inc/minishell.h"
 
-void execute(char **cmd, t_minithings *minithings, char **envp)
+void execute(char **cmd, t_minithings *minithings, char **envp, int indx)
 {
 	int		i;
 	char	*path;
@@ -21,7 +21,7 @@ void execute(char **cmd, t_minithings *minithings, char **envp)
 
     if (is_builtin(cmd[0]))
     {
-        builtins(minithings);
+        builtins(minithings, indx);
         return;
     }
     path = find_path(cmd[0], minithings->export);
@@ -35,10 +35,9 @@ void execute(char **cmd, t_minithings *minithings, char **envp)
         exit(EXIT_FAILURE);
     }
     execve(path, cmd, envp);
-//    sig_handler_block();
 }
 
-void child_one(char **cmds, t_minithings *minithings, char **envp)
+void child_one(char **cmds, t_minithings *minithings, char **envp, int indx)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -46,11 +45,12 @@ void child_one(char **cmds, t_minithings *minithings, char **envp)
 	if (pipe(fd) == -1)
 		exit(0);
 	pid = fork();
+    sig_handler_block();
 	if (pid == 0)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		execute(cmds, minithings, envp);
+		execute(cmds, minithings, envp, indx);
         exit(0);
 	}
 	else

@@ -86,10 +86,15 @@ char ****buildquadpoint(char ***cmds, int *ls)
 {
     char ****quad;
 
-    quad = malloc(sizeof(char ***) * 2);
+    quad = malloc(sizeof(char ***) * 3);
     quad[0] = copytriple(cmds, ls[1], triplesize(cmds));
     quad[1] = copytriple(cmds, 0, ls[0]);
-    //print_triple_pointer(quad[0]);
+    quad[2] = NULL;
+    if (quad[0][0] == NULL)
+    {
+        free(quad[0]);
+        quad[0] = NULL;
+    }
     if (quad[1][0] == NULL)
     {
         free(quad[1]);
@@ -157,6 +162,12 @@ void commands(t_minithings *minithings, char **envp)
         quad = buildquadpoint(minithings->cmds, searchlastls(minithings->cmds));
         //printquad(quad);
     }
+    else
+    {
+        quad = (char ****)malloc(sizeof(char ***) * 2);
+        quad[0] = copytriple(minithings->cmds, 0, triplesize(minithings->cmds));
+        quad[1] = NULL;
+    }
     while (++i < 2 && quad[i])
     {
         if (ft_strncmp(quad[i][0][0], "exit", 4) == 0)
@@ -166,7 +177,7 @@ void commands(t_minithings *minithings, char **envp)
         }
         else if (is_builtin(quad[i][0][0]) && !quad[i][1])
         {
-            builtins(minithings);
+            builtins(minithings, 0);
             return;
         }
         pid = fork();
@@ -174,6 +185,7 @@ void commands(t_minithings *minithings, char **envp)
         if (pid == 0)
         {
             while (quad[i][++nbr_cmds]) { ; }
+//            printf("nbr_cmds = %d\n", nbr_cmds);
             pipex(nbr_cmds, quad[i], envp, minithings);
             exit(0);
         }
