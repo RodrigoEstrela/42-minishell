@@ -97,10 +97,9 @@ char *str_super_dup(char *input, int start, int flag)
 
     i = start - 1;
     j = -1;
-    new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 1));
-    while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|'){
+    new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 2));
+    while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|' && input[i] != '\'')
         new_str[++j] = input[i];
-    }
     if (input[i] == ' ' && input[i + 1] != '|' && flag != '$')
     {
         new_str[++j] = ' ';
@@ -198,7 +197,7 @@ void    print_triple_pointer(char ***triple)
         printf("New Comand\n");
         while (triple[i][j])
         {
-            printf("%s\n", triple[i][j]);
+            printf("%s<---\n", triple[i][j]);
             j++;
         }
         i++;
@@ -293,7 +292,6 @@ void get_val_from_export(t_exporttable **export, t_cmds **vars, t_cmds **values)
         {
             if (ft_strcmp(tmp->cmd, tmp2->key) == 0)
             {
-                //free(tmp->cmd);
                 ft_lstadd_back(values, ft_lstnew(ft_strdup(tmp2->value)));
                 break;
             }
@@ -304,8 +302,6 @@ void get_val_from_export(t_exporttable **export, t_cmds **vars, t_cmds **values)
         tmp2 = *export;
         tmp = tmp->next;
     }
-/*    printf("Values from export\n");
-    print_stacks(*vars);*/
  }
 
 void dollar_expanded(char *input, char *new_str, int start, int divider, t_cmds **vars)
@@ -318,7 +314,6 @@ void dollar_expanded(char *input, char *new_str, int start, int divider, t_cmds 
     tmpvars = *vars;
     i = start - 1;
     j = -1;
-    g = -1;
     while (input[++i] != divider)
     {
         if (input[i] == '$')
@@ -350,7 +345,7 @@ char  *dollar_expansion(char *input, int start, int divider, t_exporttable **exp
     *values = NULL;
     var_len = get_var_name(input, start, vars);
     get_val_from_export(export, vars, values);
-    new_str = (char *)malloc(sizeof(char) * (ft_str_ui_len(input, start, divider) - var_len + ft_strlen_vars(*vars) + 1));
+    new_str = (char *)malloc(sizeof(char) * (ft_str_ui_len(input, start, divider) - var_len + ft_strlen_vars(*vars) + 2));
     dollar_expanded(input, new_str, start, divider, values);
     delete_linked_list(*vars);
     free(vars);
@@ -368,7 +363,6 @@ char *search_export(t_exporttable **export, char *key)
     while (tmp)
     {
         if (ft_strcmp(tmp->key, key) == 0) {
-            //printf("Found key %s\n", tmp->value);
             value = ft_strdup(tmp->value);
             return (value);
         }
@@ -455,6 +449,14 @@ void    cleanup(char ***cmd)
     }
 }
 
+void cleanupwherearequotesininputquotes(t_minithings *minithings, char *cmd)
+{
+    if (ft_strnstr(minithings->line, cmd, ft_strlen(cmd))[0] != ' '
+        && (ft_strnstr(minithings->line, cmd, ft_strlen(cmd))[0] == '"'
+            || ft_strnstr(minithings->line, cmd, ft_strlen(cmd))[0] == '\''))
+        minithings->cmds
+}
+
 char ***parser(char *input, t_exporttable **export)
 {
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
@@ -483,7 +485,10 @@ char ***parser(char *input, t_exporttable **export)
                 free(str);
             }
             else
+            {
+                printf("Error: uneven quotes\n");
                 ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '\'')));
+            }
         }
         else if (input[i] == '"')
         {
@@ -526,13 +531,11 @@ char ***parser(char *input, t_exporttable **export)
         else if (input[i] != ' ') {
             start = i;
             ft_lstadd_back(cmds, ft_lstnew(str_super_dup(input, start, '0')));
-            while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|') {
+            while (input[i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|' && input[i] != '\'')
                 i++;
-            }
             i--;
         }
     }
-    //print_stacks(*cmds);
     int cmd_ctr = pipe_counter(*cmds) + 1;
     char ***cmd;
     cmd = malloc(sizeof(char **) * (cmd_ctr + 1));

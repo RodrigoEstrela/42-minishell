@@ -47,9 +47,9 @@ char	*find_path(char *cmd, t_exporttable **envp)
     tmp = *envp;
     if (access(cmd, F_OK) == 0)
         return (cmd);
-    while (ft_strnstr(tmp->key, "PATH", 4) == 0)
-		tmp = tmp->next;
-	paths = ft_split(tmp->value, ':');
+    while (ft_strnstr(tmp->key, "PATH", 4) == 0 && tmp->next != NULL)
+        tmp = tmp->next;
+    paths = ft_split(tmp->value, ':');
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");

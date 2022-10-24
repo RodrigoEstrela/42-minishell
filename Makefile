@@ -18,7 +18,7 @@ SRCS		=		main.c sighandler.c commandsmaster.c builtins.c ft_strncmp.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
-CFLAGS		=		-g -lreadline -Wall -Wextra -Werror
+CFLAGS		=		-g -Wall -Wextra -Werror
 RM			=		rm -f
 
 NAME		= 		minishell
@@ -29,7 +29,7 @@ objs/%.o: srcs/%.c
 			@cc $(CFLAGS) -c $< -o $@
 
 $(NAME):    	$(OBJS)
-			@cc $(OBJS) $(CFLAGS) -o $(NAME)
+			@cc $(OBJS) $(CFLAGS) -o $(NAME) -lreadline
 
 all:      	$(NAME)
 
@@ -38,4 +38,5 @@ clean:
 
 fclean:		clean
 			@$(RM) $(NAME)  
+
 re:         fclean all
