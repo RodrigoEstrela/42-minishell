@@ -94,7 +94,7 @@ t_exporttable *copy_list(t_exporttable *list)
     new = NULL;
     while (list)
     {
-        tmp = add_export_node(list->key, list->value);
+        tmp = envvaradd(list->key, list->value);
         add_export_node_back(&new, tmp);
         list = list->next;
     }

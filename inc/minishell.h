@@ -66,7 +66,7 @@ typedef struct s_lists
 
 // Functions
 
-t_exporttable	*add_export_node(char *key, char *value);
+t_exporttable	*envvaradd(char *key, char *value);
 void			sig_handler(void);
 void			sig_handler_block(void);
 void			commands(t_minithings *minithings, char **envp);
@@ -82,7 +82,7 @@ void			pipex(int nbr_cmds, char ***cm, char **en, t_minithings *mt);
 char			*ft_strtrim(char *str);
 int				ft_strcmp(const char *s1, const char *s2);
 char			**quote_splitter(char *line);
-void			export(t_minithings *minithings);
+void			export(t_minithings *mt);
 void			show_export_list(t_minithings *minithings, int flag);
 void			add_export_node_front(t_exporttable **head, t_exporttable *new);
 void			add_export_node_back(t_exporttable **lst, t_exporttable *new);
@@ -116,5 +116,7 @@ void			free_triple_pointer(char ***triple);
 void			print_triple_pointer(char ***triple);
 void			free_double_array(char **array);
 int				doublepointersize(char **input);
+int ft_isnumber(char *str);
+int ft_atoi(const char *str);
 
 #endif

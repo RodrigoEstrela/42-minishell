@@ -292,6 +292,7 @@ void get_val_from_export(t_exporttable **export, t_cmds **vars, t_cmds **values)
         {
             if (ft_strcmp(tmp->cmd, tmp2->key) == 0)
             {
+                //free(tmp->cmd);
                 ft_lstadd_back(values, ft_lstnew(ft_strdup(tmp2->value)));
                 break;
             }
@@ -314,6 +315,7 @@ void dollar_expanded(char *input, char *new_str, int start, int divider, t_cmds 
     tmpvars = *vars;
     i = start - 1;
     j = -1;
+    g = -1;
     while (input[++i] != divider)
     {
         if (input[i] == '$')
@@ -345,7 +347,7 @@ char  *dollar_expansion(char *input, int start, int divider, t_exporttable **exp
     *values = NULL;
     var_len = get_var_name(input, start, vars);
     get_val_from_export(export, vars, values);
-    new_str = (char *)malloc(sizeof(char) * (ft_str_ui_len(input, start, divider) - var_len + ft_strlen_vars(*vars) + 2));
+    new_str = (char *)malloc(sizeof(char) * (ft_str_ui_len(input, start, divider) - var_len + ft_strlen_vars(*values) + 2));
     dollar_expanded(input, new_str, start, divider, values);
     delete_linked_list(*vars);
     free(vars);
@@ -449,14 +451,6 @@ void    cleanup(char ***cmd)
     }
 }
 
-void cleanupwherearequotesininputquotes(t_minithings *minithings, char *cmd)
-{
-    if (ft_strnstr(minithings->line, cmd, ft_strlen(cmd))[0] != ' '
-        && (ft_strnstr(minithings->line, cmd, ft_strlen(cmd))[0] == '"'
-            || ft_strnstr(minithings->line, cmd, ft_strlen(cmd))[0] == '\''))
-        minithings->cmds
-}
-
 char ***parser(char *input, t_exporttable **export)
 {
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
@@ -486,7 +480,6 @@ char ***parser(char *input, t_exporttable **export)
             }
             else
             {
-                printf("Error: uneven quotes\n");
                 ft_lstadd_back(cmds, ft_lstnew(str_space_dup(input, start, '\'')));
             }
         }
@@ -522,8 +515,16 @@ char ***parser(char *input, t_exporttable **export)
             start = i;
             while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|')
                 ;
+            if (input[i] == ' ' && input[i + 1] != '|' && input[i + 1] && input[i + 1] != ' ') {
+                char *str5 = only_$(input, start, export);
+                char *str4 = ft_strdup(str5);
+                ft_lstadd_back(cmds, ft_lstnew(ft_strjoin(str4, " ")));
+                free(str4);
+                free(str5);
+            }
+            else
+                ft_lstadd_back(cmds, ft_lstnew(only_$(input, start, export)));
             i--;
-            ft_lstadd_back(cmds, ft_lstnew(only_$(input, start, export)));
         }
         else if (input[i] == '|') {
             ft_lstadd_back(cmds, ft_lstnew(pipe_str()));

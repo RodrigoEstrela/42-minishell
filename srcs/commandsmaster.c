@@ -12,6 +12,8 @@
 
 #include"../inc/minishell.h"
 
+extern int g_exitcode;
+
 int search_ls(char ***cmds)
 {
     int i;
@@ -60,7 +62,7 @@ char ***copytriple(char ***cmds, int start, int end)
         new[i] = (char **)malloc(sizeof(char *) * (doublepointersize(cmds[start + i]) + 1));
         while (cmds[start + i][++j])
         {
-            new[i][j] = (char *)malloc(sizeof(char) * (ft_strlen(cmds[start + i][j]) + 1));
+            new[i][j] = malloc(sizeof(char) * (ft_strlen(cmds[start + i][j]) + 1));
             k = -1;
             while (cmds[start + i][j][++k])
                 new[i][j][k] = cmds[start + i][j][k];
@@ -158,10 +160,7 @@ void commands(t_minithings *minithings, char **envp)
     i = -1;
     nbr_cmds = -1;
     if (search_ls(minithings->cmds))
-    {
         quad = buildquadpoint(minithings->cmds, searchlastls(minithings->cmds));
-        //printquad(quad);
-    }
     else
     {
         quad = (char ****)malloc(sizeof(char ***) * 2);
@@ -173,8 +172,18 @@ void commands(t_minithings *minithings, char **envp)
         if (ft_strncmp(quad[i][0][0], "exit", 4) == 0)
         {
             printf("exit\n");
+            if (quad[i][0][1])
+            {
+                if (!ft_isnumber(quad[i][0][1])) {
+                    printf("exit: %s: numeric argument required\n", quad[i][0][1]);
+                    g_exitcode = 2;
+                } else
+                    g_exitcode = ft_atoi(quad[i][0][1]);
+            }
+            else
+                g_exitcode = 0;
             freequadpointer(quad);
-            exit(1);
+            exit(g_exitcode);
         }
         else if (is_builtin(quad[i][0][0]) && !quad[i][1])
         {

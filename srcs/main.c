@@ -12,6 +12,8 @@
 
 #include"../inc/minishell.h"
 
+int g_exitcode = 0;
+
 void free_double_array(char **array)
 {
     int i;
@@ -88,17 +90,31 @@ static t_minithings *build_export_table(t_minithings *minithings, char **envp)
     envp_line = ft_split(envp[i], '=');
     minithings->export = malloc(sizeof(t_exporttable *));
     (*minithings->export) = NULL;
-    add_export_node_front(minithings->export, add_export_node(envp_line[0], envp_line[1]));
+    add_export_node_front(minithings->export, envvaradd(envp_line[0], envp_line[1]));
     free_double_array(envp_line);
     i++;
     while (envp[i])
     {
         envp_line = ft_split(envp[i], '=');
-        add_export_node_back(minithings->export, add_export_node(envp_line[0], envp_line[1]));
+        add_export_node_back(minithings->export, envvaradd(envp_line[0], envp_line[1]));
         free_double_array(envp_line);
         i++;
     }
     return (minithings);
+}
+
+void free_export_table(t_exporttable *export)
+{
+    t_exporttable *tmp;
+
+    while (export)
+    {
+        tmp = export;
+        export = export->next;
+        free(tmp->key);
+        free(tmp->value);
+        free(tmp);
+    }
 }
 
 int main(int ac, char **av, char **envp)
@@ -114,17 +130,20 @@ int main(int ac, char **av, char **envp)
         colorful_path = get_prompt();
         minithings->line = readline(colorful_path);
         free(colorful_path);
-        if (!minithings->line)
+        if (!minithings->line) {
+            free_export_table(*minithings->export);
             exit(1);
-        add_history(minithings->line);
-        minithings->cmds = parser(minithings->line, minithings->export);
-        print_triple_pointer(minithings->cmds);
-        if (minithings->cmds) {
-            commands(minithings, envp);
-            free_triple_pointer(minithings->cmds);
         }
-        else
-            free(minithings->cmds);
+            add_history(minithings->line);
+        if (ft_strlen(minithings->line) > 0) {
+            minithings->cmds = parser(minithings->line, minithings->export);
+            if (minithings->cmds) {
+                commands(minithings, envp);
+                free_triple_pointer(minithings->cmds);
+            } else {
+                free(minithings->cmds);
+            }
         free(minithings->line);
+        }
     }
 }
