@@ -12,7 +12,6 @@
 
 #include"../inc/minishell.h"
 
-int g_exitcode = 0;
 
 void free_double_array(char **array)
 {
@@ -53,6 +52,7 @@ char *paint_prompt(char *str, char *color)
     free(str);
     return (tmp);
 }
+
 char *paint_prompt_2(char *str, char *color)
 {
     char *tmp;
@@ -60,7 +60,6 @@ char *paint_prompt_2(char *str, char *color)
     tmp = ft_strjoin_triple(color, str, RES);
     return (tmp);
 }
-
 
 char *get_prompt(void)
 {
@@ -90,9 +89,8 @@ static t_minithings *build_export_table(t_minithings *minithings, char **envp)
     envp_line = ft_split(envp[i], '=');
     minithings->export = malloc(sizeof(t_exporttable *));
     (*minithings->export) = NULL;
-    add_export_node_front(minithings->export, envvaradd(envp_line[0], envp_line[1]));
+    add_export_node_front(minithings->export, envvaradd("?", "0"));
     free_double_array(envp_line);
-    i++;
     while (envp[i])
     {
         envp_line = ft_split(envp[i], '=');

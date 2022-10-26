@@ -464,7 +464,8 @@ char ***parser(char *input, t_exporttable **export)
     if (uneven_quotes(input, '"') == 1 || uneven_quotes(input, '\'') == 1)
     {
         printf("Error: uneven quotes\n");
-        return (NULL);
+        change_errorcode(export, "1");
+		return (NULL);
     }
     while (++i < size) {
         if (input[i] == '\'')

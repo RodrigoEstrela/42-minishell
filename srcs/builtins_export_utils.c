@@ -113,7 +113,8 @@ void show_export_list(t_minithings *minithings, int flag)
         ft_sort_list(tmp, ft_lstsize(tmp2));
         while (tmp2)
         {
-            printf("declare -x %s=\"%s\"\n", tmp2->key, tmp2->value);
+			if (tmp2->key[0] != '?')
+            	printf("declare -x %s=\"%s\"\n", tmp2->key, tmp2->value);
             tmp2 = tmp2->next;
         }
     }

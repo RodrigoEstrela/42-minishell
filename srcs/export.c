@@ -112,6 +112,19 @@ char **key_and_value(char **cmd, char *line, int *p)
     return (key_value);
 }
 
+void change_errorcode(t_exporttable **export, char *code)
+{
+	t_exporttable *tmp;
+
+	tmp = *export;
+	while (tmp->key[0] != '?')
+	{
+		tmp = tmp->next;
+	}
+	free(tmp->value);
+	tmp->value = ft_strdup(code);
+}
+
 void export(t_minithings *mt)
 {
     int *i;

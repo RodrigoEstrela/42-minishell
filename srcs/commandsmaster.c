@@ -12,8 +12,6 @@
 
 #include"../inc/minishell.h"
 
-extern int g_exitcode;
-
 int search_ls(char ***cmds)
 {
     int i;
@@ -172,18 +170,19 @@ void commands(t_minithings *minithings, char **envp)
         if (ft_strncmp(quad[i][0][0], "exit", 4) == 0)
         {
             printf("exit\n");
+			int exitcode;
             if (quad[i][0][1])
             {
                 if (!ft_isnumber(quad[i][0][1])) {
                     printf("exit: %s: numeric argument required\n", quad[i][0][1]);
-                    g_exitcode = 2;
+                    exitcode = 2;
                 } else
-                    g_exitcode = ft_atoi(quad[i][0][1]);
+                    exitcode = ft_atoi(quad[i][0][1]);
             }
             else
-                g_exitcode = 0;
+                exitcode = 0;
             freequadpointer(quad);
-            exit(g_exitcode);
+            exit(exitcode);
         }
         else if (is_builtin(quad[i][0][0]) && !quad[i][1])
         {

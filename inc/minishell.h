@@ -116,7 +116,9 @@ void			free_triple_pointer(char ***triple);
 void			print_triple_pointer(char ***triple);
 void			free_double_array(char **array);
 int				doublepointersize(char **input);
-int ft_isnumber(char *str);
-int ft_atoi(const char *str);
+int				ft_isnumber(char *str);
+int				ft_atoi(const char *str);
+char			*ft_itoa(int c);
+void			change_errorcode(t_exporttable **export, char *code);
 
 #endif

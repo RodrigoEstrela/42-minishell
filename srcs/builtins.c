@@ -12,6 +12,8 @@
 
 #include"../inc/minishell.h"
 
+extern int g_exitcode;
+
 int is_builtin(char *str)
 {
     if (!str)
@@ -81,6 +83,7 @@ void builtins(t_minithings *minithings, int indx)
             }
             printf("\n");
         }
+		change_errorcode(minithings->export, "0");
     }
     else if (ft_strncmp(minithings->cmds[indx][0], "export", 6) == 0)
     {
