@@ -92,5 +92,6 @@ void builtins(t_minithings *minithings, int indx)
     else if (ft_strncmp(minithings->cmds[indx][0], "unset", 5) == 0)
     {
        unset(minithings);
+
     }
 }

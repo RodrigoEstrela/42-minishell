@@ -12,7 +12,7 @@
 
 #include"../inc/minishell.h"
 
-t_exporttable *envvaradd(char *key, char *value)
+t_exporttable *envvaradd(char *key, char *value, t_exporttable **export)
 {
     t_exporttable *new;
 
@@ -22,6 +22,7 @@ t_exporttable *envvaradd(char *key, char *value)
     if (ft_strcmp(key, "") == 0)
     {
         printf("amazingshell: export: `=%s': not a valid identifier\n", value);
+		change_errorcode(export, "1");
         return (NULL);
     }
     if (!value)
@@ -134,7 +135,7 @@ void export(t_minithings *mt)
     i = malloc(sizeof(int));
     i[0] = 0;
     if (ft_strcmp(mt->cmds[0][0], "export") == 0 && !mt->cmds[0][1])
-        show_export_list(mt, 0);
+		show_export_list(mt, 0);
     else if (mt->cmds[0][1]) {
         while (mt->cmds[0][++i[0]]) {
             var = key_and_value(mt->cmds[0], mt->line, i);
@@ -143,7 +144,7 @@ void export(t_minithings *mt)
                     value_modifier(mt->export, var[1], ind);
                 }
             } else
-                add_export_node_back(mt->export, envvaradd(var[0], var[1]));
+                add_export_node_back(mt->export, envvaradd(var[0], var[1], mt->export));
             free_double_array(var);
         }
     }

@@ -66,7 +66,7 @@ typedef struct s_lists
 
 // Functions
 
-t_exporttable	*envvaradd(char *key, char *value);
+t_exporttable	*envvaradd(char *key, char *value, t_exporttable **export);
 void			sig_handler(void);
 void			sig_handler_block(void);
 void			commands(t_minithings *minithings, char **envp);

@@ -47,6 +47,7 @@ void unset(t_minithings *minithings)
     int i;
     int j;
     char **inputs;
+	int error;
 
     inputs = minithings->cmds[0];
     j = 1;
@@ -58,6 +59,7 @@ void unset(t_minithings *minithings)
             printf(inputs[j], 2);
             printf("': not a valid identifier\n");
             j++;
+			error = 1;
             continue ;
         }
         i = check_duplicated(minithings->export, inputs[j]);
@@ -65,4 +67,8 @@ void unset(t_minithings *minithings)
             delete_node(minithings->export, i);
         j++;
     }
+	if (error)
+		change_errorcode(minithings->export, "1");
+	else
+		change_errorcode(minithings->export, "0");
 }
