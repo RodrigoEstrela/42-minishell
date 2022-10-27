@@ -12,7 +12,6 @@
 
 #include"../inc/minishell.h"
 
-
 void free_double_array(char **array)
 {
     int i;
@@ -132,8 +131,9 @@ int main(int ac, char **av, char **envp)
             free_export_table(*minithings->export);
             exit(0);
         }
-            add_history(minithings->line);
-        if (ft_strlen(minithings->line) > 0) {
+		add_history(minithings->line);
+        if (ft_strlen(minithings->line) > 0)
+		{
             minithings->cmds = parser(minithings->line, minithings->export);
             if (minithings->cmds) {
                 commands(minithings, envp);

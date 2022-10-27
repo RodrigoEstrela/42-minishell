@@ -120,5 +120,8 @@ int				ft_isnumber(char *str);
 int				ft_atoi(const char *str);
 char			*ft_itoa(int c);
 void			change_errorcode(t_exporttable **export, char *code);
+void			echo(t_minithings *mt, int indx);
+void			cd(t_minithings *mt, int indx);
+void			pwd(t_minithings *mt);
 
 #endif
