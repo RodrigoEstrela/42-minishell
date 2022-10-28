@@ -19,7 +19,7 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size)
 	if (!dst || !src)
 		return (0);
 	else if (!size)
-		return (ft_strlen(src));
+		return (slen(src));
 	i = 0;
 	while (src[i] && i < (size - 1))
 	{
@@ -27,7 +27,7 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size)
 		i++;
 	}
 	dst[i] = '\0';
-	return (ft_strlen(src));
+	return (slen(src));
 }
 
 char	*ft_exstrchr(char *s)
@@ -43,10 +43,10 @@ char	*ft_exstrchr(char *s)
 		free(s);
 		return (NULL);
 	}
-	tmp = malloc((ft_strlen(s) - i) + 1);
+	tmp = malloc((slen(s) - i) + 1);
 	if (!tmp)
 		return (NULL);
-	ft_strlcpy(tmp, s + i + 1, ft_strlen(s) - i + 1);
+	ft_strlcpy(tmp, s + i + 1, slen(s) - i + 1);
 	free(s);
 	return (tmp);
 }
@@ -82,7 +82,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	str = (char *)malloc(sizeof(char) * (slen(s1) + slen(s2) + 1));
 	if (!str)
 		return (NULL);
 	i = 0;

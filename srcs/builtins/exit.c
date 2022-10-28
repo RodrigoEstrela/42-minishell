@@ -12,48 +12,29 @@
 
 #include"../../inc/minishell.h"
 
-void	execute(char **cmd, t_minithings *minithings, char **envp, int indx)
+void	exitin(char ****quad, t_minithings *minithings, int i)
 {
-	int		i;
-	char	*path;
+	int	exitcode;
 
-	i = -1;
-	if (is_builtin(cmd[0]))
+	printf("exit\n");
+	if (quad[i][0][1])
 	{
-		builtins(minithings, indx);
-		return ;
-	}
-	path = find_path(cmd[0], minithings->export);
-	if (!path)
-	{
-		printf("minishell: command not found: %s\n", cmd[0]);
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
-		exit(EXIT_FAILURE);
-	}
-	execve(path, cmd, envp);
-}
-
-void	child_one(char **cmds, t_minithings *minithings, char **envp, int indx)
-{
-	pid_t	pid;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		exit(0);
-	pid = fork();
-	if (pid == 0)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		execute(cmds, minithings, envp, indx);
-		exit(0);
+		if (!ft_isnumber(quad[i][0][1]))
+		{
+			printf("exit: %s: numeric argument required\n", quad[i][0][1]);
+			exitcode = 2;
+		}
+		else if (quad[i][0][2])
+		{
+			printf("exit: too many arguments\n");
+			change_errorcode(minithings->export, "1");
+			return ;
+		}
+		else
+			exitcode = ft_atoi(quad[i][0][1]);
 	}
 	else
-	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
-	}
+		exitcode = 0;
+	freequadpointer(quad);
+	exit(exitcode);
 }

@@ -46,7 +46,7 @@ typedef struct s_list
 
 typedef struct s_exporttable
 {
-	char					*key;
+	char					*k;
 	char					*value;
 	struct s_exporttable	*next;
 }				t_exporttable;
@@ -67,37 +67,32 @@ typedef struct s_lists
 // Functions
 
 t_exporttable	*envvaradd(char *key, char *value, t_exporttable **export);
-void			sig_handler(t_minithings *minithings);
-void			sig_handler_block(t_minithings *minithings);
+void			sig_handler(void);
+void			sig_handler_block(void);
 void			commands(t_minithings *minithings, char **envp);
 void			builtins(t_minithings *minithings, int indx);
 int				is_builtin(char *str);
-int				is_not_pipeable(char *str);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strdup(const char *s1);
 char			*ft_substr(char const *s, int start, size_t len);
 char			**ft_split(char const *s, char c);
 void			pipex(int nbr_cmds, char ***cm, char **en, t_minithings *mt);
-char			*ft_strtrim(char *str);
 int				ft_strcmp(const char *s1, const char *s2);
-char			**quote_splitter(char *line);
 void			export(t_minithings *mt);
 void			show_export_list(t_minithings *minithings, int flag);
-void			add_export_node_front(t_exporttable **head, t_exporttable *new);
-void			add_export_node_back(t_exporttable **lst, t_exporttable *new);
-t_exporttable	*indxexport(t_exporttable *list, int index);
+void			nodefront(t_exporttable **head, t_exporttable *new);
+void			nodeback(t_exporttable **lst, t_exporttable *new);
+t_exporttable	*ind(t_exporttable *list, int index);
 int				ft_lstsize(t_exporttable *lst);
 int				check_duplicated(t_exporttable **export, char *str);
 void			value_modifier(t_exporttable **export, char *value, int i);
 void			unset(t_minithings *minithings);
-void			ft_sort_list(t_exporttable *tab, int size);
+void			ft_sort_list(t_exporttable *l, int size);
 t_cmds			*ft_lstnew(void *content);
 void			ft_lstadd_back(t_cmds **lst, t_cmds *new);
-void			ft_lstadd_front(t_cmds **lst, t_cmds *new);
-t_list			*indx(t_list *lst, int index);
 char			**ft_split(char const *s, char c);
-int				ft_strlen(const char *str);
+int				slen(const char *str);
 char			*ft_substr(char const *s, int start, size_t len);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char *s1, char *s2);
@@ -113,9 +108,8 @@ char			*ft_strnstr(const char	*big, const char *little, size_t len);
 char			*find_path(char *cmd, t_exporttable **envp);
 char			***parser(char *line, t_exporttable **export);
 void			free_triple_pointer(char ***triple);
-void			print_triple_pointer(char ***triple);
 void			free_double_array(char **array);
-int				doublepointersize(char **input);
+int				dpsize(char **input);
 int				ft_isnumber(char *str);
 int				ft_atoi(const char *str);
 char			*ft_itoa(int c);
@@ -123,5 +117,7 @@ void			change_errorcode(t_exporttable **export, char *code);
 void			echo(t_minithings *mt, int indx);
 void			cd(t_minithings *mt, int indx);
 void			pwd(t_minithings *mt);
+void			exitin(char ****quad, t_minithings *minithings, int i);
+void			freequadpointer(char ****quad);
 
 #endif

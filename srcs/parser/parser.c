@@ -12,120 +12,124 @@
 
 #include"../../inc/minishell.h"
 
-void    print_stacks(t_cmds *stck_a)
+void	print_stacks(t_cmds *stck_a)
 {
-    printf("\n################\n");
-    while (stck_a)
-    {
-        printf("%s<-------\n", stck_a->cmd);
-        stck_a = stck_a->next;
-    }
-    printf("\n################\n");
+	printf("\n################\n");
+	while (stck_a)
+	{
+		printf("%s<-------\n", stck_a->cmd);
+		stck_a = stck_a->next;
+	}
+	printf("\n################\n");
 }
 
-int ft_str_ui_len(const char *s, int start, int letra) {
-    int i;
-
-    i = start;
-    while (s[i] && s[i] != letra) {
-        i++;
-    }
-    return (i - start);
-}
-
-char *pipe_str(void){
-    char *str;
-
-    str = malloc(sizeof(char) * 2);
-    str[0] = '|';
-    str[1] = '\0';
-    return (str);
-}
-
-char *str_space_dup(const char *s1, int start, int letra)
+int	ft_str_ui_len(const char *s, int start, int letra)
 {
-    char *str;
-    size_t i;
-    size_t j;
+	int	i;
 
-    j = 0;
-    if (!s1) {
-        exit(42);
-    }
-    str = (char *)malloc(ft_str_ui_len(s1, start, letra) + 1);
-    if (!str) {
-        return (NULL);
-    }
-    i = start;
-    while (s1[i] && s1[i] != letra)
-    {
-        str[j] = s1[i];
-        j++;
-        i++;
-    }
-    str[j] = '\0';
-    ft_strlen(str);
-    return (str);
+	i = start;
+	while (s[i] && s[i] != letra)
+		i++;
+	return (i - start);
 }
 
-int pipe_counter(t_cmds *fds) {
-    int i;
-
-    i = 0;
-    while (fds) {
-        if (fds->cmd && fds->cmd[0] == '|')
-            i++;
-        fds = fds->next;
-    }
-    return (i);
-}
-
-int str_super_len(char *input, int start){
-    int i;
-
-    i = start - 1;
-    while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|')
-        ;
-    return (i);
-}
-
-char *str_super_dup(char *input, int start, int flag)
+char	*pipe_str(void)
 {
-    int i;
-    int j;
-    char *new_str;
+	char	*str;
 
-    i = start - 1;
-    j = -1;
-    new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 2));
-    while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|' && input[i] != '\'')
-        new_str[++j] = input[i];
-    if (input[i] == ' ' && input[i + 1] != '|' && flag != '$')
-    {
-        new_str[++j] = ' ';
-        new_str[++j] = '\0';
-    }
-    else {
-        new_str[++j] = '\0';
-    }
-    return (new_str);
+	str = malloc(sizeof(char) * 2);
+	str[0] = '|';
+	str[1] = '\0';
+	return (str);
 }
 
-int arg_ctr(t_cmds *fds, int nbr) {
-    int i;
+char	*str_space_dup(const char *s1, int start, int letra)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
 
-    i = 0;
-    while (fds && nbr > 0) {
-        if (nbr == 1)
-            i++;
-        if (fds->cmd && fds->cmd[0] == '|') {
-            nbr--;
-        }
-        if (fds->next == NULL)
-            i++;
-        fds = fds->next;
-    }
-    return (i - 1);
+	j = 0;
+	if (!s1)
+		exit(42);
+	str = (char *)malloc(ft_str_ui_len(s1, start, letra) + 1);
+	if (!str)
+		return (NULL);
+	i = start;
+	while (s1[i] && s1[i] != letra)
+	{
+		str[j] = s1[i];
+		j++;
+		i++;
+	}
+	str[j] = '\0';
+	slen(str);
+	return (str);
+}
+
+int	pipe_counter(t_cmds *fds)
+{
+	int	i;
+
+	i = 0;
+	while (fds)
+	{
+		if (fds->cmd && fds->cmd[0] == '|')
+			i++;
+		fds = fds->next;
+	}
+	return (i);
+}
+
+int	str_super_len(char *in, int start)
+{
+	int	i;
+
+	i = start - 1;
+	while (in[++i] && in[i] != 32 && in[i] != 36 && in[i] != 34
+		&& in[i] != '|')
+		;
+	return (i);
+}
+
+char	*str_super_dup(char *input, int start, int flag)
+{
+	int		i;
+	int		j;
+	char	*new_str;
+
+	i = start - 1;
+	j = -1;
+	new_str = (char *)malloc(sizeof(char) * (str_super_len(input, start) + 2));
+	while (input[++i] && input[i] != ' ' && input[i] != '$'
+		&& input[i] != '"' && input[i] != '|' && input[i] != '\'')
+		new_str[++j] = input[i];
+	if (input[i] == ' ' && input[i + 1] != '|' && flag != '$')
+	{
+		new_str[++j] = ' ';
+		new_str[++j] = '\0';
+	}
+	else
+		new_str[++j] = '\0';
+	return (new_str);
+}
+
+int	arg_ctr(t_cmds *fds, int nbr)
+{
+	int	i;
+
+	i = 0;
+	while (fds && nbr > 0)
+	{
+		if (nbr == 1)
+			i++;
+		if (fds->cmd && fds->cmd[0] == '|')
+			nbr--;
+		if (fds->next == NULL)
+			i++;
+		fds = fds->next;
+	}
+	return (i - 1);
 }
 
 char **cmd_maker(t_cmds *fds, int nbr)
@@ -246,7 +250,7 @@ int ft_strlen_vars(t_cmds *vars)
     tmp = vars;
     while (tmp)
     {
-        i += ft_strlen(tmp->cmd);
+        i += slen(tmp->cmd);
         tmp = tmp->next;
     }
     return (i);
@@ -290,7 +294,7 @@ void get_val_from_export(t_exporttable **export, t_cmds **vars, t_cmds **values)
     {
         while (tmp2)
         {
-            if (ft_strcmp(tmp->cmd, tmp2->key) == 0)
+            if (ft_strcmp(tmp->cmd, tmp2->k) == 0)
             {
                 //free(tmp->cmd);
                 ft_lstadd_back(values, ft_lstnew(ft_strdup(tmp2->value)));
@@ -364,7 +368,7 @@ char *search_export(t_exporttable **export, char *key)
     tmp = *export;
     while (tmp)
     {
-        if (ft_strcmp(tmp->key, key) == 0) {
+        if (ft_strcmp(tmp->k, key) == 0) {
             value = ft_strdup(tmp->value);
             return (value);
         }
@@ -374,7 +378,7 @@ char *search_export(t_exporttable **export, char *key)
     return (value);
 }
 
-char *only_$(char *input, int start, t_exporttable **export)
+char *only_z(char *input, int start, t_exporttable **export)
 {
     char *var_value;
     char *key;
@@ -404,7 +408,7 @@ int uneven_quotes(char *input, char duborsing)
     return (0);
 }
 
-int doublepointersize(char **input)
+int dpsize(char **input)
 {
     int i;
 
@@ -429,9 +433,9 @@ void    cleanup(char ***cmd)
         {
             while (cmd[i][j] != NULL)
             {
-                if (j == 0 || (j == doublepointersize(cmd[i]) && cmd[i][j][ft_strlen(cmd[i][j]) - 1] == ' '))
+                if (j == 0 || (j == dpsize(cmd[i]) && cmd[i][j][slen(cmd[i][j]) - 1] == ' '))
                 {
-                    cmd[i][j][ft_strlen(cmd[i][j]) - 1] = '\0';
+                    cmd[i][j][slen(cmd[i][j]) - 1] = '\0';
                     j++;
                 }
                 else{
@@ -442,8 +446,8 @@ void    cleanup(char ***cmd)
         else
             while (cmd[i][j])
             {
-                if (cmd[i][j][ft_strlen(cmd[i][j]) - 1] == ' ')
-                    cmd[i][j][ft_strlen(cmd[i][j]) - 1] = '\0';
+                if (cmd[i][j][slen(cmd[i][j]) - 1] == ' ')
+                    cmd[i][j][slen(cmd[i][j]) - 1] = '\0';
                 j++;
             }
         i++;
@@ -456,7 +460,7 @@ char ***parser(char *input, t_exporttable **export)
     t_cmds **cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
     *cmds = NULL;
     int i = -1;
-    int size = ft_strlen(input);
+    int size = slen(input);
     int start;
 
     if (!input)
@@ -518,14 +522,14 @@ char ***parser(char *input, t_exporttable **export)
             while (input[++i] && input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '|')
                 ;
             if (input[i] == ' ' && input[i + 1] != '|' && input[i + 1] && input[i + 1] != ' ') {
-                char *str5 = only_$(input, start, export);
+                char *str5 = only_z(input, start, export);
                 char *str4 = ft_strdup(str5);
                 ft_lstadd_back(cmds, ft_lstnew(ft_strjoin(str4, " ")));
                 free(str4);
                 free(str5);
             }
             else
-                ft_lstadd_back(cmds, ft_lstnew(only_$(input, start, export)));
+                ft_lstadd_back(cmds, ft_lstnew(only_z(input, start, export)));
             i--;
         }
         else if (input[i] == '|') {

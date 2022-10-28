@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRCS		=		main.c sighandler.c \
-					builtins/builtins.c builtins/cd_pwd.c builtins/echo.c \
+					builtins/builtins.c builtins/cd_pwd.c builtins/echo.c builtins/exit.c \
 					builtins/export.c builtins/export_utils.c builtins/unset.c \
 					exec/children.c exec/commandsmaster.c exec/gnl.c exec/gnl_utils.c \
 					exec/pipex.c exec/pipex_utils.c \

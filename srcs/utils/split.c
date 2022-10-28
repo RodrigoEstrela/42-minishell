@@ -85,11 +85,11 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	j = 0;
 	index = -1;
-	while (i <= ft_strlen(s))
+	while (i <= slen(s))
 	{
 		if (s[i] != c && index < 0)
 		index = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
+		else if ((s[i] == c || i == slen(s)) && index >= 0)
 		{
 			split[j++] = word_dup(s, index, i);
 			index = -1;
@@ -98,28 +98,4 @@ char	**ft_split(char const *s, char c)
 	}
 	split[j] = 0;
 	return (split);
-}
-
-char	*ft_strtrim(char *str)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	*new;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
-	while (str[i])
-		i++;
-	i--;
-	while (str[i] == ' ' || str[i] == '\t')
-		i--;
-	new = (char *)malloc(sizeof(char) * (i + 2));
-	while (j <= i)
-		new[k++] = str[j++];
-	new[k] = '\0';
-	return (new);
 }

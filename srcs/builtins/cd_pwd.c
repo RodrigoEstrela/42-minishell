@@ -41,7 +41,7 @@ void	cd(t_minithings *minithings, int indx)
 
 void	pwd(t_minithings *minithings)
 {
-	char cwd[1024];
+	char	cwd[1024];
 
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);

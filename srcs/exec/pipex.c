@@ -14,42 +14,41 @@
 
 char	*ft_strnstr(const char	*big, const char *little, size_t len)
 {
-    size_t	i;
-    size_t	j;
+	size_t	i;
+	size_t	j;
 
-    i = 0;
-    if (little[i] == '\0')
-        return ((char *)big);
-    while (big[i] && i < len)
-    {
-        j = 0;
-        while (big[i + j] == little[j] && i + j < len)
-        {
-            if (little[j + 1] == '\0')
-                return ((char *)big + i);
-            j++;
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	if (little[i] == '\0')
+		return ((char *)big);
+	while (big[i] && i < len)
+	{
+		j = 0;
+		while (big[i + j] == little[j] && i + j < len)
+		{
+			if (little[j + 1] == '\0')
+				return ((char *)big + i);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
-
 
 char	*find_path(char *cmd, t_exporttable **envp)
 {
-	char	**paths;
-	char	*path;
-	int		i;
-	char	*part_path;
-    t_exporttable *tmp;
+	char			**paths;
+	char			*path;
+	int				i;
+	char			*part_path;
+	t_exporttable	*tmp;
 
 	i = 0;
-    tmp = *envp;
-    if (access(cmd, F_OK) == 0)
-        return (cmd);
-    while (ft_strnstr(tmp->key, "PATH", 4) == 0 && tmp->next != NULL)
-        tmp = tmp->next;
-    paths = ft_split(tmp->value, ':');
+	tmp = *envp;
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
+	while (ft_strnstr(tmp->k, "PATH", 4) == 0 && tmp->next != NULL)
+		tmp = tmp->next;
+	paths = ft_split(tmp->value, ':');
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");
@@ -67,17 +66,17 @@ char	*find_path(char *cmd, t_exporttable **envp)
 	return (0);
 }
 
-void pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
+void	pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *minithings)
 {
-	int		i;
+	int	i;
 
-	if (nbr_cmds >= 1) {
-        i = -1;
-
-        while (++i < nbr_cmds - 1)
-        {
-            child_one(cmds[i], minithings, envp, i);
-        }
-        execute(cmds[nbr_cmds - 1], minithings, envp, i);
+	if (nbr_cmds >= 1)
+	{
+		i = -1;
+		while (++i < nbr_cmds - 1)
+		{
+			child_one(cmds[i], minithings, envp, i);
+		}
+		execute(cmds[nbr_cmds - 1], minithings, envp, i);
 	}
 }
