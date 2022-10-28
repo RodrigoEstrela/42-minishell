@@ -100,7 +100,6 @@ char ****buildquadpoint(char ***cmds, int *ls)
         free(quad[1]);
         quad[1] = NULL;
     }
-    //print_triple_pointer(quad[1]);
     free(ls);
     return (quad);
 }
@@ -167,16 +166,24 @@ void commands(t_minithings *minithings, char **envp)
     }
     while (++i < 2 && quad[i])
     {
-        if (ft_strncmp(quad[i][0][0], "exit", 4) == 0)
+        if (ft_strcmp(quad[i][0][0], "exit") == 0)
         {
             printf("exit\n");
 			int exitcode;
             if (quad[i][0][1])
             {
-                if (!ft_isnumber(quad[i][0][1])) {
+				if (!ft_isnumber(quad[i][0][1]))
+				{
                     printf("exit: %s: numeric argument required\n", quad[i][0][1]);
                     exitcode = 2;
-                } else
+                }
+				else if (quad[i][0][2])
+				{
+					printf("exit: too many arguments\n");
+					change_errorcode(minithings->export, "1");
+					return ;
+				}
+				else
                     exitcode = ft_atoi(quad[i][0][1]);
             }
             else
@@ -191,10 +198,11 @@ void commands(t_minithings *minithings, char **envp)
             return;
         }
         pid = fork();
-        sig_handler_block();
+        sig_handler_block(minithings);
         if (pid == 0)
         {
-            while (quad[i][++nbr_cmds]) { ; }
+            while (quad[i][++nbr_cmds])
+				;
             pipex(nbr_cmds, quad[i], envp, minithings);
             exit(0);
         }

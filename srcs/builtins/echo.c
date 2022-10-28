@@ -37,6 +37,7 @@ void echo(t_minithings *minithings, int indx)
 	if (!minithings->cmds[indx][1])
 	{
 		printf("\n");
+		change_errorcode(minithings->export, "0");
 		return;
 	}
 	if (minithings->cmds[indx][1][0] == '-')

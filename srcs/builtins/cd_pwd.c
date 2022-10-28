@@ -21,6 +21,8 @@ void	cd(t_minithings *minithings, int indx)
 			printf("amazingshell: cd: HOME not set\n");
 			change_errorcode(minithings->export, "1");
 		}
+		else
+			change_errorcode(minithings->export, "0");
 	}
 	else if (minithings->cmds[indx][2])
 	{
@@ -33,6 +35,8 @@ void	cd(t_minithings *minithings, int indx)
 		printf("%s: No such file or directory\n", minithings->cmds[indx][1]);
 		change_errorcode(minithings->export, "1");
 	}
+	else
+		change_errorcode(minithings->export, "0");
 }
 
 void	pwd(t_minithings *minithings)

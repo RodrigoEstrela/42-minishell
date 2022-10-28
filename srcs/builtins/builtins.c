@@ -12,8 +12,6 @@
 
 #include"../../inc/minishell.h"
 
-extern int g_exitcode;
-
 int is_builtin(char *str)
 {
     if (!str)

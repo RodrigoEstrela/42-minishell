@@ -12,6 +12,8 @@
 
 #include"../inc/minishell.h"
 
+int g_exitcode;
+
 void free_double_array(char **array)
 {
     int i;
@@ -123,12 +125,13 @@ int main(int ac, char **av, char **envp)
     build_export_table(minithings, envp);
     while(ac != ft_strlen(av[ac]))
     {
-        sig_handler();
+        sig_handler(minithings);
         colorful_path = get_prompt();
         minithings->line = readline(colorful_path);
         free(colorful_path);
         if (!minithings->line) {
             free_export_table(*minithings->export);
+			write(1, "exit\n", 5);
             exit(0);
         }
 		add_history(minithings->line);

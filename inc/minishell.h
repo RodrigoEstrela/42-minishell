@@ -67,8 +67,8 @@ typedef struct s_lists
 // Functions
 
 t_exporttable	*envvaradd(char *key, char *value, t_exporttable **export);
-void			sig_handler(void);
-void			sig_handler_block(void);
+void			sig_handler(t_minithings *minithings);
+void			sig_handler_block(t_minithings *minithings);
 void			commands(t_minithings *minithings, char **envp);
 void			builtins(t_minithings *minithings, int indx);
 int				is_builtin(char *str);

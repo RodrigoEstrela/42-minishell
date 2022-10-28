@@ -30,7 +30,6 @@ t_exporttable *envvaradd(char *key, char *value, t_exporttable **export)
     new->key = ft_strdup(key);
     new->value = ft_strdup(value);
     new->next = NULL;
-//	change_errorcode(export, "0");
     return (new);
 }
 
@@ -69,15 +68,13 @@ int ft_strstr_index(char *str, char *to_find)
     {
         if (str[i] == to_find[j])
         {
-            while (str[i] == to_find[j])
+            while (str[i] == to_find[j] && str[i] && to_find[j])
             {
                 i++;
                 j++;
             }
             if (to_find[j] == '\0')
-            {
                 return (str[i]);
-            }
             else
                 j = 0;
         }
@@ -137,13 +134,13 @@ void export(t_minithings *mt)
     i[0] = 0;
     if (ft_strcmp(mt->cmds[0][0], "export") == 0 && !mt->cmds[0][1])
 		show_export_list(mt, 0);
-    else if (mt->cmds[0][1]) {
+    else if (mt->cmds[0][1])
+	{
         while (mt->cmds[0][++i[0]]) {
             var = key_and_value(mt->cmds[0], mt->line, i);
             if ((ind = check_duplicated(mt->export, var[0]))) {
-                if (var[1]) {
+                if (var[1])
                     value_modifier(mt->export, var[1], ind);
-                }
             } else
                 add_export_node_back(mt->export, envvaradd(var[0], var[1], mt->export));
             free_double_array(var);

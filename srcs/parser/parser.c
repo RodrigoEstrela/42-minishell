@@ -465,6 +465,7 @@ char ***parser(char *input, t_exporttable **export)
     {
         printf("Error: uneven quotes\n");
         change_errorcode(export, "127");
+		free(cmds);
 		return (NULL);
     }
     while (++i < size) {

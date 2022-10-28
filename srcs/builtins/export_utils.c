@@ -109,7 +109,7 @@ void show_export_list(t_minithings *minithings, int flag)
 
     tmp = copy_list(*minithings->export);
     tmp2 = tmp;
-    if (flag == 0)
+	if (flag == 0)
     {
         ft_sort_list(tmp, ft_lstsize(tmp2));
         while (tmp2)
@@ -119,7 +119,7 @@ void show_export_list(t_minithings *minithings, int flag)
             tmp2 = tmp2->next;
         }
     }
-	else if (flag == 1)
+	else
 	{
 		while (tmp2) {
 			if (ft_strlen(tmp2->value) > 0)
