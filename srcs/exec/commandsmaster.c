@@ -147,7 +147,7 @@ void	commands(t_minithings *minithings, char **envp)
 	while (++i < 2 && quad[i])
 	{
 		if (ft_strcmp(quad[i][0][0], "exit") == 0)
-			exitin(quad, minithings, i);
+			exitin(quad, minithings, i, envp);
 		else if (is_builtin(quad[i][0][0]) && !quad[i][1])
 		{
 			builtins(minithings, 0);

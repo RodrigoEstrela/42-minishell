@@ -34,7 +34,7 @@
 
 // BUFFER_SIZE FOR GNL
 
-# define BUFFER_SIZE 100
+# define BUFFER_SIZE 1
 
 // Structures
 
@@ -62,6 +62,8 @@ typedef struct s_lists
 	t_exporttable	**export;
 	char			*line;
 	char			***cmds;
+	int 			writeexitcode;
+	int				readexitcode;
 }				t_minithings;
 
 // Functions
@@ -117,7 +119,8 @@ void			change_errorcode(t_exporttable **export, char *code);
 void			echo(t_minithings *mt, int indx);
 void			cd(t_minithings *mt, int indx);
 void			pwd(t_minithings *mt);
-void			exitin(char ****quad, t_minithings *minithings, int i);
+void			exitin(char ****quad, t_minithings *minithings, int i, char **envp);
 void			freequadpointer(char ****quad);
+char			*get_next_line(int fd);
 
 #endif

@@ -12,8 +12,6 @@
 
 #include"../inc/minishell.h"
 
-int	g_exitcode = 0;
-
 void	free_double_array(char **array)
 {
 	int	i;
@@ -99,6 +97,7 @@ static t_minithings	*build_export_table(t_minithings *mt, char **envp)
 		free_double_array(el);
 		i++;
 	}
+	mt->writeexitcode = open("exitfile", O_WRONLY | O_CREAT, 0777);
 	return (mt);
 }
 
@@ -118,35 +117,44 @@ void	free_export_table(t_exporttable *export)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_minithings	*minithings;
+	t_minithings	*mt;
 	char			*colorful_path;
+	char			*exitvalue;
 
-	minithings = (t_minithings *)malloc(sizeof(t_minithings) * 2);
-	build_export_table(minithings, envp);
+	exitvalue = malloc(4);
+	mt = (t_minithings *)malloc(sizeof(t_minithings) * 2);
+	build_export_table(mt, envp);
 	while (ac != slen(av[ac]))
 	{
 		sig_handler();
 		colorful_path = get_prompt();
-		minithings->line = readline(colorful_path);
+		mt->line = readline(colorful_path);
 		free(colorful_path);
-		if (!minithings->line)
+		if (!mt->line)
 		{
-			free_export_table(*minithings->export);
+			free_export_table(*mt->export);
+			free(exitvalue);
 			write(1, "exit\n", 5);
+			execve("/bin/rm", (char *[]){"/bin/rm", "exitfile", NULL}, envp);
 			exit(0);
 		}
-		add_history(minithings->line);
-		if (slen(minithings->line) > 0)
+		add_history(mt->line);
+		if (slen(mt->line) > 0)
 		{
-			minithings->cmds = parser(minithings->line, minithings->export);
-			if (minithings->cmds)
+			mt->cmds = parser(mt->line, mt->export);
+			if (mt->cmds)
 			{
-				commands(minithings, envp);
-				free_triple_pointer(minithings->cmds);
+				commands(mt, envp);
+				free_triple_pointer(mt->cmds);
+				mt->readexitcode = open("exitfile", O_RDONLY);
+				read(mt->readexitcode, exitvalue, 4);
+				if (slen(exitvalue) > 0)
+					change_errorcode(mt->export, exitvalue);
+				close(mt->readexitcode);
 			}
 			else
-				free(minithings->cmds);
-			free(minithings->line);
+				free(mt->cmds);
+			free(mt->line);
 		}
 	}
 }

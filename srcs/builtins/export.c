@@ -119,6 +119,7 @@ void	change_errorcode(t_exporttable **export, char *code)
 	}
 	free(tmp->value);
 	tmp->value = ft_strdup(code);
+	tmp->value[slen(tmp->value) - 1] = '\0';
 }
 
 void	export(t_minithings *mt)
@@ -138,10 +139,12 @@ void	export(t_minithings *mt)
 			var = key_and_value(mt->cmds[0], mt->line, i);
 			ind = check_duplicated(mt->export, var[0]);
 			if (ind)
+			{
 				if (var[1])
 					value_modifier(mt->export, var[1], ind);
+			}
 			else
-				nodeback(mt->export, envvaradd(var[0], var[1], mt->export));
+					nodeback(mt->export, envvaradd(var[0], var[1], mt->export));
 			free_double_array(var);
 		}
 	}
