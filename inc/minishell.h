@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -34,7 +35,7 @@
 
 // BUFFER_SIZE FOR GNL
 
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 100
 
 // Structures
 
@@ -62,13 +63,18 @@ typedef struct s_lists
 	t_exporttable	**export;
 	char			*line;
 	char			***cmds;
-	int 			writeexitcode;
-	int				readexitcode;
+	int 			wcode;
+	int 			rcode;
 }				t_minithings;
+
+typedef struct	s_parser {
+	int			i;
+	int			start;
+}				t_parser;
 
 // Functions
 
-t_exporttable	*envvaradd(char *key, char *value, t_exporttable **export);
+t_exporttable	*envvaradd(char *key, char *value, t_minithings *mt);
 void			sig_handler(void);
 void			sig_handler_block(void);
 void			commands(t_minithings *minithings, char **envp);
@@ -88,7 +94,7 @@ void			nodeback(t_exporttable **lst, t_exporttable *new);
 t_exporttable	*ind(t_exporttable *list, int index);
 int				ft_lstsize(t_exporttable *lst);
 int				check_duplicated(t_exporttable **export, char *str);
-void			value_modifier(t_exporttable **export, char *value, int i);
+void			valmod(t_exporttable **export, char *value, int i, t_minithings *mt);
 void			unset(t_minithings *minithings);
 void			ft_sort_list(t_exporttable *l, int size);
 t_cmds			*ft_lstnew(void *content);
@@ -113,14 +119,29 @@ void			free_triple_pointer(char ***triple);
 void			free_double_array(char **array);
 int				dpsize(char **input);
 int				ft_isnumber(char *str);
-int				ft_atoi(const char *str);
 char			*ft_itoa(int c);
+t_parser		barra(t_parser ctr, char *input, t_cmds **cmds);
+t_parser		aspas(t_parser ctr, char *input, t_cmds **cmds, t_exporttable **export);
+char 			*only_z(char *input, int start, t_exporttable **export);
+t_parser		dollar(t_parser ctr, char *input, t_cmds **cmds, t_exporttable **export);
+char			***ez_parsing(t_parser ctr, char *input, t_exporttable **export);
+char			***return_parser(t_parser ctr, t_cmds **cmds);
+char			*pipe_str(void);
+char			*str_super_dup(char *input, int start, int flag);
+t_parser		every(t_parser ctr, char *input, t_cmds **cmds);
+char			**cmd_maker(t_cmds *fds, int nbr);
+int				pipe_counter(t_cmds *fds);
+void			delete_linked_list(t_cmds *list);
+void			cleanup(char ***cmd);
+char			*str_space_dup(const char *s1, int start, int letra);
+char 			*dollar_expansion(char *input, int start, int divider, t_exporttable **export);
 void			change_errorcode(t_exporttable **export, char *code);
 void			echo(t_minithings *mt, int indx);
 void			cd(t_minithings *mt, int indx);
 void			pwd(t_minithings *mt);
-void			exitin(char ****quad, t_minithings *minithings, int i, char **envp);
+void			exitin(char ****quad, t_minithings *minithings, int i);
 void			freequadpointer(char ****quad);
 char			*get_next_line(int fd);
+
 
 #endif

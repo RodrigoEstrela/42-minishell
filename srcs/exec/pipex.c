@@ -78,6 +78,5 @@ void	pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *mt)
 			child_one(cmds[i], mt, envp, i);
 		}
 		execute(cmds[nbr_cmds - 1], mt, envp, i);
-		write(mt->writeexitcode, "0", 2);
 	}
 }

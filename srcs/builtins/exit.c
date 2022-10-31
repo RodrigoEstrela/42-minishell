@@ -14,7 +14,7 @@
 
 int	ft_isnumber(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -28,8 +28,8 @@ int	ft_isnumber(char *str)
 
 int	ft_atoi(const char *str)
 {
-	int i;
-	int res;
+	int	i;
+	int	res;
 
 	i = 0;
 	res = 0;
@@ -41,11 +41,11 @@ int	ft_atoi(const char *str)
 	return (res);
 }
 
-char *ft_strrev(char *str)
+char	*ft_strrev(char *str)
 {
-	int i;
-	int j;
-	char c;
+	int		i;
+	int		j;
+	char	c;
 
 	i = 0;
 	j = slen(str) - 1;
@@ -60,11 +60,11 @@ char *ft_strrev(char *str)
 	return (str);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
-	char *str;
-	int i;
-	int neg;
+	char	*str;
+	int		i;
+	int		neg;
 
 	i = 0;
 	neg = 0;
@@ -87,7 +87,7 @@ char *ft_itoa(int n)
 	return (ft_strrev(str));
 }
 
-void	exitin(char ****quad, t_minithings *minithings, int i, char **envp)
+void	exitin(char ****quad, t_minithings *minithings, int i)
 {
 	int	exitcode;
 
@@ -102,7 +102,7 @@ void	exitin(char ****quad, t_minithings *minithings, int i, char **envp)
 		else if (quad[i][0][2])
 		{
 			printf("exit: too many arguments\n");
-			change_errorcode(minithings->export, "1");
+			write(minithings->wcode, "1\n", 2);
 			return ;
 		}
 		else
@@ -111,6 +111,5 @@ void	exitin(char ****quad, t_minithings *minithings, int i, char **envp)
 	else
 		exitcode = 0;
 	freequadpointer(quad);
-	execve("/bin/rm", (char *[]){"/bin/rm", "exitfile", NULL}, envp);
 	exit(exitcode);
 }

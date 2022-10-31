@@ -19,24 +19,24 @@ void	cd(t_minithings *mt, int indx)
 		if (chdir(getenv("HOME")) != 0)
 		{
 			printf("amazingshell: cd: HOME not set\n");
-			write(mt->writeexitcode, "1", 2);
+			write(mt->wcode, "1\n", 2);
 		}
 		else
-			change_errorcode(mt->export, "0");
+			write(mt->wcode, "0\n", 2);
 	}
 	else if (mt->cmds[indx][2])
 	{
 		printf("amazingshell: cd: too many arguments\n");
-		write(mt->writeexitcode, "1", 2);
+		write(mt->wcode, "1\n", 2);
 	}
 	else if (chdir(mt->cmds[indx][1]) != 0)
 	{
 		printf("amazingshell: cd: ");
 		printf("%s: No such file or directory\n", mt->cmds[indx][1]);
-		write(mt->writeexitcode, "1", 2);
+		write(mt->wcode, "1\n", 2);
 	}
 	else
-		write(mt->writeexitcode, "0", 2);
+		write(mt->wcode, "0\n", 2);
 }
 
 void	pwd(t_minithings *mt)
@@ -45,5 +45,5 @@ void	pwd(t_minithings *mt)
 
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
-	write(mt->writeexitcode, "0", 2);
+	write(mt->wcode, "0\n", 2);
 }

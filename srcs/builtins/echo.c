@@ -37,7 +37,7 @@ void	echo(t_minithings *mt, int indx)
 	if (!mt->cmds[indx][1])
 	{
 		printf("\n");
-		write(mt->writeexitcode, "0", 2);
+		write(mt->wcode, "0\n", 2);
 		return ;
 	}
 	if (mt->cmds[indx][1][0] == '-')
@@ -51,5 +51,5 @@ void	echo(t_minithings *mt, int indx)
 		}
 		printf("\n");
 	}
-	write(mt->writeexitcode, "0", 2);
+	write(mt->wcode, "0\n", 2);
 }

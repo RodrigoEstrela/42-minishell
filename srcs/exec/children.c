@@ -27,14 +27,13 @@ void	execute(char **cmd, t_minithings *mt, char **envp, int indx)
 	if (!path)
 	{
 		printf("minishell: command not found: %s\n", cmd[0]);
-		write(mt->writeexitcode, "127\n", 4);
-		while (cmd[++i]) {
+		write(mt->wcode, "127\n", 4);
+		while (cmd[++i])
 			free(cmd[i]);
-		}
 		free(cmd);
 		exit(EXIT_FAILURE);
 	}
-	write(mt->writeexitcode, "0", 2);
+	write(mt->wcode, "0\n", 2);
 	execve(path, cmd, envp);
 }
 

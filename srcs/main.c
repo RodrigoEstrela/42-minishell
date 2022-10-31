@@ -88,16 +88,16 @@ static t_minithings	*build_export_table(t_minithings *mt, char **envp)
 	el = ft_split(envp[i], '=');
 	mt->export = malloc(sizeof(t_exporttable *));
 	(*mt->export) = NULL;
-	nodefront(mt->export, envvaradd("?", "0", mt->export));
+	nodefront(mt->export, envvaradd("?", "0", mt));
 	free_double_array(el);
 	while (envp[i])
 	{
 		el = ft_split(envp[i], '=');
-		nodeback(mt->export, envvaradd(el[0], el[1], mt->export));
+		nodeback(mt->export, envvaradd(el[0], el[1], mt));
 		free_double_array(el);
 		i++;
 	}
-	mt->writeexitcode = open("exitfile", O_WRONLY | O_CREAT, 0777);
+	mt->wcode = open("objs/exitfile", O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	return (mt);
 }
 
@@ -115,14 +115,38 @@ void	free_export_table(t_exporttable *export)
 	}
 }
 
+void	do_things(t_minithings *mt, char **envp)
+{
+	char	*exitvalue;
+
+	mt->cmds = parser(mt->line, mt->export);
+	if (mt->cmds)
+	{
+		commands(mt, envp);
+		free_triple_pointer(mt->cmds);
+		mt->rcode = open("objs/exitfile", O_RDONLY);
+		exitvalue = get_next_line(mt->rcode);
+		while (exitvalue)
+		{
+			if (slen(exitvalue) > 0)
+				change_errorcode(mt->export, exitvalue);
+			free(exitvalue);
+			exitvalue = get_next_line(mt->rcode);
+		}
+		free(exitvalue);
+		close(mt->rcode);
+	}
+	else
+		free(mt->cmds);
+	free(mt->line);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_minithings	*mt;
 	char			*colorful_path;
-	char			*exitvalue;
 
-	exitvalue = malloc(4);
-	mt = (t_minithings *)malloc(sizeof(t_minithings) * 2);
+	mt = (t_minithings *) malloc(sizeof(t_minithings) * 2);
 	build_export_table(mt, envp);
 	while (ac != slen(av[ac]))
 	{
@@ -133,9 +157,7 @@ int	main(int ac, char **av, char **envp)
 		if (!mt->line)
 		{
 			free_export_table(*mt->export);
-			free(exitvalue);
 			write(1, "exit\n", 5);
-			execve("/bin/rm", (char *[]){"/bin/rm", "exitfile", NULL}, envp);
 			exit(0);
 		}
 		add_history(mt->line);
@@ -143,18 +165,7 @@ int	main(int ac, char **av, char **envp)
 		{
 			mt->cmds = parser(mt->line, mt->export);
 			if (mt->cmds)
-			{
-				commands(mt, envp);
-				free_triple_pointer(mt->cmds);
-				mt->readexitcode = open("exitfile", O_RDONLY);
-				read(mt->readexitcode, exitvalue, 4);
-				if (slen(exitvalue) > 0)
-					change_errorcode(mt->export, exitvalue);
-				close(mt->readexitcode);
-			}
-			else
-				free(mt->cmds);
-			free(mt->line);
+				do_things(mt, envp);
 		}
 	}
 }
