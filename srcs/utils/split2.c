@@ -12,64 +12,28 @@
 
 #include"../../inc/minishell.h"
 
-static int	count_words(const char *str, char c)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	int	i;
-	int	trigger;
+	unsigned char	*ptr;
 
-	i = 0;
-	trigger = 0;
-	while (*str)
-	{
-		if (*str != c && trigger == 0)
-		{
-			trigger = 1;
-			i++;
-		}
-		else if (*str == c)
-			trigger = 0;
-		str++;
-	}
-	return (i);
+	ptr = b;
+	while (len-- > 0)
+		*ptr++ = c;
+	return (b);
 }
 
-static char	*word_dup(const char *str, int start, int finish)
+void	ft_bzero(void *s, size_t n)
 {
-	char	*word;
-	int		i;
-
-	i = 0;
-	word = ft_calloc((finish - start + 1), sizeof(char));
-	while (start < finish)
-		word[i++] = str[start++];
-	word[i] = '\0';
-	return (word);
+	ft_memset(s, 0, n);
 }
 
-char	**ft_split(char const *s, char c)
+void	*ft_calloc(size_t count, size_t size)
 {
-	int		i;
-	int		j;
-	int		index;
-	char	**split;
+	void	*ptr;
 
-	split = ft_calloc((count_words(s, c) + 1), sizeof(char *));
-	if (!s || !(split))
-		return (0);
-	i = 0;
-	j = 0;
-	index = -1;
-	while (i <= slen(s))
-	{
-		if (s[i] != c && index < 0)
-		index = i;
-		else if ((s[i] == c || i == slen(s)) && index >= 0)
-		{
-			split[j++] = word_dup(s, index, i);
-			index = -1;
-		}
-		i++;
-	}
-	split[j] = 0;
-	return (split);
+	ptr = (void *)malloc(count * size);
+	if (!ptr)
+		exit(0);
+	ft_bzero(ptr, count * size);
+	return (ptr);
 }

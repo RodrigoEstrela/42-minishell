@@ -12,64 +12,59 @@
 
 #include"../../inc/minishell.h"
 
-static int	count_words(const char *str, char c)
+char	*ft_strjoin_triple(char *s1, char *s2, char *s3)
 {
-	int	i;
-	int	trigger;
-
-	i = 0;
-	trigger = 0;
-	while (*str)
-	{
-		if (*str != c && trigger == 0)
-		{
-			trigger = 1;
-			i++;
-		}
-		else if (*str == c)
-			trigger = 0;
-		str++;
-	}
-	return (i);
-}
-
-static char	*word_dup(const char *str, int start, int finish)
-{
-	char	*word;
-	int		i;
-
-	i = 0;
-	word = ft_calloc((finish - start + 1), sizeof(char));
-	while (start < finish)
-		word[i++] = str[start++];
-	word[i] = '\0';
-	return (word);
-}
-
-char	**ft_split(char const *s, char c)
-{
+	char	*str;
 	int		i;
 	int		j;
-	int		index;
-	char	**split;
+	int		l;
 
-	split = ft_calloc((count_words(s, c) + 1), sizeof(char *));
-	if (!s || !(split))
-		return (0);
-	i = 0;
-	j = 0;
-	index = -1;
-	while (i <= slen(s))
-	{
-		if (s[i] != c && index < 0)
-		index = i;
-		else if ((s[i] == c || i == slen(s)) && index >= 0)
-		{
-			split[j++] = word_dup(s, index, i);
-			index = -1;
-		}
-		i++;
-	}
-	split[j] = 0;
-	return (split);
+	i = -1;
+	j = -1;
+	l = -1;
+	str = (char *)malloc(sizeof(char) * (slen(s1) + slen(s2) + slen(s3) + 1));
+	while (s1[++i])
+		str[i] = s1[i];
+	while (s2[++j])
+		str[i + j] = s2[j];
+	while (s3[++l])
+		str[i + j + l] = s3[l];
+	str[i + j + l] = '\0';
+	return (str);
+}
+
+char	*paint_prompt(char *str, char *color)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin_triple(color, str, RES);
+	free(str);
+	return (tmp);
+}
+
+char	*paint_prompt_2(char *str, char *color)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin_triple(color, str, RES);
+	return (tmp);
+}
+
+char	*get_prompt(void)
+{
+	char	*prompt;
+	char	*cwd;
+	char	*user;
+	char	*tmp;
+
+	cwd = getcwd(NULL, 0);
+	user = getenv("USER");
+	cwd = paint_prompt(cwd, YELLOW);
+	user = paint_prompt_2(user, GREEN);
+	tmp = ft_strjoin_triple(user, ":", cwd);
+	prompt = ft_strjoin_triple(tmp, " $> ", "");
+	free(tmp);
+	free(cwd);
+	free(user);
+	return (prompt);
 }

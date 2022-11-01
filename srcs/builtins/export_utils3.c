@@ -12,64 +12,47 @@
 
 #include"../../inc/minishell.h"
 
-static int	count_words(const char *str, char c)
+t_exporttable	*envvaradd(char *key, char *value, t_minithings *mt)
 {
-	int	i;
-	int	trigger;
+	t_exporttable	*new;
 
-	i = 0;
-	trigger = 0;
-	while (*str)
+	new = malloc(sizeof(t_exporttable));
+	if (!new)
+		return (NULL);
+	if (ft_strcmp(key, "") == 0)
 	{
-		if (*str != c && trigger == 0)
-		{
-			trigger = 1;
-			i++;
-		}
-		else if (*str == c)
-			trigger = 0;
-		str++;
+		printf("amazingshell: export: `=%s': not a valid identifier\n", value);
+		write(mt->wcode, "1\n", 2);
+		return (NULL);
 	}
-	return (i);
+	if (!value)
+		value = "";
+	new->k = ft_strdup(key);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	return (new);
 }
 
-static char	*word_dup(const char *str, int start, int finish)
+void	nodefront(t_exporttable **head, t_exporttable *new)
 {
-	char	*word;
-	int		i;
-
-	i = 0;
-	word = ft_calloc((finish - start + 1), sizeof(char));
-	while (start < finish)
-		word[i++] = str[start++];
-	word[i] = '\0';
-	return (word);
+	if (!head || !new)
+		return ;
+	new->next = *head;
+	*head = new;
 }
 
-char	**ft_split(char const *s, char c)
+void	nodeback(t_exporttable **lst, t_exporttable *new)
 {
-	int		i;
-	int		j;
-	int		index;
-	char	**split;
+	t_exporttable	*tmp;
 
-	split = ft_calloc((count_words(s, c) + 1), sizeof(char *));
-	if (!s || !(split))
-		return (0);
-	i = 0;
-	j = 0;
-	index = -1;
-	while (i <= slen(s))
+	if (!*lst)
 	{
-		if (s[i] != c && index < 0)
-		index = i;
-		else if ((s[i] == c || i == slen(s)) && index >= 0)
-		{
-			split[j++] = word_dup(s, index, i);
-			index = -1;
-		}
-		i++;
+		*lst = new;
+		return ;
 	}
-	split[j] = 0;
-	return (split);
+	tmp = *lst;
+	tmp->next = (*lst)->next;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
