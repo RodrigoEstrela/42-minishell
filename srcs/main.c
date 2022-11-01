@@ -105,10 +105,6 @@ int	main(int ac, char **av, char **envp)
 		}
 		add_history(mt->line);
 		if (slen(mt->line) > 0)
-		{
-			mt->cmds = parser(mt->line, mt->export);
-			if (mt->cmds)
-				do_things(mt, envp);
-		}
+			do_things(mt, envp);
 	}
 }
