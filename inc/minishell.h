@@ -61,6 +61,7 @@ typedef struct s_lists
 	t_exporttable	**export;
 	char			*line;
 	char			***cmds;
+    char            *efpath;
 	int				wcode;
 	int				rcode;
 }				t_minithings;
@@ -126,7 +127,6 @@ void			free_triple_pointer(char ***triple);
 void			free_double_array(char **array);
 int				dpsize(char **input);
 int				ft_isnumber(char *str);
-char			*ft_itoa(int c);
 t_parser		*barra(t_parser *ctr, char *input, t_cmds **cmds);
 t_parser		*aspas(t_parser *ct, char *i, t_cmds **c, t_exporttable **e);
 char			*only_z(char *input, int start, t_exporttable **export);

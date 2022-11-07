@@ -26,12 +26,15 @@ void	build_export_table(t_minithings *mt, char **envp)
 {
 	int		i;
 	char	**el;
+    char    tmp[1024];
 
 	i = 0;
 	el = ft_split(envp[i], '=');
+    getcwd(tmp, sizeof(tmp));
+    mt->efpath = ft_strjoin(tmp, "/e");
 	mt->export = malloc(sizeof(t_exporttable *));
 	(*mt->export) = NULL;
-	mt->wcode = open("objs/exitfile", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	nodefront(mt->export, envvaradd("?", "0", mt));
 	free_double_array(el);
 	while (envp[i])
@@ -67,7 +70,7 @@ void	do_things(t_minithings *mt, char **envp)
 	{
 		commands(mt, envp);
 		free_triple_pointer(mt->cmds);
-		mt->rcode = open("objs/exitfile", O_RDONLY);
+		mt->rcode = open(mt->efpath, O_RDONLY);
 		exitvalue = get_next_line(mt->rcode);
 		while (exitvalue)
 		{

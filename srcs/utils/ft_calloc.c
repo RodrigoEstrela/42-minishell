@@ -43,6 +43,7 @@ void	megafree(t_minithings *mt)
 	free_export_table(*mt->export);
 	free(mt->export);
 	free(mt->line);
+    free(mt->efpath);
 	free(mt);
 	write(1, "exit\n", 5);
 	exit(0);
