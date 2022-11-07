@@ -98,7 +98,7 @@ void			export(t_minithings *mt);
 void			show_export_list(t_minithings *minithings, int flag);
 void			nodefront(t_exporttable **head, t_exporttable *new);
 void			nodeback(t_exporttable **lst, t_exporttable *new);
-t_exporttable	*ind(t_exporttable *list, int index);
+t_exporttable	*ind(t_exporttable *tmp, int index);
 int				ft_lstsize(t_exporttable *lst);
 int				check_duplicated(t_exporttable **export, char *str);
 void			valmod(t_exporttable **exp, char *v, int i, t_minithings *mt);

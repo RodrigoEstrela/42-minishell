@@ -41,50 +41,14 @@ int	ft_atoi(const char *str)
 	return (res);
 }
 
-char	*ft_strrev(char *str)
+void	freebonitodoexit(t_minithings *mt, char ****quad)
 {
-	int		i;
-	int		j;
-	char	c;
-
-	i = 0;
-	j = slen(str) - 1;
-	while (i < j)
-	{
-		c = str[i];
-		str[i] = str[j];
-		str[j] = c;
-		i++;
-		j--;
-	}
-	return (str);
-}
-
-char	*ft_itoa(int n)
-{
-	char	*str;
-	int		i;
-	int		neg;
-
-	i = 0;
-	neg = 0;
-	if (n < 0)
-	{
-		neg = 1;
-		n = -n;
-	}
-	str = malloc(sizeof(char) * 12);
-	if (!str)
-		return (NULL);
-	while (n > 0)
-	{
-		str[i++] = n % 10 + '0';
-		n = n / 10;
-	}
-	if (neg)
-		str[i++] = '-';
-	str[i] = '\0';
-	return (ft_strrev(str));
+	free_export_table(*mt->export);
+	free(mt->export);
+	free(mt->line);
+	free_triple_pointer(mt->cmds);
+	free(mt);
+	freequadpointer(quad);
 }
 
 void	exitin(char ****quad, t_minithings *mt, int i)
@@ -104,7 +68,6 @@ void	exitin(char ****quad, t_minithings *mt, int i)
 			printf("exit: too many arguments\n");
 			write(mt->wcode, "1\n", 2);
 			freequadpointer(quad);
-			free(mt->line);
 			return ;
 		}
 		else
@@ -112,10 +75,6 @@ void	exitin(char ****quad, t_minithings *mt, int i)
 	}
 	else
 		exitcode = 0;
-	free_export_table(*mt->export);
-	free(mt->export);
-	free(mt->line);
-	free(mt);
-	freequadpointer(quad);
+	freebonitodoexit(mt, quad);
 	exit(exitcode);
 }
