@@ -12,52 +12,38 @@
 
 #include "../../inc/minishell.h"
 
-void	nodefront(t_exporttable **head, t_exporttable *new)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	if (!head || !new)
-		return ;
-	new->next = *head;
-	*head = new;
+	unsigned char	*ptr;
+
+	ptr = b;
+	while (len-- > 0)
+		*ptr++ = c;
+	return (b);
 }
 
-void	nodeback(t_exporttable **lst, t_exporttable *new)
+void	ft_bzero(void *s, size_t n)
 {
-	t_exporttable	*tmp;
-
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = *lst;
-	tmp->next = (*lst)->next;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	ft_memset(s, 0, n);
 }
 
-int	ft_strstr_index(char *str, char *to_find)
+void	*ft_calloc(size_t count, size_t size)
 {
-	int	i;
-	int	j;
+	void	*ptr;
 
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == to_find[j])
-		{
-			while (str[i] == to_find[j] && str[i] && to_find[j])
-			{
-				i++;
-				j++;
-			}
-			if (to_find[j] == '\0')
-				return (str[i]);
-			else
-				j = 0;
-		}
-		i++;
-	}
-	return (-1);
+	ptr = (void *)malloc(count * size);
+	if (!ptr)
+		exit(0);
+	ft_bzero(ptr, count * size);
+	return (ptr);
+}
+
+void	megafree(t_minithings *mt)
+{
+	free_export_table(*mt->export);
+	free(mt->export);
+	free(mt->line);
+	free(mt);
+	write(1, "exit\n", 5);
+	exit(0);
 }

@@ -87,7 +87,7 @@ char	*ft_itoa(int n)
 	return (ft_strrev(str));
 }
 
-void	exitin(char ****quad, t_minithings *minithings, int i)
+void	exitin(char ****quad, t_minithings *mt, int i)
 {
 	int	exitcode;
 
@@ -102,7 +102,9 @@ void	exitin(char ****quad, t_minithings *minithings, int i)
 		else if (quad[i][0][2])
 		{
 			printf("exit: too many arguments\n");
-			write(minithings->wcode, "1\n", 2);
+			write(mt->wcode, "1\n", 2);
+			freequadpointer(quad);
+			free(mt->line);
 			return ;
 		}
 		else
@@ -110,6 +112,10 @@ void	exitin(char ****quad, t_minithings *minithings, int i)
 	}
 	else
 		exitcode = 0;
+	free_export_table(*mt->export);
+	free(mt->export);
+	free(mt->line);
+	free(mt);
 	freequadpointer(quad);
 	exit(exitcode);
 }

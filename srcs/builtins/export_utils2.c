@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   MINISHELL                                          :+:      :+:    :+:   */
+/*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdas-nev <rdas-nev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fde-albe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 4242/42/42 42:42:42 by rdas-nev          #+#    #+#             */
-/*   Updated: 4242/42/42 42:42:42 by rdas-nev         ###   ########.fr       */
+/*   Created: 2022/10/31 10:05:30 by fde-albe          #+#    #+#             */
+/*   Updated: 2022/11/01 12:17:33 by fde-albe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 int	check_duplicated(t_exporttable **export, char *str)
 {

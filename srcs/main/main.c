@@ -22,7 +22,7 @@ void	free_double_array(char **array)
 	free(array);
 }
 
-static t_minithings	*build_export_table(t_minithings *mt, char **envp)
+void	build_export_table(t_minithings *mt, char **envp)
 {
 	int		i;
 	char	**el;
@@ -31,6 +31,7 @@ static t_minithings	*build_export_table(t_minithings *mt, char **envp)
 	el = ft_split(envp[i], '=');
 	mt->export = malloc(sizeof(t_exporttable *));
 	(*mt->export) = NULL;
+	mt->wcode = open("objs/exitfile", O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	nodefront(mt->export, envvaradd("?", "0", mt));
 	free_double_array(el);
 	while (envp[i])
@@ -40,8 +41,6 @@ static t_minithings	*build_export_table(t_minithings *mt, char **envp)
 		free_double_array(el);
 		i++;
 	}
-	mt->wcode = open("objs/exitfile", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	return (mt);
 }
 
 void	free_export_table(t_exporttable *export)
@@ -51,9 +50,9 @@ void	free_export_table(t_exporttable *export)
 	while (export)
 	{
 		tmp = export;
-		export = export->next;
 		free(tmp->k);
 		free(tmp->value);
+		export = export->next;
 		free(tmp);
 	}
 	free(export);
@@ -99,13 +98,14 @@ int	main(int ac, char **av, char **envp)
 		mt->line = readline(colorful_path);
 		free(colorful_path);
 		if (!mt->line)
+			megafree(mt);
+		if (!only_space(mt->line))
 		{
-			free_export_table(*mt->export);
-			write(1, "exit\n", 5);
-			exit(0);
+			add_history(mt->line);
+			if (slen(mt->line) > 0)
+				do_things(mt, envp);
 		}
-		add_history(mt->line);
-		if (slen(mt->line) > 0)
-			do_things(mt, envp);
+		else
+			free(mt->line);
 	}
 }

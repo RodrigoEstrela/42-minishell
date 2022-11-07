@@ -6,36 +6,32 @@
 /*   By: rdas-nev <rdas-nev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 4242/42/42 42:42:42 by rdas-nev          #+#    #+#             */
-/*   Updated: 4242/42/42 42:42:42 by rdas-nev         ###   ########.fr       */
+/*   Updated: 4242/42/42 42:42:42 by fde-albe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../../inc/minishell.h"
 
-int	ft_strstr_index(char *str, char *to_find)
+t_exporttable	*envvaradd(char *key, char *value, t_minithings *mt)
 {
-	int	i;
-	int	j;
+	t_exporttable	*new;
 
-	i = 0;
-	j = 0;
-	while (str[i])
+	if (ft_strcmp(key, "") == 0)
 	{
-		if (str[i] == to_find[j])
-		{
-			while (str[i] == to_find[j] && str[i] && to_find[j])
-			{
-				i++;
-				j++;
-			}
-			if (to_find[j] == '\0')
-				return (str[i]);
-			else
-				j = 0;
-		}
-		i++;
+		write(mt->wcode, "1\n", 2);
+		printf("amazingshell: export: `=%s': not a valid identifier\n", value);
+		return (NULL);
 	}
-	return (-1);
+	new = malloc(sizeof(t_exporttable));
+	if (!new)
+		return (NULL);
+	if (!value)
+		value = "";
+	new->k = ft_strdup(key);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	write(mt->wcode, "0\n", 2);
+	return (new);
 }
 
 char	**key_and_value(char **cmd, char *line, int *p)
@@ -87,7 +83,6 @@ void	mod_or_add(t_minithings *mt, int ind, char **var)
 	else
 	{
 		nodeback(mt->export, envvaradd(var[0], var[1], mt));
-		write(mt->wcode, "0\n", 2);
 	}
 	free_double_array(var);
 }

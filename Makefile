@@ -10,17 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=		main/main.c main/sighandler.c \
+SRCS		=		main/main.c main/sighandler.c main/prompt.c \
 					builtins/builtins.c builtins/cd_pwd.c builtins/echo.c builtins/exit.c \
-					builtins/export.c builtins/export_utils.c builtins/export_utils2.c \
+					builtins/export.c builtins/export_utils.c  builtins/export_utils2.c \
 					builtins/export_utils3.c builtins/unset.c \
 					exec/children.c exec/commandsmaster.c exec/gnl.c exec/gnl_utils.c \
 					exec/pipex.c exec/pipex_utils.c exec/quadpointer.c \
-					parser/parser.c parser/parser2.c parser/parser3.c \
-					parser/parser4.c parser/parser5.c parser/parser6.c \
-					parser/parser7.c \
-					utils/ft_strncmp.c utils/listfuncs.c utils/split.c \
-					utils/split2.c utils/prompt.c \
+					parser/parser.c parser/parser2.c parser/parser3.c parser/parser4.c \
+					parser/parser5.c parser/parser6.c parser/parser7.c \
+					utils/ft_strncmp.c utils/listfuncs.c utils/split.c utils/ft_calloc.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
@@ -31,11 +29,11 @@ NAME		= 		minishell
 
 objs/%.o: srcs/%.c
 			@mkdir -p objs
-			@mkdir -p objs/main
 			@mkdir -p objs/builtins
 			@mkdir -p objs/exec
 			@mkdir -p objs/parser
 			@mkdir -p objs/utils
+			@mkdir -p objs/main
 			@cc $(CFLAGS) -c $< -o $@
 
 $(NAME):    	$(OBJS)

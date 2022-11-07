@@ -39,8 +39,10 @@ void	commands_utils(char ***cmds, t_minithings *mt, char **envp, int ncmd)
 	waitpid(pid, NULL, 0);
 }
 
-char	****buildquad2(char ****quad, char ***cmds)
+char	****buildquad2(char ***cmds)
 {
+	char	****quad;
+
 	if (search_ls(cmds))
 		quad = buildquadpoint(cmds, searchlastls(cmds));
 	else
@@ -52,6 +54,22 @@ char	****buildquad2(char ****quad, char ***cmds)
 	return (quad);
 }
 
+int	commandexist(t_minithings *mt, char **cmd)
+{
+	char	*path;
+
+	path = find_path(cmd[0], mt->export);
+	if (!path)
+	{
+		write(mt->wcode, "127\n", 4);
+		printf("minishell: command not found: %s\n", cmd[0]);
+		free(path);
+		return (0);
+	}
+	free(path);
+	return (1);
+}
+
 void	commands(t_minithings *minithings, char **envp)
 {
 	int		nbr_cmds;
@@ -60,8 +78,7 @@ void	commands(t_minithings *minithings, char **envp)
 
 	i = -1;
 	nbr_cmds = -1;
-	quad = NULL;
-	quad = buildquad2(quad, minithings->cmds);
+	quad = buildquad2(minithings->cmds);
 	while (++i < 2 && quad[i])
 	{
 		if (ft_strcmp(quad[i][0][0], "exit") == 0)
@@ -75,7 +92,8 @@ void	commands(t_minithings *minithings, char **envp)
 			freequadpointer(quad);
 			return ;
 		}
-		commands_utils(quad[i], minithings, envp, nbr_cmds);
+		if (commandexist(minithings, quad[i][0]))
+			commands_utils(quad[i], minithings, envp, nbr_cmds);
 	}
 	freequadpointer(quad);
 }

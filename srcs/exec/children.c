@@ -14,25 +14,14 @@
 
 void	execute(char **cmd, t_minithings *mt, char **envp, int indx)
 {
-	int		i;
 	char	*path;
 
-	i = -1;
 	if (is_builtin(cmd[0]))
 	{
 		builtins(mt, indx);
 		return ;
 	}
 	path = find_path(cmd[0], mt->export);
-	if (!path)
-	{
-		printf("minishell: command not found: %s\n", cmd[0]);
-		write(mt->wcode, "127\n", 4);
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
-		exit(EXIT_FAILURE);
-	}
 	write(mt->wcode, "0\n", 2);
 	execve(path, cmd, envp);
 }

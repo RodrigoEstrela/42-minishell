@@ -28,7 +28,6 @@
 // COLORS
 
 # define YELLOW "\e[1;33m"
-# define BLUE "\e[1;34m"
 # define GREEN "\e[1;92m"
 # define RES "\e[0m"
 
@@ -147,7 +146,7 @@ void			change_errorcode(t_exporttable **export, char *code);
 void			echo(t_minithings *mt, int indx);
 void			cd(t_minithings *mt, int indx);
 void			pwd(t_minithings *mt);
-void			exitin(char ****quad, t_minithings *minithings, int i);
+void			exitin(char ****quad, t_minithings *mt, int i);
 void			freequadpointer(char ****quad);
 char			*get_next_line(int fd);
 void			freequadpointer(char ****quad);
@@ -180,4 +179,10 @@ void			print_triple_pointer(char ***triple);
 t_parser		*barra(t_parser *ctr, char *input, t_cmds **cmds);
 void			adollar(t_parser *ct, char *i, t_cmds **c, t_exporttable **e);
 void			aspas_no_dollar(t_parser *ctr, char *input, t_cmds **cmds);
+char			*get_prompt(void);
+int				ft_strstr_index(char *str, char *to_find);
+void			free_export_table(t_exporttable *export);
+int				only_space(char *str);
+void			megafree(t_minithings *mt);
+
 #endif
