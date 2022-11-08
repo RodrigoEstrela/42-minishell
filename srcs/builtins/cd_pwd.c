@@ -22,7 +22,7 @@ void	cd(t_minithings *mt, int indx)
 			write(mt->wcode, "1\n", 2);
 		}
 		else
-            write(mt->wcode, "0\n", 2);
+			write(mt->wcode, "0\n", 2);
 	}
 	else if (mt->cmds[indx][2])
 	{
@@ -36,7 +36,7 @@ void	cd(t_minithings *mt, int indx)
 		write(mt->wcode, "1\n", 2);
 	}
 	else
-        write(mt->wcode, "0\n", 2);
+		write(mt->wcode, "0\n", 2);
 }
 
 void	pwd(t_minithings *mt)

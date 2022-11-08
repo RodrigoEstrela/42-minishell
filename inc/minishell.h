@@ -61,7 +61,7 @@ typedef struct s_lists
 	t_exporttable	**export;
 	char			*line;
 	char			***cmds;
-    char            *efpath;
+	char			*efpath;
 	int				wcode;
 	int				rcode;
 }				t_minithings;

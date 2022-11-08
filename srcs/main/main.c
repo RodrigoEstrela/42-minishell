@@ -26,12 +26,12 @@ void	build_export_table(t_minithings *mt, char **envp)
 {
 	int		i;
 	char	**el;
-    char    tmp[1024];
+	char	tmp[1024];
 
 	i = 0;
 	el = ft_split(envp[i], '=');
-    getcwd(tmp, sizeof(tmp));
-    mt->efpath = ft_strjoin(tmp, "/e");
+	getcwd(tmp, sizeof(tmp));
+	mt->efpath = ft_strjoin(tmp, "/e");
 	mt->export = malloc(sizeof(t_exporttable *));
 	(*mt->export) = NULL;
 	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);
