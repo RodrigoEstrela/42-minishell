@@ -12,6 +12,8 @@
 
 #include "../../inc/minishell.h"
 
+extern char	*g_ec;
+
 void	*ft_memset(void *b, int c, size_t len)
 {
 	unsigned char	*ptr;
@@ -45,6 +47,7 @@ void	megafree(t_minithings *mt)
 	free(mt->line);
 	free(mt->efpath);
 	free(mt);
+	free(g_ec);
 	write(1, "exit\n", 5);
 	exit(0);
 }

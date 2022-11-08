@@ -12,7 +12,7 @@
 
 #include"../../inc/minishell.h"
 
-int	g_effd = 0;
+char	*g_ec = NULL;
 
 void	free_double_array(char **array)
 {
@@ -36,8 +36,7 @@ void	build_export_table(t_minithings *mt, char **envp)
 	mt->efpath = ft_strjoin(tmp, "/e");
 	mt->export = malloc(sizeof(t_exporttable *));
 	(*mt->export) = NULL;
-	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0444);
-	g_effd = mt->wcode;
+	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	nodefront(mt->export, envvaradd("?", "0", mt));
 	free_double_array(el);
 	while (envp[i])
@@ -68,6 +67,11 @@ void	do_things(t_minithings *mt, char **envp)
 {
 	char	*exitvalue;
 
+	if (g_ec != NULL)
+	{
+		change_errorcode(mt->export, g_ec);
+		g_ec = NULL;
+	}
 	mt->cmds = parser(mt->line, mt->export);
 	if (mt->cmds)
 	{
@@ -112,6 +116,9 @@ int	main(int ac, char **av, char **envp)
 				do_things(mt, envp);
 		}
 		else
+		{
 			free(mt->line);
+			free(g_ec);
+		}
 	}
 }
