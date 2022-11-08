@@ -14,7 +14,7 @@
 
 void	cd(t_minithings *mt, int indx)
 {
-	if (!mt->cmds[indx][1])
+	if (!mt->cmds[indx][1] || (ft_strcmp(mt->cmds[indx][1], "~") == 0 && !mt->cmds[indx][2]))
 	{
 		if (chdir(getenv("HOME")) != 0)
 		{

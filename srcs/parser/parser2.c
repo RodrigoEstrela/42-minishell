@@ -99,5 +99,7 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}
+	if (ft_strcmp(ft_last_cmd(*cmds)->cmd, "|") == 0)
+		return(missing_command_after_pipe(ctr, cmds));
 	return (return_parser(ctr, cmds));
 }

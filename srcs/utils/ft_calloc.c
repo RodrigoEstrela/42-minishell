@@ -47,7 +47,6 @@ void	megafree(t_minithings *mt)
 	free(mt->line);
 	free(mt->efpath);
 	free(mt);
-	free(g_ec);
 	write(1, "exit\n", 5);
 	exit(0);
 }

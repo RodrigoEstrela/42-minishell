@@ -12,23 +12,23 @@
 
 #include"../../inc/minishell.h"
 
-t_exporttable	*envvaradd(char *key, char *value, t_minithings *mt)
+t_exporttable	*envvaradd(char *k, char *v, t_minithings *mt)
 {
 	t_exporttable	*new;
 
-	if (ft_strcmp(key, "") == 0)
+	if (ft_strcmp(k, "") == 0 || (k[0] >= '0' && k[0] <= '9'))
 	{
 		write(mt->wcode, "1\n", 2);
-		printf("amazingshell: export: `=%s': not a valid identifier\n", value);
+		printf("minishell: export: `%s=%s': not a valid identifier\n", k, v);
 		return (NULL);
 	}
 	new = malloc(sizeof(t_exporttable));
 	if (!new)
 		return (NULL);
-	if (!value)
-		value = "";
-	new->k = ft_strdup(key);
-	new->value = ft_strdup(value);
+	if (!v)
+		v = "";
+	new->k = ft_strdup(k);
+	new->value = ft_strdup(v);
 	new->next = NULL;
 	write(mt->wcode, "0\n", 2);
 	return (new);

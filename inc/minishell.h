@@ -82,7 +82,7 @@ typedef struct s_path {
 
 // Functions
 
-t_exporttable	*envvaradd(char *key, char *value, t_minithings *mt);
+t_exporttable	*envvaradd(char *k, char *v, t_minithings *mt);
 void			sig_handler(void);
 void			sig_handler_block(void);
 void			commands(t_minithings *minithings, char **envp);
@@ -183,5 +183,7 @@ void			free_export_table(t_exporttable *export);
 int				only_space(char *str);
 void			megafree(t_minithings *mt);
 char			*ft_itoa(int n);
+void			*missing_command_after_pipe(t_parser *ctr, t_cmds **cmds);
+t_cmds			*ft_last_cmd(t_cmds *cmds);
 
 #endif

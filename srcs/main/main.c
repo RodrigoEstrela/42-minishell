@@ -12,7 +12,7 @@
 
 #include"../../inc/minishell.h"
 
-char	*g_ec = NULL;
+int	g_ec = 0;
 
 void	free_double_array(char **array)
 {
@@ -66,11 +66,17 @@ void	free_export_table(t_exporttable *export)
 void	do_things(t_minithings *mt, char **envp)
 {
 	char	*exitvalue;
+	char 	*tmp;
+	char 	*tmp2;
 
-	if (g_ec != NULL)
+	if (g_ec != 0)
 	{
-		change_errorcode(mt->export, g_ec);
-		g_ec = NULL;
+		tmp2 = ft_itoa(g_ec);
+		tmp = ft_strjoin(tmp2, "\n");
+		change_errorcode(mt->export, tmp);
+		free(tmp);
+		free(tmp2);
+		g_ec = 0;
 	}
 	mt->cmds = parser(mt->line, mt->export);
 	if (mt->cmds)
@@ -90,7 +96,10 @@ void	do_things(t_minithings *mt, char **envp)
 		close(mt->rcode);
 	}
 	else
+	{
+		change_errorcode(mt->export, "1\n");
 		free(mt->cmds);
+	}
 	free(mt->line);
 }
 
@@ -118,7 +127,6 @@ int	main(int ac, char **av, char **envp)
 		else
 		{
 			free(mt->line);
-			free(g_ec);
 		}
 	}
 }
