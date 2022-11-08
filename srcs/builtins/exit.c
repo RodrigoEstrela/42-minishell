@@ -46,6 +46,7 @@ void	freebonitodoexit(t_minithings *mt, char ****quad)
 	free_export_table(*mt->export);
 	free(mt->export);
 	free(mt->line);
+	free(mt->efpath);
 	free_triple_pointer(mt->cmds);
 	free(mt);
 	freequadpointer(quad);
