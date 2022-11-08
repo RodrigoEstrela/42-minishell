@@ -63,7 +63,7 @@ int	pipe_counter(t_cmds *fds)
 	i = 0;
 	while (fds)
 	{
-		if (fds->cmd && fds->cmd[0] == '|')
+		if (fds->cmd && fds->cmd[0] == '|' && fds->cmd[1] == '\0')
 			i++;
 		fds = fds->next;
 	}

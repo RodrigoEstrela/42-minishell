@@ -24,7 +24,7 @@ t_cmds	*ft_lstnew(void *content)
 	return (new);
 }
 
-void	ft_lstadd_back(t_cmds **lst, t_cmds *new)
+void	ft_lstaddback(t_cmds **lst, t_cmds *new)
 {
 	t_cmds	*tmp;
 

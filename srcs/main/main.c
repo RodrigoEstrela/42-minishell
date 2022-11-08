@@ -12,6 +12,8 @@
 
 #include"../../inc/minishell.h"
 
+int	g_effd = 0;
+
 void	free_double_array(char **array)
 {
 	int	i;
@@ -34,7 +36,8 @@ void	build_export_table(t_minithings *mt, char **envp)
 	mt->efpath = ft_strjoin(tmp, "/e");
 	mt->export = malloc(sizeof(t_exporttable *));
 	(*mt->export) = NULL;
-	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0444);
+	g_effd = mt->wcode;
 	nodefront(mt->export, envvaradd("?", "0", mt));
 	free_double_array(el);
 	while (envp[i])

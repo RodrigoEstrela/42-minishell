@@ -40,12 +40,12 @@ t_parser	*dollar(t_parser *ctr, char *i,
 	{
 		str5 = only_z(i, ctr->start, export);
 		str4 = ft_strdup(str5);
-		ft_lstadd_back(cmds, ft_lstnew(ft_strjoin(str4, " ")));
+		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str4, " ")));
 		free(str4);
 		free(str5);
 	}
 	else
-		ft_lstadd_back(cmds, ft_lstnew(only_z(i, ctr->start, export)));
+		ft_lstaddback(cmds, ft_lstnew(only_z(i, ctr->start, export)));
 	ctr->i--;
 	return (ctr);
 }
@@ -53,7 +53,7 @@ t_parser	*dollar(t_parser *ctr, char *i,
 t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
 {
 	ctr->start = ctr->i;
-	ft_lstadd_back(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0')));
+	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0')));
 	while (i[ctr->i] && i[ctr->i] != ' ' && i[ctr->i] != '$'
 		&& i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
 		ctr->i++;
@@ -95,7 +95,7 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		else if (input[ctr->i] == '$')
 			ctr = dollar(ctr, input, cmds, export);
 		else if (input[ctr->i] == '|')
-			ft_lstadd_back(cmds, ft_lstnew(pipe_str()));
+			ft_lstaddback(cmds, ft_lstnew(pipe_str()));
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}

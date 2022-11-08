@@ -12,11 +12,14 @@
 
 #include"../../inc/minishell.h"
 
+extern int *g_effd;
+
 static void	ctrlc(int s)
 {
 	if (s == 2)
 	{
 		write(1, "\n", 1);
+		write(g_effd[0], "130\n", 4);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -34,6 +37,7 @@ static void	ctrl_c_block(int sig)
 	if (sig == 2)
 	{
 		write(1, "\n", 1);
+		write(g_effd[0], "130\n", 4);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 	}
@@ -43,6 +47,7 @@ static void	ctrl_slash_block(int sig)
 {
 	(void) sig;
 	write(1, "Quit (core dumped)\n", 19);
+	write(g_effd[0], "131\n", 4);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }
