@@ -92,7 +92,7 @@ int	main(int ac, char **av, char **envp)
 	t_minithings	*mt;
 	char			*colorful_path;
 
-	mt = (t_minithings *) malloc(sizeof(t_minithings) * 2);
+	mt = (t_minithings *) malloc(sizeof(t_minithings));
 	build_export_table(mt, envp);
 	while (ac != slen(av[ac]))
 	{

@@ -25,7 +25,11 @@ int	search_ls(char ***cmds)
 
 void	commands_utils(char ***cmds, t_minithings *mt, char **envp, int ncmd)
 {
-	int	pid;
+	int		pid;
+	int		status;
+	int		e_stat;
+	char	*adeus;
+	char	*adeus1;
 
 	pid = fork();
 	sig_handler_block();
@@ -36,7 +40,16 @@ void	commands_utils(char ***cmds, t_minithings *mt, char **envp, int ncmd)
 		pipex(ncmd, cmds, envp, mt);
 		exit(0);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		e_stat = WEXITSTATUS(status);
+		adeus1 = ft_itoa(e_stat);
+		adeus = ft_strjoin(adeus1, "\n");
+		write(mt->wcode, adeus, slen(adeus));
+		free(adeus);
+		free(adeus1);
+	}
 }
 
 char	****buildquad2(char ***cmds)
@@ -58,6 +71,8 @@ int	commandexist(t_minithings *mt, char **cmd)
 {
 	char	*path;
 
+	if (is_builtin(cmd[0]))
+		return (1);
 	path = find_path(cmd[0], mt->export);
 	if (!path)
 	{

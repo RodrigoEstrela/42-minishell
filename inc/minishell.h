@@ -156,7 +156,6 @@ char			***copytriple(char ***cmds, int s, int end);
 int				*searchlastls(char ***cmds);
 void			delete_export(t_exporttable *lst);
 char			*get_prompt(void);
-
 int				ft_str_ui_len(const char *s, int start, int letra);
 char			*pipe_str(void);
 char			*str_space_dup(const char *s1, int start, int letra);
@@ -175,7 +174,6 @@ void			dollar_expanded(char *in, char *new_str, int *ij, t_cmds **v);
 void			cleanup(char ***cmd);
 char			*dollar_expansion(char *i, int s, int d, t_exporttable **e);
 char			*search_export(t_exporttable **export, char *key);
-void			print_triple_pointer(char ***triple);
 t_parser		*barra(t_parser *ctr, char *input, t_cmds **cmds);
 void			adollar(t_parser *ct, char *i, t_cmds **c, t_exporttable **e);
 void			aspas_no_dollar(t_parser *ctr, char *input, t_cmds **cmds);
@@ -184,5 +182,6 @@ int				ft_strstr_index(char *str, char *to_find);
 void			free_export_table(t_exporttable *export);
 int				only_space(char *str);
 void			megafree(t_minithings *mt);
+char			*ft_itoa(int n);
 
 #endif

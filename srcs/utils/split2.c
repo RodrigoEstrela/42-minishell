@@ -12,28 +12,53 @@
 
 #include"../../inc/minishell.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+char	*ft_strrev(char *str)
 {
-	unsigned char	*ptr;
+	int		i;
+	int		j;
+	char	tmp;
 
-	ptr = b;
-	while (len-- > 0)
-		*ptr++ = c;
-	return (b);
+	i = 0;
+	j = 0;
+	while (str[j])
+		j++;
+	j--;
+	while (i < j)
+	{
+		tmp = str[i];
+		str[i] = str[j];
+		str[j] = tmp;
+		i++;
+		j--;
+	}
+	return (str);
 }
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_itoa(int n)
 {
-	ft_memset(s, 0, n);
-}
+	char	*str;
+	int		i;
+	int		neg;
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-
-	ptr = (void *)malloc(count * size);
-	if (!ptr)
-		exit(0);
-	ft_bzero(ptr, count * size);
-	return (ptr);
+	i = 0;
+	neg = 0;
+	if (n < 0)
+	{
+		neg = 1;
+		n = -n;
+	}
+	str = (char *)malloc(sizeof(char) * 12);
+	if (!str)
+		return (NULL);
+	if (n == 0)
+		str[i++] = '0';
+	while (n > 0)
+	{
+		str[i++] = (n % 10) + '0';
+		n = n / 10;
+	}
+	if (neg == 1)
+		str[i++] = '-';
+	str[i] = '\0';
+	return (ft_strrev(str));
 }

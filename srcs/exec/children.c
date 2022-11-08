@@ -24,6 +24,9 @@ void	execute(char **cmd, t_minithings *mt, char **envp, int indx)
 	path = find_path(cmd[0], mt->export);
 	write(mt->wcode, "0\n", 2);
 	execve(path, cmd, envp);
+	free(path);
+	printf("Error: command not found: %s\n", cmd[0]);
+	write(mt->wcode, "127\n", 4);
 }
 
 void	child_one(char **cmds, t_minithings *mt, char **envp, int indx)
