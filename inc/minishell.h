@@ -187,5 +187,6 @@ void			*missing_command_after_pipe(t_parser *ctr, t_cmds **cmds);
 t_cmds			*ft_last_cmd(t_cmds *cmds);
 void			exitcode_gvar(t_minithings *mt);
 void			exitcode_file(t_minithings *mt);
+int				pipepipe(char *input);
 
 #endif

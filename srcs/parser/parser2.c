@@ -83,6 +83,8 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 {
 	t_cmds		**cmds;
 
+	if (pipepipe(input))
+		return (NULL);
 	cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
 	*cmds = NULL;
 	ctr->i = -1;
@@ -95,11 +97,12 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		else if (input[ctr->i] == '$')
 			ctr = dollar(ctr, input, cmds, export);
 		else if (input[ctr->i] == '|')
-			ft_lstaddback(cmds, ft_lstnew(pipe_str()));
+			ft_lstaddback(cmds, ft_lstnew(ft_strdup("|314159265358979323846")));
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}
-	if (ft_strcmp(ft_last_cmd(*cmds)->cmd, "|") == 0)
+	if (ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
+		&& input[slen(input) - 1] == '|')
 		return (missing_command_after_pipe(ctr, cmds));
 	return (return_parser(ctr, cmds));
 }

@@ -76,6 +76,7 @@ void	do_things(t_minithings *mt, char **envp)
 	}
 	else
 	{
+		printf("minishell: parsing error\n");
 		change_errorcode(mt->export, "1\n");
 		free(mt->cmds);
 	}

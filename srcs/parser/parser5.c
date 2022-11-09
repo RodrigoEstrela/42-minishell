@@ -83,6 +83,8 @@ void	get_val_from_export(t_exporttable **export,
 	tmp2 = *export;
 	while (tmp)
 	{
+		if (ft_strcmp(tmp->cmd, "") == 0)
+			ft_lstaddback(values, ft_lstnew(ft_strdup("$")));
 		while (tmp2)
 		{
 			if (ft_strcmp(tmp->cmd, tmp2->k) == 0)
