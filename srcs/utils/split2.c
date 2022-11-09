@@ -12,6 +12,8 @@
 
 #include"../../inc/minishell.h"
 
+extern int	g_ec;
+
 char	*ft_strrev(char *str)
 {
 	int		i;
@@ -61,4 +63,34 @@ char	*ft_itoa(int n)
 		str[i++] = '-';
 	str[i] = '\0';
 	return (ft_strrev(str));
+}
+
+void	exitcode_gvar(t_minithings *mt)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp2 = ft_itoa(g_ec);
+	tmp = ft_strjoin(tmp2, "\n");
+	change_errorcode(mt->export, tmp);
+	free(tmp);
+	free(tmp2);
+	g_ec = 0;
+}
+
+void	exitcode_file(t_minithings *mt)
+{
+	char	*exitvalue;
+
+	mt->rcode = open(mt->efpath, O_RDONLY);
+	exitvalue = get_next_line(mt->rcode);
+	while (exitvalue)
+	{
+		if (slen(exitvalue) > 0)
+			change_errorcode(mt->export, exitvalue);
+		free(exitvalue);
+		exitvalue = get_next_line(mt->rcode);
+	}
+	free(exitvalue);
+	close(mt->rcode);
 }

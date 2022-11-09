@@ -65,35 +65,14 @@ void	free_export_table(t_exporttable *export)
 
 void	do_things(t_minithings *mt, char **envp)
 {
-	char	*exitvalue;
-	char 	*tmp;
-	char 	*tmp2;
-
 	if (g_ec != 0)
-	{
-		tmp2 = ft_itoa(g_ec);
-		tmp = ft_strjoin(tmp2, "\n");
-		change_errorcode(mt->export, tmp);
-		free(tmp);
-		free(tmp2);
-		g_ec = 0;
-	}
+		exitcode_gvar(mt);
 	mt->cmds = parser(mt->line, mt->export);
 	if (mt->cmds)
 	{
 		commands(mt, envp);
 		free_triple_pointer(mt->cmds);
-		mt->rcode = open(mt->efpath, O_RDONLY);
-		exitvalue = get_next_line(mt->rcode);
-		while (exitvalue)
-		{
-			if (slen(exitvalue) > 0)
-				change_errorcode(mt->export, exitvalue);
-			free(exitvalue);
-			exitvalue = get_next_line(mt->rcode);
-		}
-		free(exitvalue);
-		close(mt->rcode);
+		exitcode_file(mt);
 	}
 	else
 	{

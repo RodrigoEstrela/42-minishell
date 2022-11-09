@@ -12,7 +12,7 @@
 
 #include"../../inc/minishell.h"
 
-extern int g_ec;
+extern int	g_ec;
 
 static void	ctrlc(int s)
 {

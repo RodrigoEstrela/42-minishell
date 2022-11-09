@@ -60,14 +60,14 @@ void	aspas_no_dollar(t_parser *ctr, char *input, t_cmds **cmds)
 		ft_lstaddback(cmds, ft_lstnew(str_space_dup(input, ctr->start, '"')));
 }
 
-t_cmds    *ft_last_cmd(t_cmds *cmds)
+t_cmds	*ft_last_cmd(t_cmds *cmds)
 {
 	while (cmds->next)
 		cmds = cmds->next;
 	return (cmds);
 }
 
-void    *missing_command_after_pipe(t_parser *ctr, t_cmds **cmds)
+void	*missing_command_after_pipe(t_parser *ctr, t_cmds **cmds)
 {
 	printf("minishell: syntax error near unexpected token `|'\n");
 	delete_linked_list(*cmds);
