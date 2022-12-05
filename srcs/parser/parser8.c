@@ -40,3 +40,72 @@ int	pipepipe(char *input)
 	}
 	return (0);
 }
+
+void	delete_elem(t_cmds **lst, int index)
+{
+	t_cmds	*tmp;
+	t_cmds	*prev;
+
+	tmp = *lst;
+	if (index == 0)
+	{
+		*lst = tmp->next;
+		free(tmp->cmd);
+		free(tmp);
+		return ;
+	}
+	while (index--)
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	prev->next = tmp->next;
+	free(tmp->cmd);
+	free(tmp);
+}
+
+void	cleanup2(t_cmds **cmds)
+{
+	int		j;
+	t_cmds	*tmp;
+
+	j = 0;
+	tmp = *cmds;
+	while (tmp)
+	{
+		if (tmp->cmd[0] == '<' && slen(tmp->cmd) == 2)
+		{
+			if (tmp->next)
+			{
+				tmp->cmd = ft_strjoin("INPUTREDIR1", tmp->next->cmd);
+				delete_elem(cmds, j + 1);
+			}
+		}
+		else if (tmp->cmd[0] == '>' && slen(tmp->cmd) == 2)
+		{
+			if (tmp->next)
+			{
+				tmp->cmd = ft_strjoin("OUTPUTREDIR1", tmp->next->cmd);
+				delete_elem(cmds, j + 1);
+			}
+		}
+		else if (!ft_strcmp(tmp->cmd, "<< ") && slen(tmp->cmd) == 3)
+		{
+			if (tmp->next)
+			{
+				tmp->cmd = ft_strjoin("HEREDOC", tmp->next->cmd);
+				delete_elem(cmds, j + 1);
+			}
+		}
+		else if (!ft_strcmp(tmp->cmd, ">> ") && slen(tmp->cmd) == 3)
+		{
+			if (tmp->next)
+			{
+				tmp->cmd = ft_strjoin("APPEND", tmp->next->cmd);
+				delete_elem(cmds, j + 1);
+			}
+		}
+		j++;
+		tmp = tmp->next;
+	}
+}

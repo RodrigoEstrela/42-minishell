@@ -65,15 +65,16 @@ void	free_export_table(t_exporttable *export)
 
 void	do_things(t_minithings *mt, char **envp)
 {
+	(void)envp;
 	if (g_ec != 0)
 		exitcode_gvar(mt);
 	mt->cmds = parser(mt->line, mt->export);
 	if (mt->cmds)
 	{
-		if (redirections(mt, envp))
-			;
-		else
-			commands(mt, envp);
+//		if (redirections(mt, envp))
+//			;
+//		else
+//		commands(mt, envp);
 		free_triple_pointer(mt->cmds);
 		exitcode_file(mt);
 	}

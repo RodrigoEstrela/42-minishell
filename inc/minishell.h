@@ -190,5 +190,6 @@ void			exitcode_file(t_minithings *mt);
 int				pipepipe(char *input);
 int				redirections(t_minithings *mt, char **envp);
 int				redirects(int ac, char **av, char **envp);
+void			cleanup2(t_cmds **cmds);
 
 #endif

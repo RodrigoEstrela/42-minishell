@@ -61,6 +61,18 @@ t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
 	return (ctr);
 }
 
+void	printlist(t_cmds **cmds)
+{
+	t_cmds	*tmp;
+
+	tmp = *cmds;
+	while (tmp)
+	{
+		printf("%s\n", tmp->cmd);
+		tmp = tmp->next;
+	}
+}
+
 char	***return_parser(t_parser *ctr, t_cmds **cmds)
 {
 	char	***cmd;
@@ -104,5 +116,6 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 	if (ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 		&& input[slen(input) - 1] == '|')
 		return (missing_command_after_pipe(ctr, cmds));
+	cleanup2(cmds);
 	return (return_parser(ctr, cmds));
 }
