@@ -33,7 +33,7 @@
 
 // BUFFER_SIZE FOR GNL
 
-# define BUFFER_SIZE 100
+# define BUFFER_SIZE 10
 
 // Structures
 
@@ -188,5 +188,7 @@ t_cmds			*ft_last_cmd(t_cmds *cmds);
 void			exitcode_gvar(t_minithings *mt);
 void			exitcode_file(t_minithings *mt);
 int				pipepipe(char *input);
+int				redirections(t_minithings *mt, char **envp);
+int				redirects(int ac, char **av, char **envp);
 
 #endif

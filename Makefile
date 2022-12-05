@@ -20,10 +20,15 @@ SRCS		=		main/main.c main/sighandler.c main/prompt.c \
 					parser/parser5.c parser/parser6.c parser/parser7.c parser/parser8.c \
 					utils/ft_strncmp.c utils/listfuncs.c utils/split.c utils/split2.c \
 					utils/ft_calloc.c \
+					redirects/chidren.c redirects/ft_memcmp.c redirects/ft_strhr.c \
+					redirects/ft_substr.c redirects/heredoc.c redirects/pipex_bonus.c \
+					redirects/pipex_utils.c redirects/ft_caloc.c redirects/ft_spit.c \
+					redirects/ft_stjoin.c redirects/ft_strlen.c redirects/ft_stdup.c \
+					redirects/gnl.c redirects/gnl_utils.c redirects/redirections.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
-CFLAGS		=		-g -Wall -Wextra -Werror
+CFLAGS		=		-g -Wall -Wextra -Werror #-fsanitize=address
 RM			=		rm -f
 
 NAME		= 		minishell
@@ -35,6 +40,7 @@ objs/%.o: srcs/%.c
 			@mkdir -p objs/parser
 			@mkdir -p objs/utils
 			@mkdir -p objs/main
+			@mkdir -p objs/redirects
 			@cc $(CFLAGS) -c $< -o $@
 
 $(NAME):    	$(OBJS)
