@@ -64,7 +64,7 @@ void	delete_elem(t_cmds **lst, int index)
 	free(tmp);
 }
 
-void	cleanup2(t_cmds **cmds)
+void	cleanup_redirects(t_cmds **cmds)
 {
 	int		j;
 	t_cmds	*tmp;
@@ -160,4 +160,29 @@ void	cleanup2(t_cmds **cmds)
 		j++;
 		tmp = tmp->next;
 	}
+}
+
+void	cleanup_output(t_cmds **cmds)
+{
+	t_cmds	*tmp;
+	int 	apagar[347];
+	int 	out;
+	int		i;
+	int 	j;
+
+	tmp = *cmds;
+	j = 0;
+	i = 0;
+	while (tmp)
+	{
+		if ((tmp->redirect == 3 || tmp->redirect == 4) && tmp->next)
+		{
+			out = j;
+			apagar[i++] = j;
+		}
+		tmp = tmp->next;
+		j++;
+	}
+	(void)apagar;
+	ft_lstaddback(cmds, ft_lstnew(idx(cmds, out)->cmd, 0, idx(cmds, out)->redirect));
 }

@@ -53,3 +53,18 @@ int	ft_lstsize(t_exporttable *lst)
 	}
 	return (i);
 }
+
+t_cmds	*idx(t_cmds **cmds, int index)
+{
+	int	i;
+	t_cmds *lst;
+
+	i = 0;
+	lst = *cmds;
+	while (i < index)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (lst);
+}

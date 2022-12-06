@@ -117,7 +117,8 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 	if (ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 		&& input[slen(input) - 1] == '|')
 		return (missing_command_after_pipe(ctr, cmds));
-	cleanup2(cmds);
+	cleanup_redirects(cmds);
+	cleanup_output(cmds);
 	printlist(cmds);
 	return (return_parser(ctr, cmds));
 }
