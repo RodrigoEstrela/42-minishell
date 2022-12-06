@@ -74,7 +74,7 @@ void	do_things(t_minithings *mt, char **envp)
 //		if (redirections(mt, envp))
 //			;
 //		else
-//		commands(mt, envp);
+		commands(mt, envp);
 		free_triple_pointer(mt->cmds);
 		exitcode_file(mt);
 	}

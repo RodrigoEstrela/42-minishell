@@ -50,9 +50,20 @@ typedef struct s_exporttable
 	struct s_exporttable	*next;
 }				t_exporttable;
 
+/*
+ quotes: 0 = no quotes, 1 = single quotes, 2 = double quotes
+ redirect: 0 = no redirect
+ redirect: 1 = input
+ redirect: 2 = HEREDOC
+ redirect: 3 = output
+ redirect: 4 = append
+*/
+
 typedef struct s_cmds
 {
 	char			*cmd;
+	int 			quotes;
+	int 			redirect;
 	struct s_cmds	*next;
 }			t_cmds;
 
@@ -105,7 +116,7 @@ int				check_duplicated(t_exporttable **export, char *str);
 void			valmod(t_exporttable **exp, char *v, int i, t_minithings *mt);
 void			unset(t_minithings *minithings);
 void			ft_sort_list(t_exporttable *l, int size);
-t_cmds			*ft_lstnew(void *content);
+t_cmds			*ft_lstnew(void *content, int quotes, int redirect);
 void			ft_lstaddback(t_cmds **lst, t_cmds *new);
 char			**ft_split(char const *s, char c);
 int				slen(const char *str);

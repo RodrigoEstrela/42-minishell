@@ -22,6 +22,7 @@ t_parser	*aspas(t_parser *ctr, char *input,
 		adollar(ctr, input, cmds, export);
 	else
 		aspas_no_dollar(ctr, input, cmds);
+
 	return (ctr);
 }
 
@@ -40,12 +41,12 @@ t_parser	*dollar(t_parser *ctr, char *i,
 	{
 		str5 = only_z(i, ctr->start, export);
 		str4 = ft_strdup(str5);
-		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str4, " ")));
+		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str4, " "), 0, 0));
 		free(str4);
 		free(str5);
 	}
 	else
-		ft_lstaddback(cmds, ft_lstnew(only_z(i, ctr->start, export)));
+		ft_lstaddback(cmds, ft_lstnew(only_z(i, ctr->start, export), 0, 0));
 	ctr->i--;
 	return (ctr);
 }
@@ -53,7 +54,7 @@ t_parser	*dollar(t_parser *ctr, char *i,
 t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
 {
 	ctr->start = ctr->i;
-	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0')));
+	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0'), 0,0));
 	while (i[ctr->i] && i[ctr->i] != ' ' && i[ctr->i] != '$'
 		&& i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
 		ctr->i++;
@@ -109,7 +110,7 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		else if (input[ctr->i] == '$')
 			ctr = dollar(ctr, input, cmds, export);
 		else if (input[ctr->i] == '|')
-			ft_lstaddback(cmds, ft_lstnew(ft_strdup("|314159265358979323846")));
+			ft_lstaddback(cmds, ft_lstnew(ft_strdup("|314159265358979323846"), 0, 0));
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}
@@ -117,5 +118,6 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		&& input[slen(input) - 1] == '|')
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup2(cmds);
+	printlist(cmds);
 	return (return_parser(ctr, cmds));
 }

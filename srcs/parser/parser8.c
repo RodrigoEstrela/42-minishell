@@ -68,41 +68,93 @@ void	cleanup2(t_cmds **cmds)
 {
 	int		j;
 	t_cmds	*tmp;
+	char	*tmp2;
 
 	j = 0;
 	tmp = *cmds;
 	while (tmp)
 	{
-		if (tmp->cmd[0] == '<' && slen(tmp->cmd) == 2)
+		if (tmp->cmd[0] == '<' && tmp->cmd[1] != '<' && tmp->quotes == 0)
 		{
-			if (tmp->next)
+			if (tmp->next && slen(tmp->cmd) == 2)
 			{
-				tmp->cmd = ft_strjoin("INPUTREDIR1", tmp->next->cmd);
+				tmp->redirect = 1;
+				free(tmp->cmd);
+				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
+			}
+			else if (slen(tmp->cmd) > 2)
+			{
+				tmp->redirect = 1;
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 1);
+				free(tmp2);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
-		else if (tmp->cmd[0] == '>' && slen(tmp->cmd) == 2)
+		else if (!ft_strncmp(tmp->cmd, "<<", 2)  && tmp->quotes == 0)
 		{
-			if (tmp->next)
+			if (tmp->next && slen(tmp->cmd) == 3)
 			{
-				tmp->cmd = ft_strjoin("OUTPUTREDIR1", tmp->next->cmd);
+				tmp->redirect = 2;
+				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
+			}
+			else if (slen(tmp->cmd) > 3)
+			{
+				tmp->redirect = 2;
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 2);
+				free(tmp2);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
-		else if (!ft_strcmp(tmp->cmd, "<< ") && slen(tmp->cmd) == 3)
+		else if (tmp->cmd[0] == '>' && tmp->cmd[1] != '>' && tmp->quotes == 0)
 		{
-			if (tmp->next)
+			if (tmp->next && slen(tmp->cmd) == 2)
 			{
-				tmp->cmd = ft_strjoin("HEREDOC", tmp->next->cmd);
+				tmp->redirect = 3;
+				free(tmp->cmd);
+				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
+			}
+			else if (slen(tmp->cmd) > 2)
+			{
+				tmp->redirect = 3;
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 1);
+				free(tmp2);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
-		else if (!ft_strcmp(tmp->cmd, ">> ") && slen(tmp->cmd) == 3)
+		else if (!ft_strncmp(tmp->cmd, ">>", 2) && tmp->quotes == 0)
 		{
-			if (tmp->next)
+			if (tmp->next && slen(tmp->cmd) == 3)
 			{
-				tmp->cmd = ft_strjoin("APPEND", tmp->next->cmd);
+				tmp->redirect = 4;
+				free(tmp->cmd);
+				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
+			}
+			else if (slen(tmp->cmd) > 2)
+			{
+				tmp->redirect = 4;
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 2);
+				free(tmp2);
+				printf("tmp->redirect = %d\n", tmp->redirect);
+				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
 		j++;

@@ -12,7 +12,7 @@
 
 #include"../../inc/minishell.h"
 
-t_cmds	*ft_lstnew(void *content)
+t_cmds	*ft_lstnew(void *content, int quotes, int redirect)
 {
 	t_cmds	*new;
 
@@ -20,6 +20,8 @@ t_cmds	*ft_lstnew(void *content)
 	if (!new)
 		return (NULL);
 	new->cmd = content;
+	new->quotes = quotes;
+	new->redirect = redirect;
 	new->next = NULL;
 	return (new);
 }
