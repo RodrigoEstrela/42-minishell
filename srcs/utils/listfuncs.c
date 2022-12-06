@@ -19,7 +19,7 @@ t_cmds	*ft_lstnew(void *content, int quotes, int redirect)
 	new = malloc(sizeof(t_list));
 	if (!new)
 		return (NULL);
-	new->cmd = content;
+	new->cmd = ft_strdup(content);
 	new->quotes = quotes;
 	new->redirect = redirect;
 	new->next = NULL;
