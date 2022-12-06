@@ -173,16 +173,26 @@ void	cleanup_output(t_cmds **cmds)
 	tmp = *cmds;
 	j = 0;
 	i = 0;
+	out = -1;
 	while (tmp)
 	{
-		if ((tmp->redirect == 3 || tmp->redirect == 4) && tmp->next)
+		printf("tmp->cmd = %s\n", tmp->cmd);
+		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
+			printf("OLA ESTOU AQUI\n");
 			out = j;
 			apagar[i++] = j;
 		}
 		tmp = tmp->next;
 		j++;
 	}
+	printf("out = %d\n", out);
 	(void)apagar;
-	ft_lstaddback(cmds, ft_lstnew(idx(cmds, out)->cmd, 0, idx(cmds, out)->redirect));
+	if (out != -1)
+	{
+		char *tmp2;
+		tmp2 = ft_strdup(idx(cmds, out)->cmd);
+		ft_lstaddback(cmds, ft_lstnew(tmp2, 0, idx(cmds, out)->redirect));
+		free(tmp2);
+	}
 }
