@@ -69,7 +69,7 @@ void	printlist(t_cmds **cmds)
 	tmp = *cmds;
 	while (tmp)
 	{
-		printf("%s\n", tmp->cmd);
+		printf("%s<-----\n", tmp->cmd);
 		tmp = tmp->next;
 	}
 }

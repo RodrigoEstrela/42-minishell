@@ -64,6 +64,27 @@ void	delete_elem(t_cmds **lst, int index)
 	free(tmp);
 }
 
+void	addinindex(t_cmds **lst, t_cmds *new, int index)
+{
+	t_cmds	*tmp;
+	t_cmds	*prev;
+
+	tmp = *lst;
+	if (index == 0)
+	{
+		new->next = tmp;
+		*lst = new;
+		return ;
+	}
+	while (index--)
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	prev->next = new;
+	new->next = tmp;
+}
+
 void	cleanup_redirects(t_cmds **cmds)
 {
 	int		j;
@@ -82,8 +103,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				free(tmp->cmd);
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 			else if (slen(tmp->cmd) > 2)
 			{
@@ -91,8 +110,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 1);
 				free(tmp2);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
 		else if (!ft_strncmp(tmp->cmd, "<<", 2)  && tmp->quotes == 0)
@@ -102,8 +119,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->redirect = 2;
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 			else if (slen(tmp->cmd) > 3)
 			{
@@ -111,8 +126,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 2);
 				free(tmp2);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
 		else if (tmp->cmd[0] == '>' && tmp->cmd[1] != '>' && tmp->quotes == 0)
@@ -123,8 +136,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				free(tmp->cmd);
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 			else if (slen(tmp->cmd) > 2)
 			{
@@ -132,8 +143,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 1);
 				free(tmp2);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
 		else if (!ft_strncmp(tmp->cmd, ">>", 2) && tmp->quotes == 0)
@@ -144,8 +153,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				free(tmp->cmd);
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 			else if (slen(tmp->cmd) > 2)
 			{
@@ -153,8 +160,6 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 2);
 				free(tmp2);
-				printf("tmp->redirect = %d\n", tmp->redirect);
-				printf("tmp->cmd = %s\n", tmp->cmd);
 			}
 		}
 		j++;
@@ -166,25 +171,45 @@ void	cleanup_output(t_cmds **cmds)
 {
 	t_cmds	*tmp;
 	int 	apagar[347];
+	int		sitio[347];
+	int		m;
 	int 	out;
+	int		meter;
 	int		i;
 	int 	j;
 
 	tmp = *cmds;
 	j = 0;
 	i = 0;
+	m = 0;
 	out = -1;
+	apagar[i++] = -1;
+	sitio[m++] = -1;
+	meter = 0;
 	while (tmp)
 	{
-		if ((tmp->redirect == 3 || tmp->redirect == 4))
+		while (ft_strcmp(tmp->cmd, "|314159265358979323846") != 0 && tmp->next)
 		{
-			out = j;
-			apagar[i++] = j;
+			printf("entrou no while\n");
+			if ((tmp->redirect == 3 || tmp->redirect == 4))
+			{
+				out = j;
+				apagar[i++] = j;
+			}
+			meter++;
+			j++;
+			tmp = tmp->next;
+
 		}
+		sitio[m++] = meter++;
 		tmp = tmp->next;
-		j++;
 	}
-	if (out != -1)
-		ft_lstaddback(cmds, ft_lstnew(idx(cmds, out)->cmd, 0, idx(cmds, out)->redirect));
-	(void)apagar;
+	while (sitio[--m] != -1)
+	{
+		printf("sitio: %d\n", sitio[m]);
+		addinindex(cmds, ft_lstnew(idx(cmds, out)->cmd, 0, idx(cmds, out)->redirect), sitio[m]);
+	}
+//	if (out != -1)
+	while (apagar[--i] != -1)
+		delete_elem(cmds, apagar[i]);
 }
