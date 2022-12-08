@@ -171,45 +171,41 @@ void	cleanup_output(t_cmds **cmds)
 {
 	t_cmds	*tmp;
 	int 	apagar[347];
+	int		i;
 	int		sitio[347];
 	int		m;
-	int 	out;
+	int 	out[347];
+	int		o;
 	int		meter;
-	int		i;
 	int 	j;
 
 	tmp = *cmds;
 	j = 0;
 	i = 0;
+	apagar[i] = 0;
 	m = 0;
-	out = -1;
-	apagar[i++] = -1;
 	sitio[m++] = -1;
+	o = 0;
+	out[0] = 0;
 	meter = 0;
 	while (tmp)
 	{
-		while (ft_strcmp(tmp->cmd, "|314159265358979323846") != 0 && tmp->next)
+		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
-			printf("entrou no while\n");
-			if ((tmp->redirect == 3 || tmp->redirect == 4))
-			{
-				out = j;
-				apagar[i++] = j;
-			}
-			meter++;
-			j++;
-			tmp = tmp->next;
-
+			out[o] = j;
+			apagar[i++] = j;
 		}
+		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
+		{
+			tmp = tmp->next;
+			o++;
+		}
+		meter++;
+		j++;
+		tmp = tmp->next;
 		sitio[m++] = meter++;
 		tmp = tmp->next;
 	}
-	while (sitio[--m] != -1)
-	{
-		printf("sitio: %d\n", sitio[m]);
-		addinindex(cmds, ft_lstnew(idx(cmds, out)->cmd, 0, idx(cmds, out)->redirect), sitio[m]);
-	}
-//	if (out != -1)
-	while (apagar[--i] != -1)
-		delete_elem(cmds, apagar[i]);
+	while(o--)
+		printf("out[%d] = %d\n", o, out[o]);
 }
