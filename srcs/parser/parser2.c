@@ -69,7 +69,7 @@ void	printlist(t_cmds **cmds)
 	tmp = *cmds;
 	while (tmp)
 	{
-		printf("%s<-----\n", tmp->cmd);
+		printf("%s\n", tmp->cmd);
 		tmp = tmp->next;
 	}
 }
@@ -119,6 +119,5 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirects(cmds);
 	cleanup_output(cmds);
-	printlist(cmds);
 	return (return_parser(ctr, cmds));
 }

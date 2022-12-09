@@ -204,5 +204,5 @@ int				redirects(int ac, char **av, char **envp);
 void			cleanup_redirects(t_cmds **cmds);
 void			cleanup_output(t_cmds **cmds);
 t_cmds			*idx(t_cmds **cmds, int index);
-
+void			printlist(t_cmds **cmds);
 #endif

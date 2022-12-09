@@ -176,18 +176,15 @@ void	cleanup_output(t_cmds **cmds)
 	int		m;
 	int 	out[347];
 	int		o;
-	int		meter;
 	int 	j;
 
 	tmp = *cmds;
 	j = 0;
 	i = 0;
-	apagar[i] = 0;
 	m = 0;
-	sitio[m++] = -1;
+	sitio[0] = 0;
 	o = 0;
-	out[0] = 0;
-	meter = 0;
+	out[0] = -1;
 	while (tmp)
 	{
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
@@ -199,13 +196,25 @@ void	cleanup_output(t_cmds **cmds)
 		{
 			tmp = tmp->next;
 			o++;
+			sitio[m++] = j - 2;
+			j++;
 		}
-		meter++;
 		j++;
 		tmp = tmp->next;
-		sitio[m++] = meter++;
-		tmp = tmp->next;
 	}
-	while(o--)
+	sitio[m] = j - i  + 1;
+	o++;
+	m++;
+	while(o-- && m--)
+	{
 		printf("out[%d] = %d\n", o, out[o]);
+		printf("sitio[%d] = %d\n", m, sitio[m]);
+		addinindex(cmds, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect), sitio[m]);
+	}
+	printf("\n");
+	while (i--) {
+		delete_elem(cmds, apagar[i]);
+	}
+	printf("\n");
+	printlist(cmds);
 }
