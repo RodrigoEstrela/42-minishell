@@ -41,50 +41,6 @@ int	pipepipe(char *input)
 	return (0);
 }
 
-void	delete_elem(t_cmds **lst, int index)
-{
-	t_cmds	*tmp;
-	t_cmds	*prev;
-
-	tmp = *lst;
-	if (index == 0)
-	{
-		*lst = tmp->next;
-		free(tmp->cmd);
-		free(tmp);
-		return ;
-	}
-	while (index--)
-	{
-		prev = tmp;
-		tmp = tmp->next;
-	}
-	prev->next = tmp->next;
-	free(tmp->cmd);
-	free(tmp);
-}
-
-void	addinindex(t_cmds **lst, t_cmds *new, int index)
-{
-	t_cmds	*tmp;
-	t_cmds	*prev;
-
-	tmp = *lst;
-	if (index == 0)
-	{
-		new->next = tmp;
-		*lst = new;
-		return ;
-	}
-	while (index--)
-	{
-		prev = tmp;
-		tmp = tmp->next;
-	}
-	prev->next = new;
-	new->next = tmp;
-}
-
 void	cleanup_redirects(t_cmds **cmds)
 {
 	int		j;
@@ -170,49 +126,64 @@ void	cleanup_redirects(t_cmds **cmds)
 void	cleanup_output(t_cmds **cmds)
 {
 	t_cmds	*tmp;
+	t_cmds	*tmp2;
+	t_cmds	**holder;
 	int 	apagar[347];
 	int		i;
-	int		sitio[347];
-	int		m;
 	int 	out[347];
 	int		o;
 	int 	j;
+	int		hold;
 
 	tmp = *cmds;
 	j = 0;
 	i = 0;
-	m = 0;
-	sitio[0] = 0;
 	o = 0;
 	out[0] = -1;
+	holder = malloc(sizeof(t_cmds *));
+	*holder = NULL;
 	while (tmp)
 	{
+		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
+		{
+			tmp = tmp->next;
+			o++;
+			j++;
+		}
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
 			out[o] = j;
 			apagar[i++] = j;
 		}
-		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
-		{
-			tmp = tmp->next;
-			o++;
-			sitio[m++] = j - 2;
-			j++;
-		}
 		j++;
 		tmp = tmp->next;
 	}
-	sitio[m] = j - i  + 1;
-	o++;
-	m++;
+	hold = o;
+	o = 0;
+	if (out[0] == -1)
+		return ;
+	while(o <= hold)
+	{
+		ft_lstaddback(holder, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect));
+		o++;
+	}
 	while (i--)
 		delete_elem(cmds, apagar[i]);
-//	while(o-- && m--)
-//	{
-//		printf("out[%d] = %d\n", o, out[o]);
-//		printf("sitio[%d] = %d\n", m, sitio[m]);
-//		addinindex(cmds, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect), sitio[m]);
-//	}
-	printf("\n");
+	printlist(cmds);
+	tmp2 = *cmds;
+	j = 0;
+	o = 0;
+	printlist(holder);
+	while (tmp2)
+	{
+		if (ft_strcmp(tmp2->cmd, "|314159265358979323846") == 0 && tmp2->next)
+		{
+			addinindex(cmds, idx(holder, o), j + 1);
+			j++;
+		}
+		j++;
+		tmp2 = tmp2->next;
+	}
+	printf("\n\n");
 	printlist(cmds);
 }

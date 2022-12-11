@@ -205,4 +205,7 @@ void			cleanup_redirects(t_cmds **cmds);
 void			cleanup_output(t_cmds **cmds);
 t_cmds			*idx(t_cmds **cmds, int index);
 void			printlist(t_cmds **cmds);
+void			addinindex(t_cmds **lst, t_cmds *new, int index);
+void			delete_elem(t_cmds **lst, int index);
+
 #endif
