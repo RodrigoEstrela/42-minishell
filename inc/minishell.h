@@ -207,5 +207,6 @@ t_cmds			*idx(t_cmds **cmds, int index);
 void			printlist(t_cmds **cmds);
 void			addinindex(t_cmds **lst, t_cmds *new, int index);
 void			delete_elem(t_cmds **lst, int index);
+int				sizelst(t_cmds **lst);
 
 #endif

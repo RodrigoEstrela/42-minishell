@@ -126,7 +126,6 @@ void	cleanup_redirects(t_cmds **cmds)
 void	cleanup_output(t_cmds **cmds)
 {
 	t_cmds	*tmp;
-	t_cmds	*tmp2;
 	t_cmds	**holder;
 	int 	apagar[347];
 	int		i;
@@ -134,6 +133,7 @@ void	cleanup_output(t_cmds **cmds)
 	int		o;
 	int 	j;
 	int		hold;
+	int		size;
 
 	tmp = *cmds;
 	j = 0;
@@ -170,19 +170,13 @@ void	cleanup_output(t_cmds **cmds)
 	while (i--)
 		delete_elem(cmds, apagar[i]);
 	printlist(cmds);
-	tmp2 = *cmds;
-	j = 0;
-	o = 0;
-	printlist(holder);
-	while (tmp2)
+	size = sizelst(cmds);
+	addinindex(cmds, idx(holder, --o), size--);
+	while (size)
 	{
-		if (ft_strcmp(tmp2->cmd, "|314159265358979323846") == 0 && tmp2->next)
-		{
-			addinindex(cmds, idx(holder, o), j + 1);
-			j++;
-		}
-		j++;
-		tmp2 = tmp2->next;
+		if (ft_strcmp(idx(cmds, size)->cmd, "|314159265358979323846") == 0)
+			addinindex(cmds, idx(holder, --o), size);
+		size--;
 	}
 	printf("\n\n");
 	printlist(cmds);
