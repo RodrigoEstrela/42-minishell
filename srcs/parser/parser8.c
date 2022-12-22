@@ -140,6 +140,7 @@ void	cleanup_output(t_cmds **cmds)
 	i = 0;
 	o = 0;
 	out[0] = -1;
+	apagar[0] = -1;
 	holder = malloc(sizeof(t_cmds *));
 	*holder = NULL;
 	while (tmp)
@@ -160,24 +161,32 @@ void	cleanup_output(t_cmds **cmds)
 	}
 	hold = o;
 	o = 0;
-	if (out[0] == -1)
-		return ;
+	printf("hold: %i\n", hold);
 	while(o <= hold)
 	{
-		ft_lstaddback(holder, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect));
+		printf("out[%d] = %d\n", o, out[o]);
+		if (out[o] != -1)
+			ft_lstaddback(holder, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect));
 		o++;
 	}
-	while (i--)
-		delete_elem(cmds, apagar[i]);
-	printlist(cmds);
-	size = sizelst(cmds);
-	addinindex(cmds, idx(holder, --o), size--);
-	while (size)
-	{
-		if (ft_strcmp(idx(cmds, size)->cmd, "|314159265358979323846") == 0)
-			addinindex(cmds, idx(holder, --o), size);
-		size--;
-	}
 	printf("\n\n");
-	printlist(cmds);
+	printlist(holder);
+	printf("\n\n");
+	if (apagar[0] != -1)
+	{
+		while (i--)
+			delete_elem(cmds, apagar[i]);
+	}
+	size = sizelst(cmds);
+	printf("size: %i\n", size);
+	if (out[0] != -1)
+	{
+		addinindex(cmds, idx(holder, --o), size--);
+	// while (size)
+	// {
+	// 	if (ft_strcmp(idx(cmds, size)->cmd, "|314159265358979323846") == 0)
+	// 		addinindex(cmds, idx(holder, --o), size);
+	// 	size--;
+	// }
+	}
 }

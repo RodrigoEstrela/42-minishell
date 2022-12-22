@@ -71,7 +71,7 @@ void	do_things(t_minithings *mt, char **envp)
 	mt->cmds = parser(mt->line, mt->export);
 	if (mt->cmds)
 	{
-//		commands(mt, envp);
+		// commands(mt, envp);
 		free_triple_pointer(mt->cmds);
 		exitcode_file(mt);
 	}
