@@ -13,7 +13,7 @@
 #include "../../inc/minishell.h"
 
 t_parser	*aspas(t_parser *ctr, char *input,
-		t_cmds **cmds, t_exporttable **export)
+				   t_cmds **cmds, t_extab **export)
 {
 	ctr->start = ctr->i + 1;
 	while (input[++ctr->i] != '"')
@@ -27,7 +27,7 @@ t_parser	*aspas(t_parser *ctr, char *input,
 }
 
 t_parser	*dollar(t_parser *ctr, char *i,
-		t_cmds **cmds, t_exporttable **export)
+					t_cmds **cmds, t_extab **export)
 {
 	char	*str5;
 	char	*str4;
@@ -92,7 +92,7 @@ char	***return_parser(t_parser *ctr, t_cmds **cmds)
 	return (cmd);
 }
 
-char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
+char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 {
 	t_cmds		**cmds;
 
@@ -106,9 +106,9 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		if (input[ctr->i] == '\'')
 			ctr = barra(ctr, input, cmds);
 		else if (input[ctr->i] == '"')
-			ctr = aspas(ctr, input, cmds, export);
+			ctr = aspas(ctr, input, cmds, etab);
 		else if (input[ctr->i] == '$')
-			ctr = dollar(ctr, input, cmds, export);
+			ctr = dollar(ctr, input, cmds, etab);
 		else if (input[ctr->i] == '|')
 			ft_lstaddback(cmds, ft_lstnew(ft_strdup("|314159265358979323846"), 0, 0));
 		else if (input[ctr->i] != ' ')
@@ -118,7 +118,7 @@ char	***ez_parsing(t_parser *ctr, char *input, t_exporttable **export)
 		&& input[slen(input) - 1] == '|')
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirects(cmds);
-	cleanup_output(cmds);
+	cleanup_output(cmds, mt);
 	printlist(cmds);
 	return (return_parser(ctr, cmds));
 }

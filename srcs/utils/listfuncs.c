@@ -41,7 +41,7 @@ void	ft_lstaddback(t_cmds **lst, t_cmds *new)
 	tmp->next = new;
 }
 
-int	ft_lstsize(t_exporttable *lst)
+int	ft_lstsize(t_extab *lst)
 {
 	int	i;
 

@@ -73,11 +73,11 @@ int	get_var_name(char *n, int start, t_cmds **lst)
 	return (var_len);
 }
 
-void	get_val_from_export(t_exporttable **export,
+void	get_val_from_export(t_extab **export,
 							t_cmds **vars, t_cmds **values)
 {
 	t_cmds			*tmp;
-	t_exporttable	*tmp2;
+	t_extab	*tmp2;
 
 	tmp = *vars;
 	tmp2 = *export;

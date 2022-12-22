@@ -123,7 +123,7 @@ void	cleanup_redirects(t_cmds **cmds)
 	}
 }
 
-void	cleanup_output(t_cmds **cmds)
+void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 {
 	t_cmds	*tmp;
 	t_cmds	**holder;
@@ -135,6 +135,7 @@ void	cleanup_output(t_cmds **cmds)
 	int		hold;
 	int		size;
 
+	(void)mt;
 	tmp = *cmds;
 	j = 0;
 	i = 0;
@@ -149,6 +150,7 @@ void	cleanup_output(t_cmds **cmds)
 		{
 			tmp = tmp->next;
 			o++;
+			out[o] = 314159265;
 			j++;
 		}
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
@@ -165,11 +167,19 @@ void	cleanup_output(t_cmds **cmds)
 	while(o <= hold)
 	{
 		printf("out[%d] = %d\n", o, out[o]);
-		if (out[o] != -1)
+		if (out[o] == 31415265)
+		{
+			o++;
+			ft_lstaddback(holder, ft_lstnew("PIPETEMPIPE", 0, 0));
+		}
+		else if (out[o] != -1)
+		{
 			ft_lstaddback(holder, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect));
+		}
 		o++;
 	}
 	printf("\n\n");
+	printf("ola\n");
 	printlist(holder);
 	printf("\n\n");
 	if (apagar[0] != -1)
@@ -179,14 +189,4 @@ void	cleanup_output(t_cmds **cmds)
 	}
 	size = sizelst(cmds);
 	printf("size: %i\n", size);
-	if (out[0] != -1)
-	{
-		addinindex(cmds, idx(holder, --o), size--);
-	// while (size)
-	// {
-	// 	if (ft_strcmp(idx(cmds, size)->cmd, "|314159265358979323846") == 0)
-	// 		addinindex(cmds, idx(holder, --o), size);
-	// 	size--;
-	// }
-	}
 }

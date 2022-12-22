@@ -65,7 +65,7 @@ char	*ft_itoa(int n)
 	return (ft_strrev(str));
 }
 
-void	exitcode_gvar(t_minithings *mt)
+void	exitcode_gvar(t_mthings *mt)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -78,7 +78,7 @@ void	exitcode_gvar(t_minithings *mt)
 	g_ec = 0;
 }
 
-void	exitcode_file(t_minithings *mt)
+void	exitcode_file(t_mthings *mt)
 {
 	char	*exitvalue;
 

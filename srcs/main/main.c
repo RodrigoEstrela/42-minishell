@@ -24,7 +24,7 @@ void	free_double_array(char **array)
 	free(array);
 }
 
-void	build_export_table(t_minithings *mt, char **envp)
+void	build_export_table(t_mthings *mt, char **envp)
 {
 	int		i;
 	char	**el;
@@ -34,7 +34,7 @@ void	build_export_table(t_minithings *mt, char **envp)
 	el = ft_split(envp[i], '=');
 	getcwd(tmp, sizeof(tmp));
 	mt->efpath = ft_strjoin(tmp, "/e");
-	mt->export = malloc(sizeof(t_exporttable *));
+	mt->export = malloc(sizeof(t_extab *));
 	(*mt->export) = NULL;
 	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	nodefront(mt->export, envvaradd("?", "0", mt));
@@ -48,9 +48,9 @@ void	build_export_table(t_minithings *mt, char **envp)
 	}
 }
 
-void	free_export_table(t_exporttable *export)
+void	free_export_table(t_extab *export)
 {
-	t_exporttable	*tmp;
+	t_extab	*tmp;
 
 	while (export)
 	{
@@ -63,15 +63,15 @@ void	free_export_table(t_exporttable *export)
 	free(export);
 }
 
-void	do_things(t_minithings *mt, char **envp)
+void	do_things(t_mthings *mt, char **envp)
 {
 	(void)envp;
 	if (g_ec != 0)
 		exitcode_gvar(mt);
-	mt->cmds = parser(mt->line, mt->export);
+	mt->cmds = parser(mt->line, mt->export, mt);
 	if (mt->cmds)
 	{
-		// commands(mt, envp);
+//		 commands(mt, envp);
 		free_triple_pointer(mt->cmds);
 		exitcode_file(mt);
 	}
@@ -86,10 +86,10 @@ void	do_things(t_minithings *mt, char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_minithings	*mt;
+	t_mthings	*mt;
 	char			*colorful_path;
 
-	mt = (t_minithings *) malloc(sizeof(t_minithings));
+	mt = (t_mthings *) malloc(sizeof(t_mthings));
 	build_export_table(mt, envp);
 	while (ac != slen(av[ac]))
 	{

@@ -31,7 +31,7 @@ t_parser	*barra(t_parser *ctr, char *input, t_cmds **cmds)
 }
 
 void	adollar(t_parser *ctr, char *input,
-					t_cmds **cmds, t_exporttable **export)
+				t_cmds **cmds, t_extab **export)
 {
 	char	*str2;
 

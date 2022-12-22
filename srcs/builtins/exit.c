@@ -41,7 +41,7 @@ int	ft_atoi(const char *str)
 	return (res);
 }
 
-void	freebonitodoexit(t_minithings *mt, char ****quad)
+void	freebonitodoexit(t_mthings *mt, char ****quad)
 {
 	free_export_table(*mt->export);
 	free(mt->export);
@@ -52,7 +52,7 @@ void	freebonitodoexit(t_minithings *mt, char ****quad)
 	freequadpointer(quad);
 }
 
-void	exitin(char ****quad, t_minithings *mt, int i)
+void	exitin(char ****quad, t_mthings *mt, int i)
 {
 	int	exitcode;
 

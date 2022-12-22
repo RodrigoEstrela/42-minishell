@@ -40,7 +40,7 @@ void	*ft_calloc(size_t count, size_t size)
 	return (ptr);
 }
 
-void	megafree(t_minithings *mt)
+void	megafree(t_mthings *mt)
 {
 	free_export_table(*mt->export);
 	free(mt->export);

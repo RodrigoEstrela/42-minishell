@@ -31,7 +31,7 @@ int	is_builtin(char *str)
 	return (0);
 }
 
-void	builtins(t_minithings *minithings, int indx)
+void	builtins(t_mthings *minithings, int indx)
 {
 	if (ft_strcmp(minithings->cmds[indx][0], "cd") == 0)
 		cd(minithings, indx);

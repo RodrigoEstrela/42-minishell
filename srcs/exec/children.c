@@ -12,7 +12,7 @@
 
 #include"../../inc/minishell.h"
 
-void	execute(char **cmd, t_minithings *mt, char **envp, int indx)
+void	execute(char **cmd, t_mthings *mt, char **envp, int indx)
 {
 	char	*path;
 
@@ -29,7 +29,7 @@ void	execute(char **cmd, t_minithings *mt, char **envp, int indx)
 	write(mt->wcode, "127\n", 4);
 }
 
-void	child_one(char **cmds, t_minithings *mt, char **envp, int indx)
+void	child_one(char **cmds, t_mthings *mt, char **envp, int indx)
 {
 	pid_t	pid;
 	int		fd[2];

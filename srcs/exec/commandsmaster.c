@@ -23,7 +23,7 @@ int	search_ls(char ***cmds)
 	return (0);
 }
 
-void	commands_utils(char ***cmds, t_minithings *mt, char **envp, int ncmd)
+void	commands_utils(char ***cmds, t_mthings *mt, char **envp, int ncmd)
 {
 	int		pid;
 	int		status;
@@ -67,7 +67,7 @@ char	****buildquad2(char ***cmds)
 	return (quad);
 }
 
-int	commandexist(t_minithings *mt, char **cmd)
+int	commandexist(t_mthings *mt, char **cmd)
 {
 	char	*path;
 
@@ -85,7 +85,7 @@ int	commandexist(t_minithings *mt, char **cmd)
 	return (1);
 }
 
-void	commands(t_minithings *minithings, char **envp)
+void	commands(t_mthings *minithings, char **envp)
 {
 	int		nbr_cmds;
 	char	****quad;

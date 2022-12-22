@@ -45,7 +45,7 @@ char	*normi(t_path *path)
 	return (tmp);
 }
 
-char	*find_path(char *cmd, t_exporttable **envp)
+char	*find_path(char *cmd, t_extab **envp)
 {
 	t_path	*path;
 
@@ -71,7 +71,7 @@ char	*find_path(char *cmd, t_exporttable **envp)
 	return (0);
 }
 
-void	pipex(int nbr_cmds, char ***cmds, char **envp, t_minithings *mt)
+void	pipex(int nbr_cmds, char ***cmds, char **envp, t_mthings *mt)
 {
 	int	i;
 

@@ -133,7 +133,7 @@ int srch_tptr(char ***str, char c)
 	return (-1);
 }
 
-int	redirections(t_minithings *mt, char **envp)
+int	redirections(t_mthings *mt, char **envp)
 {
 	int i;
 	int j;
