@@ -126,67 +126,57 @@ void	cleanup_redirects(t_cmds **cmds)
 void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 {
 	t_cmds	*tmp;
-	t_cmds	**holder;
 	int 	apagar[347];
 	int		i;
-	int 	out[347];
-	int		o;
 	int 	j;
-	int		hold;
 	int		size;
+	int		hold;
 
 	(void)mt;
 	tmp = *cmds;
 	j = 0;
 	i = 0;
-	o = 0;
-	out[0] = -1;
-	apagar[0] = -1;
-	holder = malloc(sizeof(t_cmds *));
-	*holder = NULL;
+	apagar[0] = 454545;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
 		{
 			tmp = tmp->next;
-			o++;
-			out[o] = 314159265;
 			j++;
 		}
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
-			out[o] = j;
 			apagar[i++] = j;
 		}
 		j++;
 		tmp = tmp->next;
 	}
-	hold = o;
-	o = 0;
-	printf("hold: %i\n", hold);
-	while(o <= hold)
+	hold = i;
+	int a = 0, b = 0, c = 0;
+	mt->outs = malloc(sizeof(char *));
+	while (c++ < hold)
 	{
-		printf("out[%d] = %d\n", o, out[o]);
-		if (out[o] == 31415265)
+		if (apagar[c] == 31415)
 		{
-			o++;
-			ft_lstaddback(holder, ft_lstnew("PIPETEMPIPE", 0, 0));
+			a++;
+			b = 0;
 		}
-		else if (out[o] != -1)
+		else
 		{
-			ft_lstaddback(holder, ft_lstnew(idx(cmds, out[o])->cmd, 0, idx(cmds, out[o])->redirect));
+			mt->outs[a][b++] = ft_strdup(idx(cmds, apagar[c])->cmd);
 		}
-		o++;
 	}
-	printf("\n\n");
-	printf("ola\n");
-	printlist(holder);
-	printf("\n\n");
 	if (apagar[0] != -1)
 	{
 		while (i--)
-			delete_elem(cmds, apagar[i]);
+		{
+			printf("apagar[%d] = %d\n", i, apagar[i]);
+			if (apagar[i] != 31415) {
+				delete_elem(cmds, apagar[i]);
+			}
+		}
 	}
 	size = sizelst(cmds);
+	printf("i: %d\n", i);
 	printf("size: %i\n", size);
 }

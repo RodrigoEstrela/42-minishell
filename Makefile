@@ -28,7 +28,7 @@ SRCS		=		main/main.c main/sighandler.c main/prompt.c \
 
 OBJS 		=		$(addprefix objs/,$(SRCS:.c=.o))
 
-CFLAGS		=		-g #-Wall -Wextra -Werror #-fsanitize=address
+CFLAGS		=		-g -Wall -Wextra -Werror #-fsanitize=address
 RM			=		rm -f
 
 NAME		= 		minishell
