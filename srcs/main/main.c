@@ -71,8 +71,10 @@ void	do_things(t_mthings *mt, char **envp)
 	mt->cmds = parser(mt->line, mt->export, mt);
 	if (mt->cmds)
 	{
-//		commands(mt, envp);
+		commands(mt, envp);
 		free_triple_pointer(mt->cmds);
+		free(mt->outs);
+		free(mt->ins);
 		exitcode_file(mt);
 	}
 	else

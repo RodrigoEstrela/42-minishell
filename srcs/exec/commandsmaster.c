@@ -85,7 +85,7 @@ int	commandexist(t_mthings *mt, char **cmd)
 	return (1);
 }
 
-void	commands(t_mthings *minithings, char **envp)
+void	commands(t_mthings *mt, char **envp)
 {
 	int		nbr_cmds;
 	char	****quad;
@@ -93,22 +93,22 @@ void	commands(t_mthings *minithings, char **envp)
 
 	i = -1;
 	nbr_cmds = -1;
-	quad = buildquad2(minithings->cmds);
+	quad = buildquad2(mt->cmds);
 	while (++i < 2 && quad[i])
 	{
 		if (ft_strcmp(quad[i][0][0], "exit") == 0)
 		{
-			exitin(quad, minithings, i);
+			exitin(quad, mt, i);
 			return ;
 		}
 		else if (is_builtin(quad[i][0][0]) && !quad[i][1])
 		{
-			builtins(minithings, 0);
+			builtins(mt, 0);
 			freequadpointer(quad);
 			return ;
 		}
-		if (commandexist(minithings, quad[i][0]))
-			commands_utils(quad[i], minithings, envp, nbr_cmds);
+		if (commandexist(mt, quad[i][0]))
+			commands_utils(quad[i], mt, envp, nbr_cmds);
 	}
 	freequadpointer(quad);
 }

@@ -69,9 +69,11 @@ void	printlist(t_cmds **cmds)
 	tmp = *cmds;
 	while (tmp)
 	{
-		printf("%s\n", tmp->cmd);
+		printf("cnt: %s, quotes: %d, redir: %d\n", tmp->cmd, tmp->quotes,
+			tmp->redirect);
 		tmp = tmp->next;
 	}
+	printf("\n");
 }
 
 char	***return_parser(t_parser *ctr, t_cmds **cmds)
@@ -114,11 +116,16 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}
-	if (ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
-		&& input[slen(input) - 1] == '|')
+	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
+		&& input[slen(input) - 1] == '|') || (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
+		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0
+		&& ft_strcmp((*cmds)->next->cmd, "|314159265358979323846")))
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirects(cmds);
 	cleanup_output(cmds, mt);
+	cleanup_input(cmds, mt);
+	printlist(mt->ins);
 	printlist(cmds);
+	printlist(mt->outs);
 	return (return_parser(ctr, cmds));
 }

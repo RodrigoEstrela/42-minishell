@@ -72,8 +72,8 @@ typedef struct s_lists
 	t_extab	**export;
 	char			*line;
 	char			***cmds;
-	char 			***ins;
-	char			***outs;
+	t_cmds			**ins;
+	t_cmds			**outs;
 	char			*efpath;
 	int				wcode;
 	int				rcode;
@@ -99,7 +99,7 @@ typedef struct s_path
 t_extab	*envvaradd(char *k, char *v, t_mthings *mt);
 void			sig_handler(void);
 void			sig_handler_block(void);
-void			commands(t_mthings *minithings, char **envp);
+void			commands(t_mthings *mt, char **envp);
 void			builtins(t_mthings *minithings, int indx);
 int				is_builtin(char *str);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -193,6 +193,7 @@ int				redirections(t_mthings *mt, char **envp);
 int				redirects(int ac, char **av, char **envp);
 void			cleanup_redirects(t_cmds **cmds);
 void			cleanup_output(t_cmds **cmds, t_mthings *mt);
+void			cleanup_input(t_cmds **cmds, t_mthings *mt);
 t_cmds			*idx(t_cmds **cmds, int index);
 void			printlist(t_cmds **cmds);
 void			addinindex(t_cmds **lst, t_cmds *new, int index);

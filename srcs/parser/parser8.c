@@ -36,7 +36,10 @@ int	pipepipe(char *input)
 				flag = 0;
 		}
 		if (input[i] == '|' && input[i + 1] == '|' && flag == 0)
+		{
+			printf("minishell: syntax error near unexpected token `||'");
 			return (1);
+		}
 	}
 	return (0);
 }
@@ -129,54 +132,62 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 	int 	apagar[347];
 	int		i;
 	int 	j;
-	int		size;
-	int		hold;
 
-	(void)mt;
 	tmp = *cmds;
 	j = 0;
 	i = 0;
 	apagar[0] = 454545;
+	mt->outs = malloc(sizeof(t_cmds));
+	*mt->outs = NULL;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
 		{
+			ft_lstaddback(mt->outs, ft_lstnew("PIPETEMPIPE", 0, 0));
 			tmp = tmp->next;
 			j++;
 		}
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
 			apagar[i++] = j;
+			ft_lstaddback(mt->outs, ft_lstnew(tmp->cmd, 0, tmp->redirect));
 		}
 		j++;
 		tmp = tmp->next;
 	}
-	hold = i;
-	int a = 0, b = 0, c = 0;
-	mt->outs = malloc(sizeof(char *));
-	while (c++ < hold)
+	while (i--)
+		delete_elem(cmds, apagar[i]);
+}
+
+void	cleanup_input(t_cmds **cmds, t_mthings *mt)
+{
+	t_cmds	*tmp;
+	int 	apagar[347];
+	int		i;
+	int 	j;
+
+	tmp = *cmds;
+	j = 0;
+	i = 0;
+	apagar[0] = 454545;
+	mt->ins = malloc(sizeof(t_cmds));
+	*mt->ins = NULL;
+	while (tmp)
 	{
-		if (apagar[c] == 31415)
+		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
 		{
-			a++;
-			b = 0;
+			ft_lstaddback(mt->ins, ft_lstnew("PIPETEMPIPE", 0, 0));
+			tmp = tmp->next;
+			j++;
 		}
-		else
+		if ((tmp->redirect == 1 || tmp->redirect == 2))
 		{
-			mt->outs[a][b++] = ft_strdup(idx(cmds, apagar[c])->cmd);
+			apagar[i++] = j;
+			ft_lstaddback(mt->ins, ft_lstnew(tmp->cmd, 0, tmp->redirect));
 		}
+		j++;
+		tmp = tmp->next;
 	}
-	if (apagar[0] != -1)
-	{
-		while (i--)
-		{
-			printf("apagar[%d] = %d\n", i, apagar[i]);
-			if (apagar[i] != 31415) {
-				delete_elem(cmds, apagar[i]);
-			}
-		}
-	}
-	size = sizelst(cmds);
-	printf("i: %d\n", i);
-	printf("size: %i\n", size);
+	while (i--)
+		delete_elem(cmds, apagar[i]);
 }
