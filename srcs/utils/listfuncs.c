@@ -61,7 +61,7 @@ t_cmds	*idx(t_cmds **cmds, int index)
 
 	i = 0;
 	lst = *cmds;
-	while (i < index)
+	while (lst && lst->next && i < index)
 	{
 		lst = lst->next;
 		i++;

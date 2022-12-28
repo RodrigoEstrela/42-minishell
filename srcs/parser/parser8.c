@@ -159,6 +159,32 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 		delete_elem(cmds, apagar[i]);
 }
 
+void	cleanup_input2(t_mthings *mt)
+{
+	t_cmds	*tmp;
+	int		i;
+
+	tmp = *mt->ins;
+	i = 0;
+	if (!tmp)
+		return;
+	if (ft_strcmp(idx(&tmp, 0)->cmd, "PIPETEMPIPE") == 0)
+	{
+		addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), 0);
+		i++;
+	}
+	while (i < sizelst(mt->ins))
+	{
+		i++;
+	}
+	if (ft_strcmp(idx(&tmp, sizelst(mt->ins))->cmd, "PIPETEMPIPE") == 0)
+	{
+		addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), sizelst(mt->ins));
+	}
+	printf("i: %d\n", i - 1);
+	printf("size: %d\n", sizelst(mt->ins));
+}
+
 void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 {
 	t_cmds	*tmp;
@@ -190,4 +216,5 @@ void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 	}
 	while (i--)
 		delete_elem(cmds, apagar[i]);
+	cleanup_input2(mt);
 }
