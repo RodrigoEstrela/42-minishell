@@ -128,34 +128,26 @@ void	cleanup_redirects(t_cmds **cmds)
 
 void	cleanup_output2(t_mthings *mt)
 {
-	t_cmds	*tmp;
 	int		i;
-	int		size;
 
-	tmp = *mt->outs;
 	i = 0;
-	if (!tmp)
+	if (!*mt->outs)
 	{
 		ft_lstaddback(mt->outs, ft_lstnew("SEMOUTS", 0, 0));
 		return;
 	}
-	if (ft_strcmp(idx(&tmp, 0)->cmd, "PIPETEMPIPE") == 0)
+	if (ft_strcmp(idx(mt->outs, 0)->cmd, "PIPETEMPIPE") == 0)
 	{
 		addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), 0);
 		i++;
 	}
-	if (ft_strcmp(idx(&tmp, sizelst(mt->outs))->cmd, "PIPETEMPIPE") == 0)
+	if (ft_strcmp(idx(mt->outs, sizelst(mt->outs))->cmd, "PIPETEMPIPE") == 0)
 		addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), sizelst(mt->outs));
-	size = sizelst(mt->outs);
-	while (i <= size)
+	while (i <= sizelst(mt->outs))
 	{
 		if (ft_strcmp(idx(mt->outs, i)->cmd, "PIPETEMPIPE") == 0
 			&& ft_strcmp(idx(mt->outs, i + 1)->cmd, "PIPETEMPIPE") == 0)
-		{
-			addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), i + 1);
-			size++;
-			i++;
-		}
+			addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), i++ + 1);
 		i++;
 	}
 }
@@ -196,34 +188,26 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 
 void	cleanup_input2(t_mthings *mt)
 {
-	t_cmds	*tmp;
 	int		i;
-	int		size;
 
-	tmp = *mt->ins;
 	i = 0;
-	if (!tmp)
+	if (!*mt->ins)
 	{
 		ft_lstaddback(mt->ins, ft_lstnew("SEMINS", 0, 0));
 		return;
 	}
-	if (ft_strcmp(idx(&tmp, 0)->cmd, "PIPETEMPIPE") == 0)
+	if (ft_strcmp(idx(mt->ins, 0)->cmd, "PIPETEMPIPE") == 0)
 	{
 		addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), 0);
 		i++;
 	}
-	if (ft_strcmp(idx(&tmp, sizelst(mt->ins))->cmd, "PIPETEMPIPE") == 0)
+	if (ft_strcmp(idx(mt->ins, sizelst(mt->ins))->cmd, "PIPETEMPIPE") == 0)
 		addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), sizelst(mt->ins));
-	size = sizelst(mt->ins);
-	while (i <= size)
+	while (i <= sizelst(mt->ins))
 	{
 		if (ft_strcmp(idx(mt->ins, i)->cmd, "PIPETEMPIPE") == 0
 		&& ft_strcmp(idx(mt->ins, i + 1)->cmd, "PIPETEMPIPE") == 0)
-		{
-			addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), i + 1);
-			size++;
-			i++;
-		}
+			addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), i++ + 1);
 		i++;
 	}
 }

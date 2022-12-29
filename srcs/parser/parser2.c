@@ -66,6 +66,8 @@ void	printlist(t_cmds **cmds)
 {
 	t_cmds	*tmp;
 
+	if (!cmds)
+		return ;
 	tmp = *cmds;
 	while (tmp)
 	{
@@ -93,6 +95,21 @@ char	***return_parser(t_parser *ctr, t_cmds **cmds)
 	return (cmd);
 }
 
+int	doispipesseguidos(t_cmds **cmds)
+{
+	t_cmds	*tmp;
+
+	tmp = *cmds;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0
+		&& ft_strcmp(tmp->next->cmd, "|314159265358979323846") == 0 && tmp->next->next)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 {
 	t_cmds		**cmds;
@@ -117,8 +134,7 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 	}
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 		&& input[slen(input) - 1] == '|') || (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
-		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0
-		&& ft_strcmp((*cmds)->next->cmd, "|314159265358979323846")))
+		|| doispipesseguidos(cmds) == 1)
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirects(cmds);
 	cleanup_output(cmds, mt);
