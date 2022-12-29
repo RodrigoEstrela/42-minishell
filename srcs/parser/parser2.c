@@ -69,8 +69,7 @@ void	printlist(t_cmds **cmds)
 	tmp = *cmds;
 	while (tmp)
 	{
-		printf("cnt: %s, quotes: %d, redir: %d\n", tmp->cmd, tmp->quotes,
-			tmp->redirect);
+		printf("cnt: %s,  redir: %d\n", tmp->cmd, tmp->redirect);
 		tmp = tmp->next;
 	}
 	printf("\n");
