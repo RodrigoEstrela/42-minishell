@@ -142,5 +142,6 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 	printlist(mt->ins);
 	printlist(cmds);
 	printlist(mt->outs);
+//	mt->megains = split_list(*mt->ins, "PIPETEMPIPE");
 	return (return_parser(ctr, cmds));
 }
