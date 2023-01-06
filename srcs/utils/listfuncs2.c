@@ -21,17 +21,15 @@ void	delete_elem(t_cmds **lst, int index)
 	if (index == 0)
 	{
 		*lst = tmp->next;
-		free(tmp->cmd);
 		free(tmp);
 		return ;
 	}
-	while (index--)
+	while (index-- > 0)
 	{
 		prev = tmp;
 		tmp = tmp->next;
 	}
 	prev->next = tmp->next;
-	free(tmp->cmd);
 	free(tmp);
 }
 

@@ -180,6 +180,8 @@ void	pipex(int nbr_cmds, char ***cmds, char **envp, t_mthings *mt)
 	t_redirs 	redirs;
 
 	i = -1;
+	redirs.in = -2;
+	redirs.out = -2;
 	if (nbr_cmds >= 1)
 	{
 		if (ft_strcmp(mt->ins[0]->cmd, "SEMINS") != 0)

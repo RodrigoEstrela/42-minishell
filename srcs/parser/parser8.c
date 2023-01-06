@@ -201,7 +201,7 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 		j++;
 		tmp = tmp->next;
 	}
-	while (i--)
+	while (i-- > 0)
 		delete_elem(cmds, apagar[i]);
 	cleanup_output2(mt);
 }

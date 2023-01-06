@@ -20,10 +20,10 @@ t_cmds	*ft_lstnew(void *content, int quotes, int redirect)
 	if (!new)
 		return (NULL);
 	new->cmd = ft_strdup(content);
-	free(content);
 	new->quotes = quotes;
 	new->redirect = redirect;
 	new->next = NULL;
+	free(content);
 	return (new);
 }
 
