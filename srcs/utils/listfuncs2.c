@@ -24,7 +24,7 @@ void	delete_elem(t_cmds **lst, int index)
 		free(tmp);
 		return ;
 	}
-	while (index-- > 0)
+	while (index--)
 	{
 		prev = tmp;
 		tmp = tmp->next;

@@ -63,7 +63,7 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
 			}
-			else if (slen(tmp->cmd) > 2 && tmp->cmd[1] != '>')
+			else if (slen(tmp->cmd) >= 2 && tmp->cmd[1] != '>')
 			{
 				tmp->redirect = 1;
 				tmp2 = tmp->cmd;
@@ -85,7 +85,7 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
 			}
-			else if (slen(tmp->cmd) > 3)
+			else if (slen(tmp->cmd) >= 3)
 			{
 				tmp->redirect = 2;
 				tmp2 = tmp->cmd;
@@ -102,7 +102,7 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
 			}
-			else if (slen(tmp->cmd) > 2 && tmp->cmd[1] != '<')
+			else if (slen(tmp->cmd) >= 2 && tmp->cmd[1] != '<')
 			{
 				tmp->redirect = 3;
 				tmp2 = tmp->cmd;
@@ -261,7 +261,8 @@ void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 		j++;
 		tmp = tmp->next;
 	}
-	while (i--)
+	while (i--) {
 		delete_elem(cmds, apagar[i]);
+	}
 	cleanup_input2(mt);
 }

@@ -90,9 +90,39 @@ char **cpydp(char **dp)
 	return (new);
 }
 
+void	ft_putendl_fd(char *s, int fd)
+{
+	int i;
+
+	i = 0;
+	if (!s)
+		return;
+	while (s[i]) {
+		write(fd, &s[i], 1);
+		i++;
+	}
+	write(fd, "\n", 1);
+}
+
+void ft_heredoc(char *limiter, int fd)
+{
+	char *line;
+
+	while (1)
+	{
+		line = readline("heredoc> ");
+		if (ft_strncmp(line, limiter, slen(limiter)) == 0)
+			break ;
+		ft_putendl_fd(line, fd);
+		free(line);
+	}
+	free(line);
+}
+
 int	meteins(t_cmds **ins)
 {
 	int		fd;
+	int		fd2;
 	t_cmds *tmp;
 
 	tmp = *ins;
@@ -107,7 +137,18 @@ int	meteins(t_cmds **ins)
 		}
 		if (tmp->cmd[slen(tmp->cmd) - 1] == ' ')
 			tmp->cmd[slen(tmp->cmd) - 1] = 0;
-		fd = open(tmp->cmd, O_RDONLY);
+		if (tmp->redirect == 1)
+		{
+			fd = open(tmp->cmd, O_RDONLY);
+			if (fd == -1)
+				return (-42);
+		}
+		else
+		{
+			fd2 = open("heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+			ft_heredoc(tmp->cmd, fd2);
+			fd = open("heredoc", O_RDONLY);
+		}
 		tmp = tmp->next;
 		delete_elem(ins, 0);
 	}
@@ -191,9 +232,19 @@ void	pipex(int nbr_cmds, char ***cmds, char **envp, t_mthings *mt)
 		while (++i < nbr_cmds - 1)
 		{
 			redirs = meteredirs(cmds[i], mt->ins, mt->outs);
+			if (redirs.in == -42)
+			{
+				printf("minishell: No such file or directory\n");
+				return;
+			}
 			child_one(redirs, mt, envp, i);
 		}
 		redirs = meteredirs(cmds[nbr_cmds - 1], mt->ins, mt->outs);
+		if (redirs.in == -42)
+		{
+			printf("minishell: No such file or directory\n");
+			return;
+		}
 		execute(redirs, mt, envp, i);
 	}
 }
