@@ -87,7 +87,7 @@ void	do_things(t_mthings *mt, char **envp)
 int	main(int ac, char **av, char **envp)
 {
 	t_mthings	*mt;
-	char			*colorful_path;
+	char		*colorful_path;
 
 	mt = (t_mthings *) malloc(sizeof(t_mthings));
 	build_export_table(mt, envp);

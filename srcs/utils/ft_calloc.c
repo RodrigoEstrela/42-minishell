@@ -54,4 +54,3 @@ void	megafree(t_mthings *mt)
 	write(1, "exit\n", 5);
 	exit(0);
 }
-

@@ -12,22 +12,22 @@
 
 #include"../../inc/minishell.h"
 
-t_parser	*barra(t_parser *ctr, char *input, t_cmds **cmds)
+t_parser	*barra(t_parser *p, char *in, t_cmds **cmd)
 {
 	char	*str;
 
-	ctr->start = ctr->i + 1;
-	while (input[++ctr->i] != '\'')
+	p->start = p->i + 1;
+	while (in[++p->i] != '\'')
 		;
-	if (input[ctr->i + 1] == ' ')
+	if (in[p->i + 1] == ' ')
 	{
-		str = str_space_dup(input, ctr->start, '\'');
-		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str, " "), 2, 0));
+		str = str_space_dup(in, p->start, '\'');
+		ft_lstaddback(cmd, ft_lstnew(ft_strjoin(str, " "), 2, 0));
 		free(str);
 	}
 	else
-		ft_lstaddback(cmds, ft_lstnew(str_space_dup(input, ctr->start, '\''), 2, 0));
-	return (ctr);
+		ft_lstaddback(cmd, ft_lstnew(str_space_dup(in, p->start, '\''), 2, 0));
+	return (p);
 }
 
 void	adollar(t_parser *ctr, char *input,
@@ -46,18 +46,18 @@ void	adollar(t_parser *ctr, char *input,
 				dollar_expansion(input, ctr->start, '"', export), 2, 0));
 }
 
-void	aspas_no_dollar(t_parser *ctr, char *input, t_cmds **cmds)
+void	aspas_no_dollar(t_parser *p, char *in, t_cmds **cmd)
 {
 	char	*str;
 
-	if (input[ctr->i + 1] == ' ')
+	if (in[p->i + 1] == ' ')
 	{
-		str = str_space_dup(input, ctr->start, '"');
-		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str, " "), 2, 0));
+		str = str_space_dup(in, p->start, '"');
+		ft_lstaddback(cmd, ft_lstnew(ft_strjoin(str, " "), 2, 0));
 		free(str);
 	}
 	else
-		ft_lstaddback(cmds, ft_lstnew(str_space_dup(input, ctr->start, '"'), 2, 0));
+		ft_lstaddback(cmd, ft_lstnew(str_space_dup(in, p->start, '"'), 2, 0));
 }
 
 t_cmds	*ft_last_cmd(t_cmds *cmds)

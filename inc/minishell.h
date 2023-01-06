@@ -58,18 +58,17 @@ typedef struct s_exporttable
  redirect: 3 = output
  redirect: 4 = append
 */
-
 typedef struct s_cmds
 {
 	char			*cmd;
-	int 			quotes;
-	int 			redirect;
+	int				quotes;
+	int				redirect;
 	struct s_cmds	*next;
 }			t_cmds;
 
 typedef struct s_lists
 {
-	t_extab	**export;
+	t_extab			**export;
 	char			*line;
 	char			***cmds;
 	t_cmds			**ins;
@@ -92,19 +91,19 @@ typedef struct s_path
 	char			*path;
 	int				i;
 	char			*part_path;
-	t_extab	*tmp;
+t_extab			*tmp;
 }					t_path;
 
 typedef struct s_coisas
 {
 	char			**cmd;
-	int 			in;
-	int 			out;
+	int				in;
+	int				out;
 }					t_redirs;
 
 // Functions
 
-t_extab	*envvaradd(char *k, char *v, t_mthings *mt);
+t_extab			*envvaradd(char *k, char *v, t_mthings *mt);
 void			sig_handler(void);
 void			sig_handler_block(void);
 void			commands(t_mthings *mt, char **envp);
@@ -121,7 +120,7 @@ void			export(t_mthings *mt);
 void			show_export_list(t_mthings *minithings, int flag);
 void			nodefront(t_extab **head, t_extab *new);
 void			nodeback(t_extab **lst, t_extab *new);
-t_extab	*ind(t_extab *tmp, int index);
+t_extab			*ind(t_extab *tmp, int index);
 int				ft_lstsize(t_extab *lst);
 int				check_duplicated(t_extab **export, char *str);
 void			valmod(t_extab **exp, char *v, int i, t_mthings *mt);
@@ -135,7 +134,7 @@ char			*ft_substr(char const *s, int start, size_t len);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char *s1, char *s2);
 char			*ft_strchr(const char *s, int c);
-void			child_one(t_redirs redirs, t_mthings *mt, char **envp, int indx);
+void			child_one(t_redirs red, t_mthings *mt, char **envp, int indx);
 void			execute(t_redirs redirs, t_mthings *mt, char **envp, int indx);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_exstrchr(char *s);
@@ -149,7 +148,7 @@ void			free_triple_pointer(char ***triple);
 void			free_double_array(char **array);
 int				dpsize(char **input);
 int				ft_isnumber(char *str);
-t_parser		*barra(t_parser *ctr, char *input, t_cmds **cmds);
+t_parser		*barra(t_parser *p, char *in, t_cmds **cmd);
 t_parser		*aspas(t_parser *ct, char *i, t_cmds **c, t_extab **e);
 char			*only_z(char *input, int start, t_extab **export);
 t_parser		*dollar(t_parser *ct, char *i, t_cmds **c, t_extab **e);
@@ -186,7 +185,7 @@ void			get_val_from_export(t_extab **e, t_cmds **a, t_cmds **v);
 void			dollar_expanded(char *in, char *new_str, int *ij, t_cmds **v);
 char			*search_export(t_extab **export, char *key);
 void			adollar(t_parser *ct, char *i, t_cmds **c, t_extab **e);
-void			aspas_no_dollar(t_parser *ctr, char *input, t_cmds **cmds);
+void			aspas_no_dollar(t_parser *p, char *in, t_cmds **cmd);
 int				ft_strstr_index(char *str, char *to_find);
 void			free_export_table(t_extab *export);
 int				only_space(char *str);
@@ -197,8 +196,6 @@ t_cmds			*ft_last_cmd(t_cmds *cmds);
 void			exitcode_gvar(t_mthings *mt);
 void			exitcode_file(t_mthings *mt);
 int				pipepipe(char *input);
-int				redirections(t_mthings *mt, char **envp);
-int				redirects(int ac, char **av, char **envp);
 void			cleanup_redirects(t_cmds **cmds);
 void			cleanup_output(t_cmds **cmds, t_mthings *mt);
 void			cleanup_input(t_cmds **cmds, t_mthings *mt);

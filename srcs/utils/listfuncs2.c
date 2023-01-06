@@ -58,8 +58,8 @@ void	addinindex(t_cmds **lst, t_cmds *new, int index)
 
 int	sizelst(t_cmds **lst)
 {
-	int	i;
-	t_cmds *tmp;
+	int		i;
+	t_cmds	*tmp;
 
 	i = 0;
 	tmp = *lst;

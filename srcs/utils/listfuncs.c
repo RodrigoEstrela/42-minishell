@@ -57,8 +57,8 @@ int	ft_lstsize(t_extab *lst)
 
 t_cmds	*idx(t_cmds **cmds, int index)
 {
-	int	i;
-	t_cmds *lst;
+	int		i;
+	t_cmds	*lst;
 
 	i = 0;
 	lst = *cmds;

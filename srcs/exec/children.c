@@ -12,9 +12,9 @@
 
 #include"../../inc/minishell.h"
 
-void print_double_array(char **array)
+void	print_double_array(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i])
@@ -39,7 +39,6 @@ void	execute(t_redirs redirs, t_mthings *mt, char **envp, int indx)
 		dup2(redirs.out, 1);
 	if (redirs.in != -2)
 		dup2(redirs.in, 0);
-//	print_double_array(redirs.cmd);
 	execve(path, redirs.cmd, envp);
 	free(path);
 	printf("Error: command not found: %s\n", redirs.cmd[0]);
@@ -66,7 +65,6 @@ void	child_one(t_redirs redirs, t_mthings *mt, char **envp, int indx)
 	}
 	else
 	{
-
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);

@@ -13,7 +13,7 @@
 #include "../../inc/minishell.h"
 
 t_parser	*aspas(t_parser *ctr, char *input,
-				   t_cmds **cmds, t_extab **export)
+				t_cmds **cmds, t_extab **export)
 {
 	ctr->start = ctr->i + 1;
 	while (input[++ctr->i] != '"')
@@ -22,7 +22,6 @@ t_parser	*aspas(t_parser *ctr, char *input,
 		adollar(ctr, input, cmds, export);
 	else
 		aspas_no_dollar(ctr, input, cmds);
-
 	return (ctr);
 }
 
@@ -54,7 +53,7 @@ t_parser	*dollar(t_parser *ctr, char *i,
 t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
 {
 	ctr->start = ctr->i;
-	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0'), 0,0));
+	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0'), 0, 0));
 	while (i[ctr->i] && i[ctr->i] != ' ' && i[ctr->i] != '$'
 		&& i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
 		ctr->i++;
@@ -105,7 +104,8 @@ int	doispipesseguidos(t_cmds **cmds)
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0
-		&& ft_strcmp(tmp->next->cmd, "|314159265358979323846") == 0 && tmp->next->next)
+			&& ft_strcmp(tmp->next->cmd, "|314159265358979323846") == 0
+			&& tmp->next->next)
 			return (1);
 		tmp = tmp->next;
 	}
@@ -130,19 +130,19 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 		else if (input[ctr->i] == '$')
 			ctr = dollar(ctr, input, cmds, etab);
 		else if (input[ctr->i] == '|')
-			ft_lstaddback(cmds, ft_lstnew(ft_strdup("|314159265358979323846"), 0, 0));
+			ft_lstaddback(cmds, ft_lstnew(
+					ft_strdup("|314159265358979323846"),
+					0, 0));
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
-		&& input[slen(input) - 1] == '|') || (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
+			&& input[slen(input) - 1] == '|')
+		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
 		|| doispipesseguidos(cmds) == 1)
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirects(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
-	printlist(mt->ins);
-	printlist(cmds);
-	printlist(mt->outs);
 	return (return_parser(ctr, cmds));
 }

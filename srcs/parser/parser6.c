@@ -58,7 +58,7 @@ void	cleanup(char ***cmd)
 }
 
 char	*dollar_expansion(char *input, int start,
-						  int divider, t_extab **export)
+						int divider, t_extab **export)
 {
 	t_cmds		**vars;
 	t_cmds		**values;
@@ -86,7 +86,7 @@ char	*dollar_expansion(char *input, int start,
 char	*search_export(t_extab **export, char *key)
 {
 	t_extab	*tmp;
-	char			*value;
+	char	*value;
 
 	tmp = *export;
 	while (tmp)

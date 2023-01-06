@@ -72,7 +72,7 @@ void	ft_sort_list(t_extab *l, int size)
 t_extab	*ind(t_extab *list, int index)
 {
 	int				i;
-	t_extab	*tmp;
+	t_extab			*tmp;
 
 	i = 0;
 	tmp = list;
