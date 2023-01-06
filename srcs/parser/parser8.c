@@ -153,21 +153,21 @@ void	cleanup_output2(t_mthings *mt)
 	i = 0;
 	if (!*mt->outs)
 	{
-		ft_lstaddback(mt->outs, ft_lstnew("SEMOUTS", 0, 0));
+		ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"), 0, 0));
 		return;
 	}
 	if (ft_strcmp(idx(mt->outs, 0)->cmd, "PIPETEMPIPE") == 0)
 	{
-		addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), 0);
+		addinindex(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"), 0, 0), 0);
 		i++;
 	}
 	if (ft_strcmp(idx(mt->outs, sizelst(mt->outs))->cmd, "PIPETEMPIPE") == 0)
-		addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), sizelst(mt->outs));
+		addinindex(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"), 0, 0), sizelst(mt->outs));
 	while (i <= sizelst(mt->outs))
 	{
 		if (ft_strcmp(idx(mt->outs, i)->cmd, "PIPETEMPIPE") == 0
 			&& ft_strcmp(idx(mt->outs, i + 1)->cmd, "PIPETEMPIPE") == 0)
-			addinindex(mt->outs, ft_lstnew("SEMOUTS", 0, 0), i++ + 1);
+			addinindex(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"), 0, 0), i++ + 1);
 		i++;
 	}
 }
@@ -189,7 +189,7 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 	{
 		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
 		{
-			ft_lstaddback(mt->outs, ft_lstnew("PIPETEMPIPE", 0, 0));
+			ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("PIPETEMPIPE"), 0, 0));
 			tmp = tmp->next;
 			j++;
 		}
@@ -213,21 +213,21 @@ void	cleanup_input2(t_mthings *mt)
 	i = 0;
 	if (!*mt->ins)
 	{
-		ft_lstaddback(mt->ins, ft_lstnew("SEMINS", 0, 0));
+		ft_lstaddback(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0));
 		return;
 	}
 	if (ft_strcmp(idx(mt->ins, 0)->cmd, "PIPETEMPIPE") == 0)
 	{
-		addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), 0);
+		addinindex(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0), 0);
 		i++;
 	}
 	if (ft_strcmp(idx(mt->ins, sizelst(mt->ins))->cmd, "PIPETEMPIPE") == 0)
-		addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), sizelst(mt->ins));
+		addinindex(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0), sizelst(mt->ins));
 	while (i <= sizelst(mt->ins))
 	{
 		if (ft_strcmp(idx(mt->ins, i)->cmd, "PIPETEMPIPE") == 0
 		&& ft_strcmp(idx(mt->ins, i + 1)->cmd, "PIPETEMPIPE") == 0)
-			addinindex(mt->ins, ft_lstnew("SEMINS", 0, 0), i++ + 1);
+			addinindex(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0), i++ + 1);
 		i++;
 	}
 }
@@ -249,7 +249,7 @@ void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 	{
 		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
 		{
-			ft_lstaddback(mt->ins, ft_lstnew("PIPETEMPIPE", 0, 0));
+			ft_lstaddback(mt->ins, ft_lstnew(ft_strdup("PIPETEMPIPE"), 0, 0));
 			tmp = tmp->next;
 			j++;
 		}

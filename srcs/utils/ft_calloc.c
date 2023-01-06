@@ -46,7 +46,12 @@ void	megafree(t_mthings *mt)
 	free(mt->export);
 	free(mt->line);
 	free(mt->efpath);
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
 	free(mt);
 	write(1, "exit\n", 5);
 	exit(0);
 }
+

@@ -73,8 +73,6 @@ void	do_things(t_mthings *mt, char **envp)
 	{
 		commands(mt, envp);
 		free_triple_pointer(mt->cmds);
-		free(mt->outs);
-		free(mt->ins);
 		exitcode_file(mt);
 	}
 	else
