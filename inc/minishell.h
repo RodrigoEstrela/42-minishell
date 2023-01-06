@@ -73,6 +73,7 @@ typedef struct s_lists
 	char			*line;
 	char			***cmds;
 	t_cmds			**ins;
+	char			***megains;
 	t_cmds			**outs;
 	char			*efpath;
 	int				wcode;
@@ -93,6 +94,13 @@ typedef struct s_path
 	char			*part_path;
 	t_extab	*tmp;
 }					t_path;
+
+typedef struct s_coisas
+{
+	char			**cmd;
+	int 			in;
+	int 			out;
+}					t_redirs;
 
 // Functions
 
@@ -127,8 +135,8 @@ char			*ft_substr(char const *s, int start, size_t len);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char *s1, char *s2);
 char			*ft_strchr(const char *s, int c);
-void			child_one(char **av, t_mthings *mt, char **envp, int indx);
-void			execute(char **cmds, t_mthings *mt, char **envp, int indx);
+void			child_one(t_redirs redirs, t_mthings *mt, char **envp, int indx);
+void			execute(t_redirs redirs, t_mthings *mt, char **envp, int indx);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_exstrchr(char *s);
 char			*ft_strnldup(char *s1);

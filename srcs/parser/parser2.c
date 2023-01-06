@@ -88,6 +88,8 @@ char	***return_parser(t_parser *ctr, t_cmds **cmds)
 	while (++ctr->i < cmd_ctr)
 		cmd[ctr->i] = cmd_maker(*cmds, ctr->i + 1);
 	cmd[ctr->i] = NULL;
+	printf("after cmd_maker\n");
+	printlist(cmds);
 	delete_linked_list(*cmds);
 	free(cmds);
 	cleanup(cmd);
@@ -142,6 +144,5 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 	printlist(mt->ins);
 	printlist(cmds);
 	printlist(mt->outs);
-//	mt->megains = split_list(*mt->ins, "PIPETEMPIPE");
 	return (return_parser(ctr, cmds));
 }

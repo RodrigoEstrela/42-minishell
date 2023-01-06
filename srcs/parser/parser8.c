@@ -63,15 +63,21 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
 			}
-			else if (slen(tmp->cmd) > 2)
+			else if (slen(tmp->cmd) > 2 && tmp->cmd[1] != '>')
 			{
 				tmp->redirect = 1;
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 1);
 				free(tmp2);
 			}
+			else if (tmp->cmd[1] == '>')
+			{
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 1);
+				free(tmp2);
+			}
 		}
-		else if (!ft_strncmp(tmp->cmd, "<<", 2)  && tmp->quotes == 0)
+		if (!ft_strncmp(tmp->cmd, "<<", 2)  && tmp->quotes == 0)
 		{
 			if (tmp->next && slen(tmp->cmd) == 3)
 			{
@@ -87,7 +93,7 @@ void	cleanup_redirects(t_cmds **cmds)
 				free(tmp2);
 			}
 		}
-		else if (tmp->cmd[0] == '>' && tmp->cmd[1] != '>' && tmp->quotes == 0)
+		if (tmp->cmd[0] == '>' && tmp->cmd[1] != '>' && tmp->quotes == 0)
 		{
 			if (tmp->next && slen(tmp->cmd) == 2)
 			{
@@ -96,15 +102,22 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
 			}
-			else if (slen(tmp->cmd) > 2)
+			else if (slen(tmp->cmd) > 2 && tmp->cmd[1] != '<')
 			{
 				tmp->redirect = 3;
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 1);
 				free(tmp2);
 			}
+			else if (tmp->cmd[1] == '<')
+			{
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 1);
+				free(tmp2);
+				cleanup_redirects(cmds);
+			}
 		}
-		else if (!ft_strncmp(tmp->cmd, ">>", 2) && tmp->quotes == 0)
+		if (!ft_strncmp(tmp->cmd, ">>", 2) && tmp->quotes == 0)
 		{
 			if (tmp->next && slen(tmp->cmd) == 3)
 			{
@@ -113,12 +126,19 @@ void	cleanup_redirects(t_cmds **cmds)
 				tmp->cmd = ft_strdup(tmp->next->cmd);
 				delete_elem(cmds, j + 1);
 			}
-			else if (slen(tmp->cmd) > 2)
+			else if (slen(tmp->cmd) > 2 && tmp->cmd[2] != '<')
 			{
 				tmp->redirect = 4;
 				tmp2 = tmp->cmd;
 				tmp->cmd = ft_strdup(tmp2 + 2);
 				free(tmp2);
+			}
+			else if (tmp->cmd[2] == '<')
+			{
+				tmp2 = tmp->cmd;
+				tmp->cmd = ft_strdup(tmp2 + 2);
+				free(tmp2);
+				cleanup_redirects(cmds);
 			}
 		}
 		j++;
