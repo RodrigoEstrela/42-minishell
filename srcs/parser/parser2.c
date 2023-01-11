@@ -70,7 +70,7 @@ void	printlist(t_cmds **cmds)
 	tmp = *cmds;
 	while (tmp)
 	{
-		printf("cnt: %s,  redir: %d\n", tmp->cmd, tmp->redirect);
+		printf("cnt: %s,  redir: %d quotes: %d\n", tmp->cmd, tmp->redirect, tmp->quotes);
 		tmp = tmp->next;
 	}
 	printf("\n");
@@ -139,8 +139,13 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
 		|| doispipesseguidos(cmds) == 1)
 		return (missing_command_after_pipe(ctr, cmds));
+	cleanup_redirsnomeio(cmds);
 	cleanup_redirects(cmds);
+	printlist(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
+	printlist(cmds);
+	printlist(mt->ins);
+	printlist(mt->outs);
 	return (return_parser(ctr, cmds));
 }

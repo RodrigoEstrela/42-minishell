@@ -204,5 +204,6 @@ void			printlist(t_cmds **cmds);
 void			addinindex(t_cmds **lst, t_cmds *new, int index);
 void			delete_elem(t_cmds **lst, int index);
 int				sizelst(t_cmds **lst);
+void			cleanup_redirsnomeio(t_cmds **cmds);
 
 #endif

@@ -35,27 +35,6 @@ void	delete_elem(t_cmds **lst, int index)
 	free(tmp);
 }
 
-void	addinindex(t_cmds **lst, t_cmds *new, int index)
-{
-	t_cmds	*tmp;
-	t_cmds	*prev;
-
-	tmp = *lst;
-	if (index == 0)
-	{
-		new->next = tmp;
-		*lst = new;
-		return ;
-	}
-	while (index--)
-	{
-		prev = tmp;
-		tmp = tmp->next;
-	}
-	prev->next = new;
-	new->next = tmp;
-}
-
 int	sizelst(t_cmds **lst)
 {
 	int		i;
@@ -69,4 +48,30 @@ int	sizelst(t_cmds **lst)
 		i++;
 	}
 	return (i);
+}
+
+void	addinindex(t_cmds **lst, t_cmds *new, int index)
+{
+	t_cmds	*tmp;
+	t_cmds	*prev;
+
+	tmp = *lst;
+	if (index == 0)
+	{
+		new->next = tmp;
+		*lst = new;
+		return ;
+	}
+	while (index-- && tmp)
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	if (index > 0)
+	{
+		ft_lstaddback(lst, new);
+		return ;
+	}
+	prev->next = new;
+	new->next = tmp;
 }

@@ -44,6 +44,40 @@ int	pipepipe(char *input)
 	return (0);
 }
 
+void	cleanup_redirsnomeio(t_cmds **cmds)
+{
+	t_cmds	*tmp;
+	char	*str;
+	char	*str2;
+	int 	i;
+
+	tmp = *cmds;
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->quotes == 0 && ft_strchr(tmp->cmd, '<') && (tmp->cmd[0] != '<' || ft_strchr(ft_strchr(tmp->cmd, '<') + 2, '<')))
+		{
+			str = ft_strndup(tmp->cmd, slen(tmp->cmd) - slen(ft_strchr(tmp->cmd + 2, '<')));
+			str2 = ft_strdup(ft_strchr(tmp->cmd + 2, '<'));
+			free(tmp->cmd);
+			tmp->cmd = str;
+			addinindex(cmds, ft_lstnew(str2, 0, 0), i + 1);
+			i++;
+		}
+		else if (tmp->quotes == 0 && ft_strchr(tmp->cmd, '>') && (tmp->cmd[0] != '>' ||  ft_strchr(ft_strchr(tmp->cmd, '>') + 2, '>')))
+		{
+			str = ft_strndup(tmp->cmd, slen(tmp->cmd) - slen(ft_strchr(tmp->cmd + 2, '>')));
+			str2 = ft_strdup(ft_strchr(tmp->cmd + 2, '>'));
+			free(tmp->cmd);
+			tmp->cmd = str;
+			addinindex(cmds, ft_lstnew(str2, 0, 0), i + 1);
+			i++;
+		}
+		i++;
+		tmp = tmp->next;
+	}
+}
+
 void	cleanup_redirects(t_cmds **cmds)
 {
 	int		j;
