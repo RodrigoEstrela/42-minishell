@@ -82,6 +82,10 @@ void	do_things(t_mthings *mt, char **envp)
 		free(mt->cmds);
 	}
 	free(mt->line);
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
 }
 
 int	main(int ac, char **av, char **envp)

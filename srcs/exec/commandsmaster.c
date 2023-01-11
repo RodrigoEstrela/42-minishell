@@ -101,7 +101,7 @@ void	commands(t_mthings *mt, char **envp)
 			exitin(quad, mt, i);
 			return ;
 		}
-		else if (is_builtin(quad[i][0][0]) && !quad[i][1])
+		else if (is_builtin(quad[i][0][0]) == 2 && !quad[i][1])
 		{
 			builtins(mt, 0);
 			freequadpointer(quad);

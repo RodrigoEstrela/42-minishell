@@ -48,6 +48,10 @@ void	freebonitodoexit(t_mthings *mt, char ****quad)
 	free(mt->line);
 	free(mt->efpath);
 	free_triple_pointer(mt->cmds);
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
 	free(mt);
 	freequadpointer(quad);
 }

@@ -196,7 +196,7 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
 			apagar[i++] = j;
-			ft_lstaddback(mt->outs, ft_lstnew(tmp->cmd, 0, tmp->redirect));
+			ft_lstaddback(mt->outs, ft_lstnew(ft_strdup(tmp->cmd), 0, tmp->redirect));
 		}
 		j++;
 		tmp = tmp->next;
@@ -256,7 +256,7 @@ void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 		if ((tmp->redirect == 1 || tmp->redirect == 2))
 		{
 			apagar[i++] = j;
-			ft_lstaddback(mt->ins, ft_lstnew(tmp->cmd, 0, tmp->redirect));
+			ft_lstaddback(mt->ins, ft_lstnew(ft_strdup(tmp->cmd), 0, tmp->redirect));
 		}
 		j++;
 		tmp = tmp->next;

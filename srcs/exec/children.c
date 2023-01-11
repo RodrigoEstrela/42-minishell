@@ -28,19 +28,20 @@ void	execute(t_redirs redirs, t_mthings *mt, char **envp, int indx)
 {
 	char	*path;
 
-	if (is_builtin(redirs.cmd[0]))
-	{
-		builtins(mt, indx);
-		return ;
-	}
-	path = find_path(redirs.cmd[0], mt->export);
-	write(mt->wcode, "0\n", 2);
 	if (redirs.out != -2)
 		dup2(redirs.out, 1);
 	if (redirs.in != -2)
 	{
 		dup2(redirs.in, 0);
 	}
+	if (is_builtin(redirs.cmd[0]))
+	{
+		builtins(mt, indx);
+		free_double_array(redirs.cmd);
+		return ;
+	}
+	path = find_path(redirs.cmd[0], mt->export);
+	write(mt->wcode, "0\n", 2);
 	execve(path, redirs.cmd, envp);
 	free(path);
 	printf("Error: command not found: %s\n", redirs.cmd[0]);

@@ -19,7 +19,7 @@ int	is_builtin(char *str)
 	if (ft_strcmp(str, "echo") == 0)
 		return (1);
 	if (ft_strncmp(str, "cd", 2) == 0)
-		return (1);
+		return (2);
 	if (ft_strcmp(str, "pwd") == 0)
 		return (1);
 	if (ft_strncmp(str, "export", 6) == 0)

@@ -21,6 +21,7 @@ void	delete_elem(t_cmds **lst, int index)
 	if (index == 0)
 	{
 		*lst = tmp->next;
+		free(tmp->cmd);
 		free(tmp);
 		return ;
 	}
@@ -30,6 +31,7 @@ void	delete_elem(t_cmds **lst, int index)
 		tmp = tmp->next;
 	}
 	prev->next = tmp->next;
+	free(tmp->cmd);
 	free(tmp);
 }
 
