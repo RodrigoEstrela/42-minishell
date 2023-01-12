@@ -156,7 +156,7 @@ t_parser		*dollar(t_parser *ct, char *i, t_cmds **c, t_extab **e);
 char			***ezpars(t_parser *c, char *i, t_extab **expo, t_mthings *mt);
 char			***return_parser(t_parser *ctr, t_cmds **cmds);
 char			*str_super_dup(char *input, int start, int flag);
-t_parser		*every(t_parser *ctr, char *input, t_cmds **cmds, t_extab **expo);
+t_parser		*every(t_parser *ctr, char *input, t_cmds **cmds);
 char			**cmd_maker(t_cmds *fds, int nbr);
 int				pipe_counter(t_cmds *fds);
 void			delete_linked_list(t_cmds *list);

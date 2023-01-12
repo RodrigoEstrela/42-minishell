@@ -50,27 +50,14 @@ t_parser	*dollar(t_parser *ctr, char *i,
 	return (ctr);
 }
 
-t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds, t_extab **extab)
+t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
 {
 	ctr->start = ctr->i;
-	char *str;
-	char *str2;
-	int ferf;
-
-	ferf = 0;
-	str2 = str_super_dup(i, ctr->start, '0');
-	ferf = slen(str2);
-	if (i[ctr->i + slen(str2) - 1] == '$')
-	{
-		str = only_z(i, ctr->i + slen(str2), extab);
-		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str2, str), 0, 0));
-		ferf += slen(str) + 1;
-		free(str);
-	}
-	else
-		ft_lstaddback(cmds, ft_lstnew(ft_strdup(str2), 0, 0));
-	ctr->i += ferf - 1;
-	free(str2);
+	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0'), 0, 0));
+	while (i[ctr->i] && i[ctr->i] != ' ' && i[ctr->i] != '$'
+		   && i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
+		ctr->i++;
+	ctr->i--;
 	return (ctr);
 }
 
@@ -165,7 +152,7 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 					ft_strdup("|314159265358979323846"),
 					0, 0));
 		else if (input[ctr->i] != ' ')
-			ctr = every(ctr, input, cmds, etab);
+			ctr = every(ctr, input, cmds);
 	}
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 			&& input[slen(input) - 1] == '|')
