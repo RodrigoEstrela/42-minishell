@@ -50,14 +50,27 @@ t_parser	*dollar(t_parser *ctr, char *i,
 	return (ctr);
 }
 
-t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
+t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds, t_extab **extab)
 {
 	ctr->start = ctr->i;
-	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0'), 0, 0));
-	while (i[ctr->i] && i[ctr->i] != ' ' && i[ctr->i] != '$'
-		&& i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
-		ctr->i++;
-	ctr->i--;
+	char *str;
+	char *str2;
+	int ferf;
+
+	ferf = 0;
+	str2 = str_super_dup(i, ctr->start, '0');
+	ferf = slen(str2);
+	if (i[ctr->i + slen(str2) - 1] == '$')
+	{
+		str = only_z(i, ctr->i + slen(str2), extab);
+		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str2, str), 0, 0));
+		ferf += slen(str) + 1;
+		free(str);
+	}
+	else
+		ft_lstaddback(cmds, ft_lstnew(ft_strdup(str2), 0, 0));
+	ctr->i += ferf - 1;
+	free(str2);
 	return (ctr);
 }
 
@@ -110,6 +123,26 @@ int	doispipesseguidos(t_cmds **cmds)
 	return (0);
 }
 
+int redirsdiferentesjuntas(t_cmds **cmds)
+{
+	t_cmds	*tmp;
+
+	tmp = *cmds;
+	while (tmp)
+	{
+		if (tmp->quotes == 0)
+		{
+			if(tmp->next && (ft_strncmp((*cmds)->cmd, "<", 1) == 0 && ft_strncmp((*cmds)->next->cmd, ">", 1) == 0 ) ||
+			   (ft_strncmp((*cmds)->cmd, ">", 1) == 0 && ft_strncmp((*cmds)->next->cmd, "<", 1) == 0))
+				return (1);
+			if (ft_strnstr(tmp->cmd, "<>", 2) || ft_strnstr(tmp->cmd, "><", 2))
+				return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 {
 	t_cmds		**cmds;
@@ -132,7 +165,7 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 					ft_strdup("|314159265358979323846"),
 					0, 0));
 		else if (input[ctr->i] != ' ')
-			ctr = every(ctr, input, cmds);
+			ctr = every(ctr, input, cmds, etab);
 	}
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 			&& input[slen(input) - 1] == '|')
@@ -140,6 +173,8 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 		|| doispipesseguidos(cmds) == 1)
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirsnomeio(cmds);
+	if (redirsdiferentesjuntas(cmds) == 1)
+		return (missing_command_after_redir(ctr, cmds));
 	cleanup_redirects(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
