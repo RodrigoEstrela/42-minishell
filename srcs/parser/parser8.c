@@ -44,39 +44,92 @@ int	pipepipe(char *input)
 	return (0);
 }
 
+int redirectcounter(char *str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	if (str[0] == '>' || str[0] == '<')
+		count = -1;
+	while (str[i] != '\0')
+	{
+		while (str[i] && str[i] != '>' && str[i] != '<')
+			i++;
+		if (str[i] && (str[i] == '>' || str[i] == '<'))
+		{
+			if (str[i + 1] && (str[i + 1] == '>' || str[i + 1] == '<'))
+				i++;
+			i++;
+		}
+		count++;
+	}
+	return (count);
+}
+
+char *ft_redirdup(char *str)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	dest = malloc(sizeof(char) * (slen(str) + 1));
+	if (!dest)
+		return (NULL);
+	if (str[i] == '>' || str[i] == '<')
+	{
+		dest[i] = str[i];
+		i++;
+	}
+	if (str[i] == '>' || str[i] == '<')
+	{
+		dest[i] = str[i];
+		i++;
+	}
+	while (str[i] && (str[i] != '<' && str[i] != '>'))
+	{
+		dest[i] = str[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
 void	cleanup_redirsnomeio(t_cmds **cmds)
 {
 	t_cmds	*tmp;
 	char	*str;
-	char	*str2;
+	char 	*str2;
 	int 	i;
+	int counter;
 
 	tmp = *cmds;
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->quotes == 0 && ft_strchr(tmp->cmd, '<') && (tmp->cmd[0] != '<' || ft_strchr(ft_strchr(tmp->cmd, '<') + 2, '<')))
+		counter = redirectcounter(tmp->cmd);
+		if (counter >= 2 && tmp->quotes == 0)
 		{
-			str = ft_strndup(tmp->cmd, slen(tmp->cmd) - slen(ft_strchr(tmp->cmd + 2, '<')));
-			str2 = ft_strdup(ft_strchr(tmp->cmd + 2, '<'));
-			free(tmp->cmd);
-			tmp->cmd = str;
-			addinindex(cmds, ft_lstnew(str2, 0, 0), i + 1);
-			i++;
-		}
-		else if (tmp->quotes == 0 && ft_strchr(tmp->cmd, '>') && (tmp->cmd[0] != '>' ||  ft_strchr(ft_strchr(tmp->cmd, '>') + 2, '>')))
-		{
-			str = ft_strndup(tmp->cmd, slen(tmp->cmd) - slen(ft_strchr(tmp->cmd + 2, '>')));
-			str2 = ft_strdup(ft_strchr(tmp->cmd + 2, '>'));
-			free(tmp->cmd);
-			tmp->cmd = str;
-			addinindex(cmds, ft_lstnew(str2, 0, 0), i + 1);
-			i++;
+			while (counter > 1 && tmp)
+			{
+				str = ft_redirdup(tmp->cmd);
+				addinindex(cmds, ft_lstnew(ft_strdup(tmp->cmd + slen(str)), 0, 0), i + 1);
+				free(tmp->cmd);
+				str2 = ft_strdup(str);
+				tmp->cmd = ft_strjoin(str2, " ");
+				free(str);
+				free(str2);
+				i++;
+				tmp = tmp->next;
+				counter--;
+			}
 		}
 		i++;
 		tmp = tmp->next;
 	}
 }
+
 
 void	cleanup_redirects(t_cmds **cmds)
 {

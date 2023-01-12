@@ -141,11 +141,7 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirsnomeio(cmds);
 	cleanup_redirects(cmds);
-	printlist(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
-	printlist(cmds);
-	printlist(mt->ins);
-	printlist(mt->outs);
 	return (return_parser(ctr, cmds));
 }
