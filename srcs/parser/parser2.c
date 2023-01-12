@@ -101,7 +101,7 @@ int	doispipesseguidos(t_cmds **cmds)
 	tmp = *cmds;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0
+		if (tmp->next && ft_strcmp(tmp->cmd, "|314159265358979323846") == 0
 			&& ft_strcmp(tmp->next->cmd, "|314159265358979323846") == 0
 			&& tmp->next->next)
 			return (1);

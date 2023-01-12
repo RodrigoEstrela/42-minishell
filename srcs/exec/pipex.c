@@ -111,7 +111,7 @@ void ft_heredoc(char *limiter, int fd)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (ft_strncmp(line, limiter, slen(limiter)) == 0)
+		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		ft_putendl_fd(line, fd);
 		free(line);
