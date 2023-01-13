@@ -77,12 +77,6 @@ char	***parser(char *input, t_extab **export, t_mthings *mt)
 	if (uneven_quotes(input) == 1)
 	{
 		quotes(export);
-		mt->ins = malloc(sizeof(t_cmds *) * 2);
-		*mt->ins = NULL;
-		ft_lstaddback(mt->ins, ft_lstnew(ft_strdup("uma merda qualquer"), 0, 0));
-		mt->outs = malloc(sizeof(t_cmds *) * 2);
-		*mt->outs = NULL;
-		ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("outrea merda qualquer"), 0, 0));
 		return (NULL);
 	}
 	ctr = (t_parser *)malloc(sizeof(t_parser));

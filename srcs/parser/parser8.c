@@ -270,6 +270,8 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 	j = 0;
 	i = 0;
 	apagar[0] = 454545;
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
 	mt->outs = malloc(sizeof(t_cmds));
 	*mt->outs = NULL;
 	while (tmp)
@@ -330,6 +332,8 @@ void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 	j = 0;
 	i = 0;
 	apagar[0] = 454545;
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
 	mt->ins = malloc(sizeof(t_cmds));
 	*mt->ins = NULL;
 	while (tmp)

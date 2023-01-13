@@ -43,6 +43,10 @@ void	*ft_calloc(size_t count, size_t size)
 void	megafree(t_mthings *mt)
 {
 	free_export_table(*mt->export);
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
 	free(mt->export);
 	free(mt->line);
 	free(mt->efpath);

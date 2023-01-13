@@ -46,8 +46,7 @@ void	build_export_table(t_mthings *mt, char **envp)
 		free_double_array(el);
 		i++;
 	}
-	mt->ins = NULL;
-	mt->outs = NULL;
+
 }
 
 void	free_export_table(t_extab *export)
@@ -83,15 +82,20 @@ void	do_things(t_mthings *mt, char **envp)
 		change_errorcode(mt->export, "1\n");
 	}
 	free(mt->line);
-	if (mt->ins)
-	{
-		if (*mt->ins)
-			delete_linked_list(*mt->ins);
-		free(mt->ins);
-		if (*mt->outs)
-			delete_linked_list(*mt->outs);
-		free(mt->outs);
-	}
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
+}
+
+void insandouts(t_mthings *mt)
+{
+	mt->ins = malloc(sizeof(t_cmds *));
+	(*mt->ins) = NULL;
+	ft_lstaddback(mt->ins, ft_lstnew(ft_strdup("exit"), 0, 0));
+	mt->outs = malloc(sizeof(t_cmds *));
+	(*mt->outs) = NULL;
+	ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("echo"), 0, 0));
 }
 
 int	main(int ac, char **av, char **envp)
@@ -103,6 +107,7 @@ int	main(int ac, char **av, char **envp)
 	build_export_table(mt, envp);
 	while (ac != slen(av[ac]))
 	{
+		insandouts(mt);
 		sig_handler();
 		colorful_path = get_prompt();
 		mt->line = readline(colorful_path);

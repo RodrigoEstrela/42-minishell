@@ -119,8 +119,10 @@ int redirsdiferentesjuntas(t_cmds **cmds)
 	{
 		if (tmp->quotes == 0)
 		{
-			if(tmp->next && (ft_strncmp((*cmds)->cmd, "<", 1) == 0 && ft_strncmp((*cmds)->next->cmd, ">", 1) == 0 ) ||
-			   (ft_strncmp((*cmds)->cmd, ">", 1) == 0 && ft_strncmp((*cmds)->next->cmd, "<", 1) == 0))
+			if (tmp->next && ((tmp->cmd[slen(tmp->cmd) - 2] == '>' && tmp->next->cmd[0] == '<')
+				|| (tmp->cmd[slen(tmp->cmd) - 2] == '<' && tmp->next->cmd[0] == '>')
+				|| (tmp->cmd[slen(tmp->cmd) - 2] == '<' && tmp->next->cmd[0] == '<')
+				|| (tmp->cmd[slen(tmp->cmd) - 2] == '>' && tmp->next->cmd[0] == '>')))
 				return (1);
 			if (ft_strnstr(tmp->cmd, "<>", 2) || ft_strnstr(tmp->cmd, "><", 2))
 				return (1);
@@ -160,7 +162,6 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 	cleanup_redirects(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
-	printlist(cmds);
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 								 && input[slen(input) - 1] == '|')
 								|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
