@@ -17,6 +17,8 @@ void	delete_elem(t_cmds **lst, int index)
 	t_cmds	*tmp;
 	t_cmds	*prev;
 
+	if (index < 0)
+		return ;
 	tmp = *lst;
 	if (index == 0)
 	{
