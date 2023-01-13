@@ -47,6 +47,7 @@ void	build_export_table(t_mthings *mt, char **envp)
 		i++;
 	}
 	mt->ins = NULL;
+	mt->outs = NULL;
 }
 
 void	free_export_table(t_extab *export)
@@ -80,14 +81,15 @@ void	do_things(t_mthings *mt, char **envp)
 	{
 		printf("minishell: parsing error\n");
 		change_errorcode(mt->export, "1\n");
-//		free(mt->cmds);
 	}
 	free(mt->line);
 	if (mt->ins)
 	{
-		delete_linked_list(*mt->ins);
+		if (*mt->ins)
+			delete_linked_list(*mt->ins);
 		free(mt->ins);
-		delete_linked_list(*mt->outs);
+		if (*mt->outs)
+			delete_linked_list(*mt->outs);
 		free(mt->outs);
 	}
 }

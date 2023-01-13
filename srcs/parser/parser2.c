@@ -65,7 +65,7 @@ void	printlist(t_cmds **cmds)
 {
 	t_cmds	*tmp;
 
-	if (!cmds)
+	if (!cmds || !*cmds)
 		return ;
 	tmp = *cmds;
 	while (tmp)
@@ -154,16 +154,20 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 		else if (input[ctr->i] != ' ')
 			ctr = every(ctr, input, cmds);
 	}
-	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
-			&& input[slen(input) - 1] == '|')
-		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
-		|| doispipesseguidos(cmds) == 1)
-		return (missing_command_after_pipe(ctr, cmds));
 	cleanup_redirsnomeio(cmds);
 	if (redirsdiferentesjuntas(cmds) == 1)
 		return (missing_command_after_redir(ctr, cmds));
 	cleanup_redirects(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
+	printlist(cmds);
+	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
+								 && input[slen(input) - 1] == '|')
+								|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
+								|| doispipesseguidos(cmds) == 1
+								|| ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0)
+	{
+		return (missing_command_after_pipe(ctr, cmds));
+	}
 	return (return_parser(ctr, cmds));
 }
