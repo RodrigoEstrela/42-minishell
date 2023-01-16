@@ -49,6 +49,7 @@ t_extab	*copy_list(t_extab *export, t_mthings *minithings)
 
 void	showenv(t_extab *tmp2)
 {
+	tmp2 = tmp2->next;
 	while (tmp2)
 	{
 		if (slen(tmp2->value) > 0)
