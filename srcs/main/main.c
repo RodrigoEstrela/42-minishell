@@ -75,6 +75,7 @@ void	do_things(t_mthings *mt, char **envp)
 	free(mt->ins);
 	delete_linked_list(*mt->outs);
 	free(mt->outs);
+	unlink(".heredoc");
 }
 
 void	insandouts(t_mthings *mt)

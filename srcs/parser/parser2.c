@@ -25,7 +25,7 @@ t_parser	*aspas(t_parser *ctr, char *input,
 	return (ctr);
 }
 
-char *get_last_content_in_cmds(t_cmds **cmds)
+char	*get_last_content_in_cmds(t_cmds **cmds)
 {
 	t_cmds	*tmp;
 
@@ -38,11 +38,11 @@ char *get_last_content_in_cmds(t_cmds **cmds)
 }
 
 t_parser	*dollar(t_parser *ctr, char *i,
-					t_cmds **cmds, t_extab **export)
+	t_cmds	**cmds, t_extab	**export)
 {
 	char	*str5;
 	char	*str4;
-	char 	*str6;
+	char	*str6;
 	char	*str7;
 
 	ctr->start = ctr->i;
@@ -89,7 +89,6 @@ t_parser	*dollar(t_parser *ctr, char *i,
 			free(str6);
 			free(str7);
 		}
-
 	}
 	ctr->i--;
 	return (ctr);
@@ -100,25 +99,10 @@ t_parser	*every(t_parser *ctr, char *i, t_cmds **cmds)
 	ctr->start = ctr->i;
 	ft_lstaddback(cmds, ft_lstnew(str_super_dup(i, ctr->start, '0'), 0, 0));
 	while (i[ctr->i] && i[ctr->i] != ' ' && i[ctr->i] != '$'
-		   && i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
+		&& i[ctr->i] != '"' && i[ctr->i] != '|' && i[ctr->i] != '\'')
 		ctr->i++;
 	ctr->i--;
 	return (ctr);
-}
-
-void	printlist(t_cmds **cmds)
-{
-	t_cmds	*tmp;
-
-	if (!cmds || !*cmds)
-		return ;
-	tmp = *cmds;
-	while (tmp)
-	{
-		printf("cnt: %s,  redir: %d quotes: %d\n", tmp->cmd, tmp->redirect, tmp->quotes);
-		tmp = tmp->next;
-	}
-	printf("\n");
 }
 
 char	***return_parser(t_parser *ctr, t_cmds **cmds)
@@ -137,112 +121,4 @@ char	***return_parser(t_parser *ctr, t_cmds **cmds)
 	cleanup(cmd);
 	free(ctr);
 	return (cmd);
-}
-
-int	doispipesseguidos(t_cmds **cmds)
-{
-	t_cmds	*tmp;
-
-	tmp = *cmds;
-	while (tmp)
-	{
-		if (tmp->next && ft_strcmp(tmp->cmd, "|314159265358979323846") == 0
-			&& ft_strcmp(tmp->next->cmd, "|314159265358979323846") == 0
-			&& tmp->next->next)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int redirsdiferentesjuntas(t_cmds **cmds)
-{
-	t_cmds	*tmp;
-
-	tmp = *cmds;
-	while (tmp)
-	{
-		if (tmp->quotes == 0)
-		{
-			if (tmp->next && ((tmp->cmd[slen(tmp->cmd) - 2] == '>' && tmp->next->cmd[0] == '<')
-				|| (tmp->cmd[slen(tmp->cmd) - 2] == '<' && tmp->next->cmd[0] == '>')
-				|| (tmp->cmd[slen(tmp->cmd) - 2] == '<' && tmp->next->cmd[0] == '<')
-				|| (tmp->cmd[slen(tmp->cmd) - 2] == '>' && tmp->next->cmd[0] == '>')))
-				return (1);
-			if (ft_strnstr(tmp->cmd, "<>", 2) || ft_strnstr(tmp->cmd, "><", 2))
-				return (1);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int is_whitespace(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != ' ' && str[i] != '\t')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int redirnotok(char *input)
-{
-	int    i;
-
-	i = -1;
-	while (input[++i])
-		if (input[i] == '>' || input[i] == '<')
-			if (is_whitespace(input + i + 1))
-				return (1);
-	return (0);
-}
-
-char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
-{
-	t_cmds		**cmds;
-
-	if (pipepipe(input) || redirnotok(input))
-	{
-		free(ctr);
-		return (NULL);
-	}
-	cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
-	*cmds = NULL;
-	ctr->i = -1;
-	while (++ctr->i < slen(input))
-	{
-		if (input[ctr->i] == '\'')
-			ctr = barra(ctr, input, cmds);
-		else if (input[ctr->i] == '"')
-			ctr = aspas(ctr, input, cmds, etab);
-		else if (input[ctr->i] == '$')
-			ctr = dollar(ctr, input, cmds, etab);
-		else if (input[ctr->i] == '|')
-			ft_lstaddback(cmds, ft_lstnew(
-					ft_strdup("|314159265358979323846"),
-					0, 0));
-		else if (input[ctr->i] != ' ')
-			ctr = every(ctr, input, cmds);
-	}
-	cleanup_redirsnomeio(cmds);
-	if (redirsdiferentesjuntas(cmds) == 1)
-		return (missing_command_after_redir(ctr, cmds));
-	cleanup_redirects(cmds);
-	cleanup_output(cmds, mt);
-	cleanup_input(cmds, mt);
-	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
-								 && input[slen(input) - 1] == '|')
-								|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
-								|| doispipesseguidos(cmds) == 1
-								|| ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0)
-	{
-		return (missing_command_after_pipe(ctr, cmds));
-	}
-	return (return_parser(ctr, cmds));
 }

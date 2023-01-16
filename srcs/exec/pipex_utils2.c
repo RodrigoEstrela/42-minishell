@@ -66,10 +66,10 @@ int	mexenoheredoc(char *cmd)
 	int	fd;
 	int	fd2;
 
-	fd2 = open("heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	fd2 = open(".heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	ft_heredoc(cmd, fd2);
 	close(fd2);
-	fd = open("heredoc", O_RDONLY);
+	fd = open(".heredoc", O_RDONLY);
 	return (fd);
 }
 

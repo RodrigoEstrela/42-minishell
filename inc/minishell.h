@@ -208,5 +208,9 @@ void			ft_putendl_fd(char *s, int fd);
 char			**cpydp(char **dp);
 char			*normi(t_path *path);
 char			*find_path(char *cmd, t_extab **envp);
+int				redirnotok(char *input);
+int				is_whitespace(char *str);
+int				redirsdiferentesjuntas(t_cmds **cmds);
+int				doispipesseguidos(t_cmds **cmds);
 
 #endif
