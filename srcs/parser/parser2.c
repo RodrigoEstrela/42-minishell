@@ -177,12 +177,41 @@ int redirsdiferentesjuntas(t_cmds **cmds)
 	return (0);
 }
 
+int is_whitespace(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int redirnotok(char *input)
+{
+	int    i;
+
+	i = -1;
+	while (input[++i])
+		if (input[i] == '>' || input[i] == '<')
+			if (is_whitespace(input + i + 1))
+				return (1);
+	return (0);
+}
+
 char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 {
 	t_cmds		**cmds;
 
-	if (pipepipe(input))
+	if (pipepipe(input) || redirnotok(input))
+	{
+		free(ctr);
 		return (NULL);
+	}
 	cmds = (t_cmds **)malloc(sizeof(t_cmds *) * 1);
 	*cmds = NULL;
 	ctr->i = -1;

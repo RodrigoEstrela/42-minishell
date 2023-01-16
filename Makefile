@@ -15,7 +15,7 @@ SRCS		=		main/main.c main/sighandler.c main/prompt.c \
 					builtins/export.c builtins/export_utils.c  builtins/export_utils2.c \
 					builtins/export_utils3.c builtins/unset.c \
 					exec/children.c exec/commandsmaster.c exec/gnl.c exec/gnl_utils.c \
-					exec/pipex.c exec/pipex_utils.c exec/quadpointer.c \
+					exec/pipex.c exec/pipex_utils.c exec/quadpointer.c exec/pipex_utils2.c \
 					parser/parser.c parser/parser2.c parser/parser3.c parser/parser4.c \
 					parser/parser5.c parser/parser6.c parser/parser7.c parser/parser8.c \
 					parser/parser9.c \

@@ -12,18 +12,6 @@
 
 #include"../../inc/minishell.h"
 
-void	print_double_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
-}
-
 void	execute(t_redirs redirs, t_mthings *mt, char **envp, int indx)
 {
 	char	*path;
@@ -72,4 +60,31 @@ void	child_one(t_redirs redirs, t_mthings *mt, char **envp, int indx)
 		dup2(fd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
 	}
+}
+
+int	childthings(t_mthings *mt, t_redirs redirs, char **envp, int nbr_cmds)
+{
+	int	i;
+
+	i = -1;
+	if (ft_strcmp(mt->ins[0]->cmd, "SEMINS") != 0)
+	{
+		dup2(redirs.in, 0);
+	}
+	while (++i < nbr_cmds - 1)
+	{
+		redirs = meteredirs(mt->cmds[i], mt->ins, mt->outs);
+		if (redirs.in == -42)
+		{
+			printf("minishell: No such file or directory\n");
+			free_double_array(redirs.cmd);
+			delete_linked_list(*mt->ins);
+			free(mt->ins);
+			delete_linked_list(*mt->outs);
+			free(mt->outs);
+			return (-42);
+		}
+		child_one(redirs, mt, envp, i);
+	}
+	return (i);
 }

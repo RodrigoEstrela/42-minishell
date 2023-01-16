@@ -14,16 +14,6 @@
 
 int	g_ec = 0;
 
-void	free_double_array(char **array)
-{
-	int	i;
-
-	i = -1;
-	while (array[++i])
-		free(array[i]);
-	free(array);
-}
-
 void	build_export_table(t_mthings *mt, char **envp)
 {
 	int		i;
@@ -46,7 +36,6 @@ void	build_export_table(t_mthings *mt, char **envp)
 		free_double_array(el);
 		i++;
 	}
-
 }
 
 void	free_export_table(t_extab *export)
@@ -88,7 +77,7 @@ void	do_things(t_mthings *mt, char **envp)
 	free(mt->outs);
 }
 
-void insandouts(t_mthings *mt)
+void	insandouts(t_mthings *mt)
 {
 	mt->ins = malloc(sizeof(t_cmds *));
 	(*mt->ins) = NULL;

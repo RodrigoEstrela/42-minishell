@@ -37,12 +37,6 @@
 
 // Structures
 
-typedef struct s_list
-{
-	char			*content;
-	struct s_list	*next;
-}			t_list;
-
 typedef struct s_exporttable
 {
 	char					*k;
@@ -63,7 +57,6 @@ typedef struct s_cmds
 	char			*cmd;
 	int				quotes;
 	int				redirect;
-	int 			dollar;
 	struct s_cmds	*next;
 }			t_cmds;
 
@@ -73,7 +66,6 @@ typedef struct s_lists
 	char			*line;
 	char			***cmds;
 	t_cmds			**ins;
-	char			***megains;
 	t_cmds			**outs;
 	char			*efpath;
 	int				wcode;
@@ -92,7 +84,7 @@ typedef struct s_path
 	char			*path;
 	int				i;
 	char			*part_path;
-t_extab			*tmp;
+	t_extab			*tmp;
 }					t_path;
 
 typedef struct s_coisas
@@ -207,5 +199,14 @@ void			delete_elem(t_cmds **lst, int index);
 int				sizelst(t_cmds **lst);
 void			cleanup_redirsnomeio(t_cmds **cmds);
 void			*missing_command_after_redir(t_parser *ctr, t_cmds **cmds);
+t_redirs		meteredirs(char **cmd, t_cmds **ins, t_cmds **outs);
+int				childthings(t_mthings *mt, t_redirs redirs, char **env, int n);
+void			ft_heredoc(char *limiter, int fd);
+int				ve_la_isso_bem(t_cmds *tmp);
+int				mexenoheredoc(char *cmd);
+void			ft_putendl_fd(char *s, int fd);
+char			**cpydp(char **dp);
+char			*normi(t_path *path);
+char			*find_path(char *cmd, t_extab **envp);
 
 #endif

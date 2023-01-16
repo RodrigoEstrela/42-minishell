@@ -54,3 +54,13 @@ void	megafree(t_mthings *mt)
 	write(1, "exit\n", 5);
 	exit(0);
 }
+
+void	free_double_array(char **array)
+{
+	int	i;
+
+	i = -1;
+	while (array[++i])
+		free(array[i]);
+	free(array);
+}
