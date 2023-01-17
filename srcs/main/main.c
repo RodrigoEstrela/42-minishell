@@ -23,7 +23,7 @@ void	build_export_table(t_mthings *mt, char **envp)
 	i = 0;
 	el = ft_split(envp[i], '=');
 	getcwd(tmp, sizeof(tmp));
-	mt->efpath = ft_strjoin(tmp, "/e");
+	mt->efpath = ft_strjoin(tmp, "/.e");
 	mt->export = malloc(sizeof(t_extab *));
 	(*mt->export) = NULL;
 	mt->wcode = open(mt->efpath, O_WRONLY | O_CREAT | O_TRUNC, 0777);

@@ -14,32 +14,28 @@
 
 int	pipepipe(char *input)
 {
-	int	flag;
-	int	i;
+	int	fi[2];
 
-	flag = 0;
-	i = -1;
-	while (input[++i])
+	fi[0] = 0;
+	fi[1] = -1;
+	while (input[++fi[1]])
 	{
-		if (input[i] == '\'')
+		if (input[fi[1]] == '\'')
 		{
-			if (flag == 0)
-				flag = 1;
-			else if (flag == 1)
-				flag = 0;
+			if (fi[0] == 0)
+				fi[0] = 1;
+			else if (fi[0] == 1)
+				fi[0] = 0;
 		}
-		else if (input[i] == '"')
+		else if (input[fi[1]] == '"')
 		{
-			if (flag == 0)
-				flag = 2;
-			else if (flag == 2)
-				flag = 0;
+			if (fi[0] == 0)
+				fi[0] = 2;
+			else if (fi[0] == 2)
+				fi[0] = 0;
 		}
-		if (input[i] == '|' && input[i + 1] == '|' && flag == 0)
-		{
-			printf("minishell: syntax error near unexpected token `||'");
-			return (1);
-		}
+		if (input[fi[1]] == '|' && input[fi[1] + 1] == '|' && fi[0] == 0)
+			return (printf("minishell: syntax error\n"));
 	}
 	return (0);
 }
@@ -96,11 +92,24 @@ char	*ft_redirdup(char *str)
 	return (dest);
 }
 
+void	redirsnomeio_utils(t_cmds *tmp, t_cmds **cmds, int i)
+{
+	char	*str;
+	char	*str2;
+
+	str = ft_redirdup(tmp->cmd);
+	addinindex(cmds, ft_lstnew(
+			ft_strdup(tmp->cmd + slen(str)), 0, 0), i + 1);
+	free(tmp->cmd);
+	str2 = ft_strdup(str);
+	tmp->cmd = ft_strjoin(str2, " ");
+	free(str);
+	free(str2);
+}
+
 void	cleanup_redirsnomeio(t_cmds **cmds)
 {
 	t_cmds	*tmp;
-	char	*str;
-	char	*str2;
 	int		i;
 	int		counter;
 
@@ -113,14 +122,7 @@ void	cleanup_redirsnomeio(t_cmds **cmds)
 		{
 			while (counter > 1 && tmp)
 			{
-				str = ft_redirdup(tmp->cmd);
-				addinindex(cmds, ft_lstnew(
-						ft_strdup(tmp->cmd + slen(str)), 0, 0), i + 1);
-				free(tmp->cmd);
-				str2 = ft_strdup(str);
-				tmp->cmd = ft_strjoin(str2, " ");
-				free(str);
-				free(str2);
+				redirsnomeio_utils(tmp, cmds, i);
 				i++;
 				tmp = tmp->next;
 				counter--;

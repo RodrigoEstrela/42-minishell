@@ -37,58 +37,74 @@ char	*get_last_content_in_cmds(t_cmds **cmds)
 	return (tmp->cmd);
 }
 
-t_parser	*dollar(t_parser *ctr, char *i,
+void	command_dollar(t_cmds **cmds, char *str4)
+{
+	char	*str6;
+	char	*str7;
+
+	str6 = ft_strdup(ft_last_cmd(*cmds)->cmd);
+	str7 = ft_strjoin(str6, str4);
+	delete_elem(cmds, sizelst(cmds) - 1);
+	ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str7, " "), 0, 0));
+	free(str6);
+	free(str7);
+}
+
+void	dollar_else(t_parser *ctr, char *i,
 	t_cmds	**cmds, t_extab	**export)
 {
-	char	*str5;
 	char	*str4;
 	char	*str6;
 	char	*str7;
 
+	str4 = only_z(i, ctr->start, export);
+	str6 = ft_strdup(get_last_content_in_cmds(cmds));
+	if (!str6)
+		str7 = ft_strdup(str4);
+	else
+		str7 = ft_strjoin(str6, str4);
+	delete_elem(cmds, sizelst(cmds) - 1);
+	if (i[ctr->start + 1] == ' ')
+		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str7, " "), 0, 0));
+	else
+		ft_lstaddback(cmds, ft_lstnew(ft_strdup(str7), 0, 0));
+	free(str4);
+	free(str6);
+	free(str7);
+}
+
+void	dollar_if(t_parser *ctr, char *i,
+	t_cmds	**cmds, t_extab	**export)
+{
+	char	*str5;
+	char	*str4;
+
+	str5 = only_z(i, ctr->start, export);
+	str4 = ft_strdup(str5);
+	if (i[ctr->start - 1] == ' ')
+		ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str4, " "), 0, 0));
+	else
+		command_dollar(cmds, str4);
+	free(str4);
+	free(str5);
+}
+
+t_parser	*dollar(t_parser *ctr, char *i,
+	t_cmds	**cmds, t_extab	**export)
+{
 	ctr->start = ctr->i;
 	while (i[++ctr->i] && i[ctr->i] != ' '
 		&& i[ctr->i] != '$' && i[ctr->i] != '"' && i[ctr->i] != '|')
 		;
 	if (i[ctr->i] == ' ' && i[ctr->i + 1] != '|'
 		&& i[ctr->i + 1] && i[ctr->i + 1] != ' ')
-	{
-		str5 = only_z(i, ctr->start, export);
-		str4 = ft_strdup(str5);
-		if (i[ctr->start - 1] == ' ')
-			ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str4, " "), 0, 0));
-		else
-		{
-			str6 = ft_strdup(ft_last_cmd(*cmds)->cmd);
-			str7 = ft_strjoin(str6, str4);
-			delete_elem(cmds, sizelst(cmds) - 1);
-			ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str7, " "), 0, 0));
-			free(str6);
-			free(str7);
-		}
-		free(str4);
-		free(str5);
-	}
+		dollar_if(ctr, i, cmds, export);
 	else
 	{
 		if (i[ctr->start - 1] == ' ')
 			ft_lstaddback(cmds, ft_lstnew(only_z(i, ctr->start, export), 0, 0));
 		else
-		{
-			str4 = only_z(i, ctr->start, export);
-			str6 = ft_strdup(get_last_content_in_cmds(cmds));
-			if (!str6)
-				str7 = ft_strdup(str4);
-			else
-				str7 = ft_strjoin(str6, str4);
-			delete_elem(cmds, sizelst(cmds) - 1);
-			if (i[ctr->start + 1] == ' ')
-				ft_lstaddback(cmds, ft_lstnew(ft_strjoin(str7, " "), 0, 0));
-			else
-				ft_lstaddback(cmds, ft_lstnew(ft_strdup(str7), 0, 0));
-			free(str4);
-			free(str6);
-			free(str7);
-		}
+			dollar_else(ctr, i, cmds, export);
 	}
 	ctr->i--;
 	return (ctr);

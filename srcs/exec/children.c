@@ -32,8 +32,8 @@ void	execute(t_redirs redirs, t_mthings *mt, char **envp, int indx)
 	write(mt->wcode, "0\n", 2);
 	execve(path, redirs.cmd, envp);
 	free(path);
-	printf("Error: command not found: %s\n", redirs.cmd[0]);
 	write(mt->wcode, "127\n", 4);
+	printf("Error: command not found\n");
 }
 
 void	child_one(t_redirs redirs, t_mthings *mt, char **envp, int indx)

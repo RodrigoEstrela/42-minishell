@@ -146,12 +146,11 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 {
 	t_cmds	*tmp;
 	int		apagar[347];
-	int		i;
-	int		j;
+	int		ij[2];
 
 	tmp = *cmds;
-	j = 0;
-	i = 0;
+	ij[0] = 0;
+	ij[1] = 0;
 	apagar[0] = 454545;
 	delete_linked_list(*mt->outs);
 	free(mt->outs);
@@ -163,19 +162,19 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 		{
 			ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("PIPETEMPIPE"), 0, 0));
 			tmp = tmp->next;
-			j++;
+			ij[1]++;
 		}
 		if ((tmp->redirect == 3 || tmp->redirect == 4))
 		{
-			apagar[i++] = j;
+			apagar[ij[0]++] = ij[1];
 			ft_lstaddback(mt->outs, ft_lstnew(ft_strdup(tmp->cmd),
 					0, tmp->redirect));
 		}
-		j++;
+		ij[1]++;
 		tmp = tmp->next;
 	}
-	while (i-- > 0)
-		delete_elem(cmds, apagar[i]);
+	while (ij[0]-- > 0)
+		delete_elem(cmds, apagar[ij[0]]);
 	cleanup_output2(mt);
 }
 

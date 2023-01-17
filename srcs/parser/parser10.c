@@ -93,33 +93,8 @@ char	***ezpars(t_parser *ctr, char *input, t_extab **etab, t_mthings *mt)
 	*cmds = NULL;
 	ctr->i = -1;
 	while (++ctr->i < slen(input))
-	{
-		if (input[ctr->i] == '\'')
-			ctr = barra(ctr, input, cmds);
-		else if (input[ctr->i] == '"')
-			ctr = aspas(ctr, input, cmds, etab);
-		else if (input[ctr->i] == '$')
-			ctr = dollar(ctr, input, cmds, etab);
-		else if (input[ctr->i] == '|')
-			ft_lstaddback(cmds, ft_lstnew(
-					ft_strdup("|314159265358979323846"),
-					0, 0));
-		else if (input[ctr->i] != ' ')
-			ctr = every(ctr, input, cmds);
-	}
-	cleanup_redirsnomeio(cmds);
-	if (redirsdiferentesjuntas(cmds) == 1)
-		return (missing_command_after_redir(ctr, cmds));
-	cleanup_redirects(cmds);
-	cleanup_output(cmds, mt);
-	cleanup_input(cmds, mt);
-	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
-			&& input[slen(input) - 1] == '|')
-		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)
-		|| doispipesseguidos(cmds) == 1
-		|| ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0)
-	{
-		return (missing_command_after_pipe(ctr, cmds));
-	}
+		ctr = ez_utils(ctr, input, etab, cmds);
+	if (mclean(cmds, ctr, mt, input) == 1)
+		return (NULL);
 	return (return_parser(ctr, cmds));
 }

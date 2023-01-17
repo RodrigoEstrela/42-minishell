@@ -54,6 +54,7 @@ void	freebonitodoexit(t_mthings *mt, char ****quad)
 	free(mt->outs);
 	free(mt);
 	freequadpointer(quad);
+	unlink(".e");
 }
 
 void	exitin(char ****quad, t_mthings *mt, int i)

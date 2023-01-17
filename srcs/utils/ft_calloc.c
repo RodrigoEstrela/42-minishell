@@ -52,6 +52,7 @@ void	megafree(t_mthings *mt)
 	free(mt->efpath);
 	free(mt);
 	write(1, "exit\n", 5);
+	unlink(".e");
 	exit(0);
 }
 

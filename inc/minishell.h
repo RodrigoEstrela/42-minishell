@@ -212,5 +212,7 @@ int				redirnotok(char *input);
 int				is_whitespace(char *str);
 int				redirsdiferentesjuntas(t_cmds **cmds);
 int				doispipesseguidos(t_cmds **cmds);
+t_parser		*ez_utils(t_parser *p, char *i, t_extab **e, t_cmds **c);
+int				mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *in);
 
 #endif
