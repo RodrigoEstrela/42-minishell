@@ -52,10 +52,9 @@ int	mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *input)
 		return (1);
 	}
 	cleanup_redirects(cmds);
-	printlist(cmds);
+	cleanup_pipes(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
-
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 			&& input[slen(input) - 1] == '|')
 		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)

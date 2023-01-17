@@ -216,5 +216,7 @@ int				mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *in);
 char			*get_last_content_in_cmds(t_cmds **cmds);
 void			command_dollar(t_cmds **cmds, char *str4);
 void			free_emptyline(t_mthings *mt);
+void			cleanup_pipes(t_cmds **cmds);
+void			printlist(t_cmds **cmds);
 
 #endif

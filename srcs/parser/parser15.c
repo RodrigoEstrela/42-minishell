@@ -80,3 +80,29 @@ void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 	*mt->ins = NULL;
 	loopdoinput(cmds, mt, ij, apagar);
 }
+
+void	cleanup_pipes(t_cmds **cmds)
+{
+	t_cmds	*tmp;
+	int		normal;
+	int		redir;
+	int 	i;
+
+	tmp = *cmds;
+	normal = 0;
+	redir = 0;
+	i = 0;
+	while (tmp)
+	{
+		if (tmp->redirect == 0)
+			normal = 1;
+		else if (tmp->redirect > 0)
+			redir = 1;
+		tmp = tmp->next;
+		i++;
+	}
+	if (normal == 0 && redir == 1)
+	{
+		addinindex(cmds, ft_lstnew(ft_strdup("SOREDIR"), 0, 0), i);
+	}
+}
