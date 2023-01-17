@@ -74,7 +74,7 @@ int	commandexist(t_mthings *mt, char **cmd)
 	if (is_builtin(cmd[0]))
 		return (1);
 	path = find_path(cmd[0], mt->export);
-	if (!path)
+	if (!path || ft_strcmp(cmd[0], "") == 0)
 	{
 		write(mt->wcode, "127\n", 4);
 		printf("minishell: command not found: %s\n", cmd[0]);
