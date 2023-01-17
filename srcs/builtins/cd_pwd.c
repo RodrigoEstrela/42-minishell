@@ -26,8 +26,7 @@ void	til(t_mthings *mt, int indx)
 
 void	cd(t_mthings *mt, int indx)
 {
-	printf("cd\n");
-	if (mt->cmds[indx][2])
+	if (mt->cmds[indx] && mt->cmds[indx][1] && mt->cmds[indx][2])
 	{
 		printf("amazingshell: cd: too many arguments\n");
 		write(mt->wcode, "1\n", 2);
