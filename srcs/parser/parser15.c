@@ -12,35 +12,34 @@
 
 #include"../../inc/minishell.h"
 
-void	cleanup_output2(t_mthings *mt)
+void	cleanup_input2(t_mthings *mt)
 {
 	int		i;
 
 	i = 0;
-	if (!*mt->outs)
+	if (!*mt->ins)
 	{
-		ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"), 0, 0));
+		ft_lstaddback(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0));
 		return ;
 	}
-	if (ft_strcmp(idx(mt->outs, 0)->cmd, "PIPETEMPIPE") == 0)
+	if (ft_strcmp(idx(mt->ins, 0)->cmd, "PIPETEMPIPE") == 0)
 	{
-		addinindex(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"), 0, 0), 0);
+		addinindex(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0), 0);
 		i++;
 	}
-	if (ft_strcmp(idx(mt->outs, sizelst(mt->outs))->cmd, "PIPETEMPIPE") == 0)
-		addinindex(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"),
-				0, 0), sizelst(mt->outs));
-	while (i <= sizelst(mt->outs))
+	if (ft_strcmp(idx(mt->ins, sizelst(mt->ins))->cmd, "PIPETEMPIPE") == 0)
+		addinindex(mt->ins, ft_lstnew(ft_strdup("SEMINS"),
+				0, 0), sizelst(mt->ins));
+	while (i <= sizelst(mt->ins))
 	{
-		if (ft_strcmp(idx(mt->outs, i)->cmd, "PIPETEMPIPE") == 0
-			&& ft_strcmp(idx(mt->outs, i + 1)->cmd, "PIPETEMPIPE") == 0)
-			addinindex(mt->outs, ft_lstnew(ft_strdup("SEMOUTS"),
-					0, 0), i++ + 1);
+		if (ft_strcmp(idx(mt->ins, i)->cmd, "PIPETEMPIPE") == 0
+			&& ft_strcmp(idx(mt->ins, i + 1)->cmd, "PIPETEMPIPE") == 0)
+			addinindex(mt->ins, ft_lstnew(ft_strdup("SEMINS"), 0, 0), i++ + 1);
 		i++;
 	}
 }
 
-void	loopdoout(t_cmds **cmds, t_mthings *mt, int *ij, int *apagar)
+void	loopdoinput(t_cmds **cmds, t_mthings *mt, int *ij, int *apagar)
 {
 	t_cmds	*tmp;
 
@@ -49,14 +48,14 @@ void	loopdoout(t_cmds **cmds, t_mthings *mt, int *ij, int *apagar)
 	{
 		if (ft_strcmp(tmp->cmd, "|314159265358979323846") == 0 && tmp->next)
 		{
-			ft_lstaddback(mt->outs, ft_lstnew(ft_strdup("PIPETEMPIPE"), 0, 0));
+			ft_lstaddback(mt->ins, ft_lstnew(ft_strdup("PIPETEMPIPE"), 0, 0));
 			tmp = tmp->next;
 			ij[1]++;
 		}
-		if ((tmp->redirect == 3 || tmp->redirect == 4))
+		if ((tmp->redirect == 1 || tmp->redirect == 2))
 		{
 			apagar[ij[0]++] = ij[1];
-			ft_lstaddback(mt->outs, ft_lstnew(ft_strdup(tmp->cmd),
+			ft_lstaddback(mt->ins, ft_lstnew(ft_strdup(tmp->cmd),
 					0, tmp->redirect));
 		}
 		ij[1]++;
@@ -64,10 +63,10 @@ void	loopdoout(t_cmds **cmds, t_mthings *mt, int *ij, int *apagar)
 	}
 	while (ij[0]-- > 0)
 		delete_elem(cmds, apagar[ij[0]]);
-	cleanup_output2(mt);
+	cleanup_input2(mt);
 }
 
-void	cleanup_output(t_cmds **cmds, t_mthings *mt)
+void	cleanup_input(t_cmds **cmds, t_mthings *mt)
 {
 	int		apagar[347];
 	int		ij[2];
@@ -75,9 +74,9 @@ void	cleanup_output(t_cmds **cmds, t_mthings *mt)
 	ij[0] = 0;
 	ij[1] = 0;
 	apagar[0] = 454545;
-	delete_linked_list(*mt->outs);
-	free(mt->outs);
-	mt->outs = malloc(sizeof(t_cmds));
-	*mt->outs = NULL;
-	loopdoout(cmds, mt, ij, apagar);
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	mt->ins = malloc(sizeof(t_cmds));
+	*mt->ins = NULL;
+	loopdoinput(cmds, mt, ij, apagar);
 }

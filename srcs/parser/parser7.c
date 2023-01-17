@@ -75,12 +75,3 @@ void	*missing_command_after_pipe(t_parser *ctr, t_cmds **cmds)
 	free(ctr);
 	return (NULL);
 }
-
-void	*missing_command_after_redir(t_parser *ctr, t_cmds **cmds)
-{
-	printf("minishell: syntax error near unexpected token `newline'\n");
-	delete_linked_list(*cmds);
-	free(cmds);
-	free(ctr);
-	return (NULL);
-}

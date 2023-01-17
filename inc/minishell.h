@@ -214,5 +214,7 @@ int				redirsdiferentesjuntas(t_cmds **cmds);
 int				doispipesseguidos(t_cmds **cmds);
 t_parser		*ez_utils(t_parser *p, char *i, t_extab **e, t_cmds **c);
 int				mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *in);
+char			*get_last_content_in_cmds(t_cmds **cmds);
+void			command_dollar(t_cmds **cmds, char *str4);
 
 #endif
