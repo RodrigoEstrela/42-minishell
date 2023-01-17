@@ -74,6 +74,8 @@ int	childthings(t_mthings *mt, t_redirs redirs, char **envp, int nbr_cmds)
 	while (++i < nbr_cmds - 1)
 	{
 		redirs = meteredirs(mt->cmds[i], mt->ins, mt->outs);
+		if (ft_strcmp(mt->cmds[i][0], "SOREDIR") == 0)
+			return (i);
 		if (redirs.in == -42)
 		{
 			printf("minishell: No such file or directory\n");

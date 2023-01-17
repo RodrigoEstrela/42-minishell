@@ -193,7 +193,6 @@ void			cleanup_redirects(t_cmds **cmds);
 void			cleanup_output(t_cmds **cmds, t_mthings *mt);
 void			cleanup_input(t_cmds **cmds, t_mthings *mt);
 t_cmds			*idx(t_cmds **cmds, int index);
-void			printlist(t_cmds **cmds);
 void			addinindex(t_cmds **lst, t_cmds *new, int index);
 void			delete_elem(t_cmds **lst, int index);
 int				sizelst(t_cmds **lst);
@@ -216,5 +215,6 @@ t_parser		*ez_utils(t_parser *p, char *i, t_extab **e, t_cmds **c);
 int				mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *in);
 char			*get_last_content_in_cmds(t_cmds **cmds);
 void			command_dollar(t_cmds **cmds, char *str4);
+void			free_emptyline(t_mthings *mt);
 
 #endif

@@ -115,6 +115,8 @@ void	pipex(int nbr_cmds, char ***cmds, char **envp, t_mthings *mt)
 		if (i == -42)
 			return ;
 		redirs = meteredirs(cmds[nbr_cmds - 1], mt->ins, mt->outs);
+		if (ft_strcmp(cmds[i][0], "SOREDIR") == 0)
+			return ;
 		if (redirs.in == -42)
 		{
 			printf("minishell: No such file or directory\n");

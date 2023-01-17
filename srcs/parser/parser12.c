@@ -29,6 +29,20 @@ t_parser	*ez_utils(t_parser *ctr, char *in, t_extab **et, t_cmds **cmds)
 	return (ctr);
 }
 
+void printlist(t_cmds **cmds)
+{
+	t_cmds *tmp;
+
+	if (!cmds)
+		return ;
+	tmp = *cmds;
+	while (tmp)
+	{
+		printf("cmd: %s, redir: %d\n", tmp->cmd, tmp->redirect);
+		tmp = tmp->next;
+	}
+}
+
 int	mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *input)
 {
 	cleanup_redirsnomeio(cmds);
@@ -38,8 +52,10 @@ int	mclean(t_cmds **cmds, t_parser *ctr, t_mthings *mt, char *input)
 		return (1);
 	}
 	cleanup_redirects(cmds);
+	printlist(cmds);
 	cleanup_output(cmds, mt);
 	cleanup_input(cmds, mt);
+
 	if ((ft_strcmp(ft_last_cmd(*cmds)->cmd, "|314159265358979323846") == 0
 			&& input[slen(input) - 1] == '|')
 		|| (ft_strcmp((*cmds)->cmd, "|314159265358979323846") == 0)

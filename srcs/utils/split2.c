@@ -94,3 +94,12 @@ void	exitcode_file(t_mthings *mt)
 	free(exitvalue);
 	close(mt->rcode);
 }
+
+void	free_emptyline(t_mthings *mt)
+{
+	free(mt->line);
+	delete_linked_list(*mt->ins);
+	free(mt->ins);
+	delete_linked_list(*mt->outs);
+	free(mt->outs);
+}

@@ -111,8 +111,6 @@ int	main(int ac, char **av, char **envp)
 				do_things(mt, envp);
 		}
 		else
-		{
-			free(mt->line);
-		}
+			free_emptyline(mt);
 	}
 }

@@ -62,6 +62,11 @@ void	aspas_no_dollar(t_parser *p, char *in, t_cmds **cmd)
 
 t_cmds	*ft_last_cmd(t_cmds *cmds)
 {
+	if (!cmds)
+	{
+		cmds = ft_lstnew("", 0, 0);
+		return (cmds);
+	}
 	while (cmds->next)
 		cmds = cmds->next;
 	return (cmds);

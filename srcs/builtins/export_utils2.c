@@ -28,6 +28,8 @@ int	check_duplicated(t_extab **export, char *str)
 
 void	valmod(t_extab **export, char *value, int i, t_mthings *mt)
 {
+	if (ind(*export, i)->value)
+		free(ind(*export, i)->value);
 	ind(*export, i)->value = ft_strdup(value);
 	write(mt->wcode, "0\n", 2);
 }

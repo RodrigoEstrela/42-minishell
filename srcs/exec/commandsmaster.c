@@ -73,6 +73,8 @@ int	commandexist(t_mthings *mt, char **cmd)
 
 	if (is_builtin(cmd[0]))
 		return (1);
+	if (ft_strcmp(cmd[0], "SOREDIR") == 0)
+		return (1);
 	path = find_path(cmd[0], mt->export);
 	if (!path || ft_strcmp(cmd[0], "") == 0)
 	{
